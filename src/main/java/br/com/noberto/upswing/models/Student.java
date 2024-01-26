@@ -1,5 +1,7 @@
 package br.com.noberto.upswing.models;
 
+import br.com.noberto.upswing.dtos.address.AddressRrequest;
+import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +25,7 @@ public class Student {
     private Account account;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
     private Address address;
 
     @OneToMany(mappedBy = "student")
@@ -30,4 +33,9 @@ public class Student {
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<Registration> registrations = new ArrayList<>();
+
+    public Student(RegisterStudent student, AddressRrequest address) {
+        this.account = new Account(student);
+        this.address = new Address(address);
+    }
 }

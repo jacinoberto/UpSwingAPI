@@ -1,5 +1,6 @@
 package br.com.noberto.upswing.models;
 
+import br.com.noberto.upswing.dtos.address.ZipCodeRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,4 +24,12 @@ public class ZipCode {
 
     @OneToMany(mappedBy = "zipCode")
     private List<Address> addresses = new ArrayList<>();
+
+    public ZipCode(ZipCodeRequest zipCode) {
+        this.zipCode = zipCode.zipCode();
+        this.street = zipCode.street();
+        this.area = zipCode.area();
+        this.city = zipCode.city();
+        this.state = zipCode.state();
+    }
 }

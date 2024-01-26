@@ -1,5 +1,6 @@
 package br.com.noberto.upswing.models;
 
+import br.com.noberto.upswing.dtos.address.AddressRrequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,4 +28,10 @@ public class Address {
 
     @OneToMany(mappedBy = "address")
     private List<Company> companies = new ArrayList<>();
+
+    public Address(AddressRrequest address) {
+        this.number = address.number();
+        this.complement = address.complement();
+        this.zipCode = new ZipCode(address.zipCode());
+    }
 }
