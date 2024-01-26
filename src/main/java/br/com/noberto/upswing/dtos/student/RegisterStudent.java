@@ -17,7 +17,6 @@ public record RegisterStudent(
         LocalDate birthDate,
         @NotBlank
         @CPF
-        @UniqueElements
         String socialSecurity,
         @NotBlank
         String mainPhone,
@@ -37,7 +36,6 @@ public record RegisterStudent(
         String state,
         @NotBlank
         @Email
-        @UniqueElements
         String mail,
         @NotBlank
         String password,

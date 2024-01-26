@@ -1,6 +1,8 @@
 package br.com.noberto.upswing.models;
 
+import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -14,9 +16,11 @@ public class Account {
 
     private String name;
     private LocalDate birthDate;
+    @Column(unique = true)
     private String socialSecurity;
     private String mainPhone;
     private String optionalPhone;
+    @Column(unique = true)
     private String mail;
     private String password;
     private Boolean activeProfile;
@@ -29,6 +33,17 @@ public class Account {
         this.optionalPhone = student.optionalPhone();
         this.mail = student.mail();
         this.password = student.password();
+        this.activeProfile = true;
+    }
+
+    public Account(RegisterAdmin admin) {
+        this.name = admin.name();
+        this.birthDate = admin.birthDate();
+        this.socialSecurity = admin.socialSecurity();
+        this.mainPhone = admin.mainPhone();
+        this.optionalPhone = admin.optionalPhone();
+        this.mail = admin.mail();
+        this.password = admin.password();
         this.activeProfile = true;
     }
 }
