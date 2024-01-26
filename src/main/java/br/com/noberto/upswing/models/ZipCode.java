@@ -1,12 +1,12 @@
 package br.com.noberto.upswing.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_zip_codes")
@@ -20,4 +20,7 @@ public class ZipCode {
     private String neighborhood;
     private String city;
     private String state;
+
+    @OneToMany(mappedBy = "zipCode")
+    private List<Address> addresses = new ArrayList<>();
 }
