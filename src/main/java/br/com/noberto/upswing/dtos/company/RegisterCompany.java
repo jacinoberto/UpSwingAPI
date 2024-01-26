@@ -1,7 +1,7 @@
 package br.com.noberto.upswing.dtos.company;
 
 import br.com.noberto.upswing.dtos.address.AddressRrequest;
-import br.com.noberto.upswing.dtos.area.AreaOfOperationRequest;
+import br.com.noberto.upswing.dtos.area.BusinessAreaRequest;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,23 +9,23 @@ import org.hibernate.validator.constraints.br.CNPJ;
 
 public record RegisterCompany(
         @NotBlank
-        String corporateName,
+        String companyName,
         @NotBlank
-        String fantasyName,
+        String tradingName,
         @NotBlank
         @CNPJ
-        String cnpj,
-        AreaOfOperationRequest areaOfOperation,
+        String companyCode,
+        BusinessAreaRequest businessArea,
         @NotBlank
         String description,
         AddressRrequest address,
-        String site,
+        String website,
         @NotBlank
         String mainPhone,
         String optionalPhone,
         @NotBlank
         @Email
-        String email,
+        String mail,
         @NotBlank
         String password,
         @NotNull

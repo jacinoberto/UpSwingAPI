@@ -8,7 +8,7 @@ public record ZipCodeRequest(
         @NotBlank
         String street,
         @NotBlank
-        String neighborhood,
+        String area,
         @NotBlank
         String city,
         @NotBlank

@@ -1,6 +1,6 @@
 package br.com.noberto.upswing.models;
 
-import br.com.noberto.upswing.enums.Category;
+import br.com.noberto.upswing.enums.LearningMode;
 import br.com.noberto.upswing.enums.Shift;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ public class Class {
     private Integer code;
 
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private LearningMode learningMode;
 
     @Enumerated(EnumType.STRING)
     private Shift shift;
@@ -36,12 +36,12 @@ public class Class {
     private LocalDate finalDate;
 
     @Column(name = "number_of_vacancies")
-    private Integer numberOfVacancies;
+    private Integer vacanciesNumber;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id")
     private Course course;
 
     @OneToMany(mappedBy = "aClass", fetch = FetchType.LAZY)
-    private List<Matriculation> matriculations = new ArrayList<>();
+    private List<Registration> matriculations = new ArrayList<>();
 }

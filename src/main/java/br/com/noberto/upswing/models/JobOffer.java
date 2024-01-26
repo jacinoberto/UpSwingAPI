@@ -1,8 +1,7 @@
 package br.com.noberto.upswing.models;
 
 import br.com.noberto.upswing.enums.Contract;
-import br.com.noberto.upswing.enums.EducationDegree;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import br.com.noberto.upswing.enums.EducationLevel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,43 +14,47 @@ import java.util.UUID;
 @Entity
 @Table(name = "tb_job_vacancies")
 @AllArgsConstructor @NoArgsConstructor @Data
-public class JobVacancy {
+public class JobOffer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_job_vacancy")
     private UUID id;
-    private String occupation;
+    private String position;
 
     @Enumerated(EnumType.STRING)
-    private EducationDegree degree;
+    private EducationLevel educationLevel;
 
     @Enumerated(EnumType.STRING)
     private Contract contract;
-    private BigDecimal remuneration;
+    private BigDecimal salary;
 
     @Column(name = "disabled_person")
-    private Boolean disabledPerson;
+    private Boolean disability;
 
     @Column(name = "number_of_vacancies")
-    private Integer numberOfVacancies;
+    private Integer vacanciesNumber;
     private LocalDate deadline;
     private String description;
 
     @Column(name = "assigned_functions")
     private String assignedFunctions;
-    private Boolean meal;
+    private Boolean benefitsMealVoucher;
 
-    @Column(name = "food_voucher")
-    private Boolean foodVoucher;
+    @Column(name = "benefits_food_voucher")
+    private Boolean benefitsFoodVoucher;
 
-    @Column(name = "transportation_allowance")
-    private Boolean transportationAllowance;
-    private Boolean culture;
-    private Boolean aducation;
+    @Column(name = "benefits_transport_allowance")
+    private Boolean benefitsTransportAllowance;
 
-    @Column(name = "health_plan")
-    private Boolean healthPlan;
+    @Column(name = "benefits_culture")
+    private Boolean benefitsCulture;
+
+    @Column(name = "benefits_education")
+    private Boolean benefitsEducation;
+
+    @Column(name = "benefits_health_insurance")
+    private Boolean benefitsHealthInsurance;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
@@ -59,5 +62,5 @@ public class JobVacancy {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "area_of_operation_id")
-    private AreaOfOperation areaOfOperation;
+    private BusinessArea businessArea;
 }

@@ -10,18 +10,20 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_automatic_applications")
+@Table(name = "tb_auto_apply")
 @AllArgsConstructor @NoArgsConstructor @Data
-public class AutomaticApplication {
+public class AutoApply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Column(name = "enrolled_course")
     private Boolean enrolledCourse;
     private Contract contract;
 
     @Enumerated(EnumType.STRING)
-    private Location location;
+    private Location offerLocation;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id")

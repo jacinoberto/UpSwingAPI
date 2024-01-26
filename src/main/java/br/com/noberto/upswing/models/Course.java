@@ -1,6 +1,6 @@
 package br.com.noberto.upswing.models;
 
-import br.com.noberto.upswing.enums.EducationDegree;
+import br.com.noberto.upswing.enums.EducationLevel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,23 +22,23 @@ public class Course {
     private UUID id;
     private String course;
 
-    @Column(name = "education_degree")
+    @Column(name = "education_level")
     @Enumerated(EnumType.STRING)
-    private EducationDegree educationDegree;
+    private EducationLevel educationLevel;
     private Integer workload;
 
-    @Column(name = "monthly_value")
-    private BigDecimal monthlyValue;
+    @Column(name = "monthly_cost")
+    private BigDecimal monthlyCost;
 
-    @Column(name = "total_value")
-    private BigDecimal totalValue;
+    @Column(name = "total_cost")
+    private BigDecimal totalCost;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "area_of_operation_id")
-    private AreaOfOperation areaOfOperation;
+    private BusinessArea businessArea;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
-    private List<Discipline> disciplines = new ArrayList<>();
+    private List<Subject> subjects = new ArrayList<>();
 
     @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
     private List<Course> courses = new ArrayList<>();

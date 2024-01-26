@@ -2,8 +2,8 @@ package br.com.noberto.upswing.dtos.area;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record AreaOfOperationRequest(
+public record BusinessAreaRequest(
         @NotBlank
-        String areaOfOperation
+        String area
 ) {
 }

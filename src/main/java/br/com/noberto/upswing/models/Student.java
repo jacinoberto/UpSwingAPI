@@ -26,8 +26,8 @@ public class Student {
     private Address address;
 
     @OneToMany(mappedBy = "student")
-    private List<AutomaticApplication> automaticApplications = new ArrayList<>();
+    private List<AutoApply> autoApplies = new ArrayList<>();
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    private List<Matriculation> matriculations = new ArrayList<>();
+    private List<Registration> registrations = new ArrayList<>();
 }

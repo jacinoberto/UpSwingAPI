@@ -17,7 +17,7 @@ public class ZipCode {
     @Column(name = "zip_code")
     private String zipCode;
     private String street;
-    private String neighborhood;
+    private String area;
     private String city;
     private String state;
 

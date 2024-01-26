@@ -1,28 +1,27 @@
 package br.com.noberto.upswing.dtos.company;
 
-import br.com.noberto.upswing.dtos.area.AreaOfOperationRequest;
-import br.com.noberto.upswing.models.AreaOfOperation;
+import br.com.noberto.upswing.dtos.area.BusinessAreaRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record JobVacancyRequest(
+public record JobOfferRequest(
         RegisterCompany company,
         @NotBlank
-        String occupation,
-        AreaOfOperationRequest areaOfOperation,
+        String position,
+        BusinessAreaRequest businessArea,
         @NotBlank
-        String educationDegree,
+        String educationLevel,
         @NotBlank
         String contract,
         @NotNull
-        BigDecimal remuneration,
+        BigDecimal salary,
         @NotNull
-        Boolean disabledPerson,
+        Boolean disability,
         @NotNull
-        Integer numberOfVacancies,
+        Integer vacanciesNumber,
         @NotNull
         LocalDate deadline,
         @NotBlank
@@ -30,16 +29,16 @@ public record JobVacancyRequest(
         @NotBlank
         String assignedFunctions,
         @NotNull
-        Boolean meal,
+        Boolean benefitsMealVoucher ,
         @NotNull
-        Boolean foodVoucher,
+        Boolean benefitsFoodVoucher,
         @NotNull
-        Boolean transportationAllowance,
+        Boolean benefitsTransportAllowance,
         @NotNull
-        Boolean culture,
+        Boolean benefitsCulture,
         @NotNull
-        Boolean education,
+        Boolean benefitsEducation,
         @NotNull
-        Boolean healthPlan
+        Boolean benefitsHealthInsurance
 ) {
 }

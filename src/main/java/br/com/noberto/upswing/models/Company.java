@@ -17,14 +17,16 @@ public class Company {
     @Column(name = "id_company")
     private UUID id;
 
-    @Column(name = "corporate_name")
-    private String corporateName;
+    @Column(name = "company_name")
+    private String companyName;
 
-    @Column(name = "fantasy_name")
-    private String fantasyName;
-    private String cnpj;
+    @Column(name = "trading_name")
+    private String tradingName;
+
+    @Column(name = "companyCode")
+    private String companyCode;
     private String description;
-    private String site;
+    private String website;
 
     @Column(name = "main_phone")
     private String mainPhone;
@@ -34,15 +36,15 @@ public class Company {
 
     @Embedded
     private SocialNetworks socialNetworks;
-    private String email;
+    private String mail;
     private String password;
 
     @Column(name = "active_profile")
     private Boolean activeProfile;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "area_of_operation_id")
-    private AreaOfOperation areaOfOperation;
+    @JoinColumn(name = "business_area_id")
+    private BusinessArea businessArea;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")

@@ -1,7 +1,7 @@
 package br.com.noberto.upswing.enums;
 
 public enum Location {
-    NEIGHBORHOOD("Bairro"),
+    AREA("Bairro"),
     CITY("Cidade"),
     STATE("Estado");
 

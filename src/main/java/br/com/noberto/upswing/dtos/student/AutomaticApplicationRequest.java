@@ -10,7 +10,7 @@ public record AutomaticApplicationRequest(
         @NotBlank
         String contract,
         @NotBlank
-        String location,
+        String offerLocation,
         @NotNull
         RegisterStudent student
 ) {

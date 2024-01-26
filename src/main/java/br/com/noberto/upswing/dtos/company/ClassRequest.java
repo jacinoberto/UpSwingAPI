@@ -11,13 +11,13 @@ public record ClassRequest(
         Integer code,
         CourseRequest course,
         @NotBlank
-        String category,
+        String learningMode,
         @NotBlank
         String shift,
         @NotNull
         LocalDate startDate,
         LocalDate finalDate,
         @NotNull
-        Integer numberOfVacancies
+        Integer vacanciesNumber
 ) {
 }

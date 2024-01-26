@@ -16,7 +16,7 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_admin")
     private UUID id;
-    private String occupation;
+    private String position;
 
     @Embedded
     private Account account;

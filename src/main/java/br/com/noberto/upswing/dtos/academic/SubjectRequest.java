@@ -2,9 +2,9 @@ package br.com.noberto.upswing.dtos.academic;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record DisciplineRequest(
+public record SubjectRequest(
         @NotBlank
-        String discipline,
+        String subject,
         @NotBlank
         String description,
         CourseRequest course

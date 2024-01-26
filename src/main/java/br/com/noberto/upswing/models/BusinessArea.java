@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_area_of_operations")
+@Table(name = "tb_business_areas")
 @AllArgsConstructor @NoArgsConstructor @Data
-public class AreaOfOperation {
+public class BusinessArea {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,5 +27,5 @@ public class AreaOfOperation {
     private List<Course> courses = new ArrayList<>();
 
     @OneToMany(mappedBy = "areaOfOperation")
-    private List<JobVacancy> jobVacancies = new ArrayList<>();
+    private List<JobOffer> jobVacancies = new ArrayList<>();
 }

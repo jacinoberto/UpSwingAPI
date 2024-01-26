@@ -9,20 +9,20 @@ import java.time.LocalDate;
 
 public record RegisterAdmin (
         @NotBlank
-        String occupation,
+        String position,
         @NotBlank
         String name,
         @NotNull
-        LocalDate dateOfBirth,
+        LocalDate birthDate,
         @NotBlank
         @CPF
-        String cpf,
+        String socialSecurity,
         @NotBlank
         String mainPhone,
         String optionalPhone,
         @NotBlank
         @Email
-        String email,
+        String mail,
         @NotBlank
         String password,
         @NotNull

@@ -8,11 +8,11 @@ import java.time.LocalDate;
 public class Account {
 
     private String name;
-    private LocalDate dateOfBirth;
-    private String cpf;
+    private LocalDate birthDate;
+    private String socialSecurity;
     private String mainPhone;
     private String optionalPhone;
-    private String email;
+    private String mail;
     private String password;
     private Boolean activeProfile;
 }

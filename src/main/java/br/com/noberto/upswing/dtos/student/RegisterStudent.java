@@ -11,16 +11,16 @@ public record RegisterStudent(
         @NotBlank
         String name,
         @NotNull
-        LocalDate dateOfBirth,
+        LocalDate birthDate,
         @NotBlank
         @CPF
-        String cpf,
+        String socialSecurity,
         @NotBlank
         String mainPhone,
         String optionalPhone,
         @NotBlank
         @Email
-        String email,
+        String mail,
         @NotBlank
         String password,
         @NotNull
