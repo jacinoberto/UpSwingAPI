@@ -34,7 +34,7 @@ public class Course {
     private BigDecimal totalCost;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "area_of_operation_id")
+    @JoinColumn(name = "business_area_id")
     private BusinessArea businessArea;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)

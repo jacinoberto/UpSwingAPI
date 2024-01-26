@@ -20,12 +20,12 @@ public class BusinessArea {
     private UUID id;
     private String area;
 
-    @OneToMany(mappedBy = "areaOfOperation")
+    @OneToMany(mappedBy = "businessArea")
     private List<Company> companies = new ArrayList<>();
 
-    @OneToMany(mappedBy = "areaOfOperation")
+    @OneToMany(mappedBy = "businessArea")
     private List<Course> courses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "areaOfOperation")
-    private List<JobOffer> jobVacancies = new ArrayList<>();
+    @OneToMany(mappedBy = "businessArea")
+    private List<JobOffer> jobOffers = new ArrayList<>();
 }

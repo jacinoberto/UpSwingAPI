@@ -12,13 +12,13 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_job_vacancies")
+@Table(name = "tb_job_offer")
 @AllArgsConstructor @NoArgsConstructor @Data
 public class JobOffer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_job_vacancy")
+    @Column(name = "id_job_offer")
     private UUID id;
     private String position;
 
@@ -29,16 +29,18 @@ public class JobOffer {
     private Contract contract;
     private BigDecimal salary;
 
-    @Column(name = "disabled_person")
+    @Column(name = "disability")
     private Boolean disability;
 
-    @Column(name = "number_of_vacancies")
+    @Column(name = "vacancies_number")
     private Integer vacanciesNumber;
     private LocalDate deadline;
     private String description;
 
     @Column(name = "assigned_functions")
     private String assignedFunctions;
+
+    @Column(name = "benefits_meal_voucher")
     private Boolean benefitsMealVoucher;
 
     @Column(name = "benefits_food_voucher")
