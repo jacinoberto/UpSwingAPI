@@ -1,21 +1,20 @@
 package br.com.noberto.upswing.dtos.admin;
 
+import br.com.noberto.upswing.dtos.account.AccountResponse;
 import br.com.noberto.upswing.models.Admin;
 
+import java.util.UUID;
+
 public record AdminResponse(
-        String name,
+        UUID id,
         String position,
-        String mainPhone,
-        String optionalPhone,
-        String mail
+        AccountResponse account
 ) {
     public AdminResponse(Admin admin) {
         this(
-                admin.getAccount().getName(),
+                admin.getId(),
                 admin.getPosition(),
-                admin.getAccount().getMainPhone(),
-                admin.getAccount().getOptionalPhone(),
-                admin.getAccount().getMail()
+                new AccountResponse(admin.getAccount())
         );
     }
 }

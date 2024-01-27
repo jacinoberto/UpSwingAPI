@@ -46,4 +46,13 @@ public class Account {
         this.password = admin.password();
         this.activeProfile = true;
     }
+
+    public Account(Admin admin) {
+        this.name = admin.getAccount().getName();
+        this.birthDate = admin.getAccount().getBirthDate();
+        this.socialSecurity = admin.getAccount().getSocialSecurity();
+        this.mainPhone = admin.getAccount().getMainPhone();
+        this.optionalPhone = admin.getAccount().getOptionalPhone();
+        this.mail = admin.getAccount().getMail();
+    }
 }
