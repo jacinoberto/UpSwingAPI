@@ -2,6 +2,7 @@ package br.com.noberto.upswing.dtos.company;
 
 import br.com.noberto.upswing.dtos.address.AddressRequest;
 import br.com.noberto.upswing.dtos.area.BusinessAreaRequest;
+import br.com.noberto.upswing.models.Company;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,10 +16,9 @@ public record RegisterCompany(
         String tradingName,
         @NotBlank
         @CNPJ
-        @UniqueElements
         String companyCode,
         BusinessAreaRequest businessArea,
-        @NotBlank
+        //@NotBlank
         String description,
         AddressRequest address,
         String website,
@@ -27,11 +27,23 @@ public record RegisterCompany(
         String optionalPhone,
         @NotBlank
         @Email
-        @UniqueElements
         String mail,
         @NotBlank
-        String password,
-        @NotNull
-        Boolean activeProfile
+        String password
 ) {
+        public RegisterCompany(Company company) {
+                this(
+                        company.getCompanyName(),
+                        company.getTradingName(),
+                        company.getCompanyCode(),
+                        new BusinessAreaRequest(company.getBusinessArea()),
+                        company.getDescription(),
+                        new AddressRequest(company.getAddress()),
+                        company.getWebsite(),
+                        company.getMainPhone(),
+                        company.getOptionalPhone(),
+                        company.getMail(),
+                        company.getPassword()
+                );
+        }
 }

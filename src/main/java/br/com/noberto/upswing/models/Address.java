@@ -1,6 +1,7 @@
 package br.com.noberto.upswing.models;
 
 import br.com.noberto.upswing.dtos.address.AddressRequest;
+import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,12 @@ public class Address {
     public Address(RegisterStudent student, ZipCode zipCode) {
         this.number = student.address().number();
         this.complement = student.address().complement();
+        this.zipCode = zipCode;
+    }
+
+    public Address(RegisterCompany company, ZipCode zipCode) {
+        this.number = company.address().number();
+        this.complement = company.address().complement();
         this.zipCode = zipCode;
     }
 }

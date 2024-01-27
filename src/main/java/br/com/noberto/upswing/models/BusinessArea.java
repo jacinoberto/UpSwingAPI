@@ -16,7 +16,7 @@ public class BusinessArea {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_area_of_operation")
+    @Column(name = "id_business_area")
     private UUID id;
     private String area;
 

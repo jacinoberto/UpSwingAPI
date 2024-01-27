@@ -1,6 +1,7 @@
 package br.com.noberto.upswing.models;
 
 import br.com.noberto.upswing.dtos.address.ZipCodeRequest;
+import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,5 +33,13 @@ public class ZipCode {
         this.area = student.address().zipCode().area();
         this.city = student.address().zipCode().city();
         this.state = student.address().zipCode().state();
+    }
+
+    public ZipCode(RegisterCompany company) {
+        this.zipCode = company.address().zipCode().zipCode();
+        this.street = company.address().zipCode().street();
+        this.area = company.address().zipCode().area();
+        this.city = company.address().zipCode().city();
+        this.state = company.address().zipCode().state();
     }
 }

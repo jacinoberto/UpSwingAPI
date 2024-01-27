@@ -1,5 +1,6 @@
 package br.com.noberto.upswing.models;
 
+import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class Company {
     @Column(name = "trading_name")
     private String tradingName;
 
-    @Column(name = "companyCode")
+    @Column(name = "companyCode", unique = true)
     private String companyCode;
     private String description;
     private String website;
@@ -36,6 +37,8 @@ public class Company {
 
     @Embedded
     private SocialNetworks socialNetworks;
+
+    @Column(unique = true)
     private String mail;
     private String password;
 
@@ -46,7 +49,20 @@ public class Company {
     @JoinColumn(name = "business_area_id")
     private BusinessArea businessArea;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
+
+    public Company(RegisterCompany company) {
+        this.companyName = company.companyName();
+        this.tradingName = company.tradingName();
+        this.companyCode = company.companyCode();
+        this.description = company.description();
+        this.website = company.website();
+        this.mainPhone = company.mainPhone();
+        this.optionalPhone = company.optionalPhone();
+        this.mail = company.mail();
+        this.password = company.password();
+        this.activeProfile = true;
+    }
 }
