@@ -26,9 +26,4 @@ public class AdminListService {
         }
         throw new ValidationException("ID informado é invalido!");
     }
-
-    public List<AdminResponse> findAllAdmins(){
-       List<Admin> admins = repository.findAll();
-        return admins.stream().map(AdminResponse::new).toList();
-    }
 }
