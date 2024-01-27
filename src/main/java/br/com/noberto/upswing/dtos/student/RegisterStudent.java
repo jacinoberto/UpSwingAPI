@@ -1,11 +1,9 @@
 package br.com.noberto.upswing.dtos.student;
 
-import br.com.noberto.upswing.dtos.address.AddressRrequest;
 import br.com.noberto.upswing.models.Student;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;

@@ -1,6 +1,7 @@
 package br.com.noberto.upswing.models;
 
-import br.com.noberto.upswing.dtos.address.AddressRrequest;
+import br.com.noberto.upswing.dtos.address.AddressRequest;
+import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,16 +23,22 @@ public class Address {
     private Integer number;
     private String complement;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "zip_code_id")
     private ZipCode zipCode;
 
     @OneToMany(mappedBy = "address")
     private List<Company> companies = new ArrayList<>();
 
-    public Address(AddressRrequest address) {
+    public Address(AddressRequest address) {
         this.number = address.number();
         this.complement = address.complement();
         this.zipCode = new ZipCode(address.zipCode());
+    }
+
+    public Address(RegisterStudent student, ZipCode zipCode) {
+        this.number = student.number();
+        this.complement = student.complement();
+        this.zipCode = zipCode;
     }
 }

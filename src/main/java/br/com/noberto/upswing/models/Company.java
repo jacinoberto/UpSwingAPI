@@ -46,7 +46,7 @@ public class Company {
     @JoinColumn(name = "business_area_id")
     private BusinessArea businessArea;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private Address address;
 }

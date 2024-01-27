@@ -1,6 +1,6 @@
 package br.com.noberto.upswing.dtos.company;
 
-import br.com.noberto.upswing.dtos.address.AddressRrequest;
+import br.com.noberto.upswing.dtos.address.AddressRequest;
 import br.com.noberto.upswing.dtos.area.BusinessAreaRequest;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -20,7 +20,7 @@ public record RegisterCompany(
         BusinessAreaRequest businessArea,
         @NotBlank
         String description,
-        AddressRrequest address,
+        AddressRequest address,
         String website,
         @NotBlank
         String mainPhone,
