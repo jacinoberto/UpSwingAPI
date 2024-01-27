@@ -1,5 +1,7 @@
 package br.com.noberto.upswing.dtos.admin;
 
+import br.com.noberto.upswing.models.Admin;
+import br.com.noberto.upswing.models.Student;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,18 +19,26 @@ public record RegisterAdmin (
         LocalDate birthDate,
         @NotBlank
         @CPF
-        @UniqueElements
         String socialSecurity,
         @NotBlank
         String mainPhone,
         String optionalPhone,
         @NotBlank
         @Email
-        @UniqueElements
         String mail,
         @NotBlank
-        String password,
-        @NotNull
-        Boolean activeProfile
+        String password
 ) {
+        public RegisterAdmin(Admin admin) {
+                this(
+                        admin.getAccount().getName(),
+                        admin.getPosition(),
+                        admin.getAccount().getBirthDate(),
+                        admin.getAccount().getSocialSecurity(),
+                        admin.getAccount().getMainPhone(),
+                        admin.getAccount().getOptionalPhone(),
+                        admin.getAccount().getMail(),
+                        admin.getAccount().getPassword()
+                );
+        }
 }

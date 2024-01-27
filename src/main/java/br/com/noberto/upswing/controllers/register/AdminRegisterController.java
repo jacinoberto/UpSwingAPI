@@ -1,6 +1,8 @@
 package br.com.noberto.upswing.controllers.register;
 
+import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
+import br.com.noberto.upswing.models.Admin;
 import br.com.noberto.upswing.models.Student;
 import br.com.noberto.upswing.services.register.AdminRegisterService;
 import jakarta.validation.Valid;
@@ -29,5 +31,13 @@ public class AdminRegisterController {
         Student student = service.registerStudent(data);
         URI uri =uriBuilder.path("/api/register/student/{id}").buildAndExpand(student.getId()).toUri();
         return ResponseEntity.created(uri).body(new RegisterStudent(student));
+    }
+
+    @PostMapping("/admin")
+    @Transactional
+    public ResponseEntity<RegisterAdmin> registerAdmin(@RequestBody @Valid RegisterAdmin data, UriComponentsBuilder uriBuilder){
+        Admin admin = service.registerAdmin(data);
+        URI uri =uriBuilder.path("/api/register/admin/{id}").buildAndExpand(admin.getId()).toUri();
+        return ResponseEntity.created(uri).body(new RegisterAdmin(admin));
     }
 }

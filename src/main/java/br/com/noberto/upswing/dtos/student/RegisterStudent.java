@@ -38,8 +38,7 @@ public record RegisterStudent(
         @Email
         String mail,
         @NotBlank
-        String password,
-        Boolean activeProfile
+        String password
 ) {
         public RegisterStudent(Student student) {
                 this(
@@ -56,8 +55,7 @@ public record RegisterStudent(
                         student.getAddress().getZipCode().getCity(),
                         student.getAddress().getZipCode().getState(),
                         student.getAccount().getMail(),
-                        student.getAccount().getPassword(),
-                        true
+                        student.getAccount().getPassword()
                 );
         }
 }

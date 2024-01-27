@@ -1,5 +1,6 @@
 package br.com.noberto.upswing.models;
 
+import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,8 +17,15 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_admin")
     private UUID id;
+
+    @Column(name = "admin_position")
     private String position;
 
     @Embedded
     private Account account;
+
+    public Admin(RegisterAdmin admin) {
+        this.position = admin.position();
+        this.account = new Account(admin);
+    }
 }
