@@ -30,15 +30,9 @@ public class Address {
     @OneToMany(mappedBy = "address")
     private List<Company> companies = new ArrayList<>();
 
-    public Address(AddressRequest address) {
-        this.number = address.number();
-        this.complement = address.complement();
-        this.zipCode = new ZipCode(address.zipCode());
-    }
-
     public Address(RegisterStudent student, ZipCode zipCode) {
-        this.number = student.number();
-        this.complement = student.complement();
+        this.number = student.address().number();
+        this.complement = student.address().complement();
         this.zipCode = zipCode;
     }
 }

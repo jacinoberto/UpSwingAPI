@@ -7,9 +7,14 @@ import jakarta.validation.constraints.NotNull;
 public record AddressRequest(
         @NotNull
         Integer number,
-
         String complement,
-        @NotNull
         ZipCodeRequest zipCode
 ) {
+        public AddressRequest(Address address) {
+                this(
+                        address.getNumber(),
+                        address.getComplement(),
+                        new ZipCodeRequest(address.getZipCode())
+                );
+        }
 }

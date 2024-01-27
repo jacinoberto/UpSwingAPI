@@ -26,19 +26,11 @@ public class ZipCode {
     @OneToMany(mappedBy = "zipCode")
     private List<Address> addresses = new ArrayList<>();
 
-    public ZipCode(ZipCodeRequest zipCode) {
-        this.zipCode = zipCode.zipCode();
-        this.street = zipCode.street();
-        this.area = zipCode.area();
-        this.city = zipCode.city();
-        this.state = zipCode.state();
-    }
-
     public ZipCode(RegisterStudent student) {
-        this.zipCode = student.zipCode();
-        this.street = student.street();
-        this.area = student.area();
-        this.city = student.city();
-        this.state = student.state();
+        this.zipCode = student.address().zipCode().zipCode();
+        this.street = student.address().zipCode().street();
+        this.area = student.address().zipCode().area();
+        this.city = student.address().zipCode().city();
+        this.state = student.address().zipCode().state();
     }
 }

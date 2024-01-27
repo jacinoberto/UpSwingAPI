@@ -1,14 +1,11 @@
 package br.com.noberto.upswing.services.register;
 
-import br.com.noberto.upswing.dtos.address.AddressRequest;
-import br.com.noberto.upswing.dtos.address.ZipCodeRequest;
 import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import br.com.noberto.upswing.models.Address;
 import br.com.noberto.upswing.models.Admin;
 import br.com.noberto.upswing.models.Student;
 import br.com.noberto.upswing.models.ZipCode;
-import br.com.noberto.upswing.repositories.AddressRepository;
 import br.com.noberto.upswing.repositories.AdminRepository;
 import br.com.noberto.upswing.repositories.StudentRepository;
 import br.com.noberto.upswing.repositories.ZipCodeRepository;
@@ -20,20 +17,18 @@ public class AdminRegisterService {
     private final AdminRepository repository;
     private final StudentRepository studentRepository;
     private final ZipCodeRepository zipCodeRepository;
-    private final AddressRepository addressRepository;
 
     @Autowired
-    AdminRegisterService(AdminRepository repository, StudentRepository studentRepository, ZipCodeRepository zipCodeRepository,
-                         AddressRepository addressRepository){
+    AdminRegisterService(AdminRepository repository, StudentRepository studentRepository, ZipCodeRepository zipCodeRepository){
         this.repository = repository;
         this.studentRepository = studentRepository;
         this.zipCodeRepository = zipCodeRepository;
-        this.addressRepository = addressRepository;
     }
 
     public Student registerStudent(RegisterStudent registerStudent){
         Address address = checkAddress(registerStudent);
-        Student student = new Student(registerStudent, address);
+        Student student = new Student(registerStudent);
+        student.setAddress(address);
         return studentRepository.save(student);
     }
 
@@ -46,12 +41,12 @@ public class AdminRegisterService {
     private Address checkAddress(RegisterStudent data){
         ZipCode zipCode = null;
 
-        if (zipCodeRepository.existsById(data.zipCode())){
-            zipCode = zipCodeRepository.getReferenceById(data.zipCode());
+        if (zipCodeRepository.existsById(data.address().zipCode().zipCode())){
+            zipCode = zipCodeRepository.getReferenceById(data.address().zipCode().zipCode());
         } else {
             zipCode = zipCodeRepository.save(new ZipCode(data));
         }
 
-        return addressRepository.save(new Address(data, zipCode));
+        return new Address(data, zipCode);
     }
 }

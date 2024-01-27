@@ -1,5 +1,6 @@
 package br.com.noberto.upswing.dtos.student;
 
+import br.com.noberto.upswing.dtos.address.AddressRequest;
 import br.com.noberto.upswing.models.Student;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -19,19 +20,7 @@ public record RegisterStudent(
         @NotBlank
         String mainPhone,
         String optionalPhone,
-        @NotBlank
-        String zipCode,
-        @NotBlank
-        String street,
-        @NotNull
-        Integer number,
-        String complement,
-        @NotBlank
-        String area,
-        @NotBlank
-        String city,
-        @NotBlank
-        String state,
+        AddressRequest address,
         @NotBlank
         @Email
         String mail,
@@ -45,13 +34,7 @@ public record RegisterStudent(
                         student.getAccount().getSocialSecurity(),
                         student.getAccount().getMainPhone(),
                         student.getAccount().getOptionalPhone(),
-                        student.getAddress().getZipCode().getZipCode(),
-                        student.getAddress().getZipCode().getStreet(),
-                        student.getAddress().getNumber(),
-                        student.getAddress().getComplement(),
-                        student.getAddress().getZipCode().getArea(),
-                        student.getAddress().getZipCode().getCity(),
-                        student.getAddress().getZipCode().getState(),
+                        new AddressRequest(student.getAddress()),
                         student.getAccount().getMail(),
                         student.getAccount().getPassword()
                 );

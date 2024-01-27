@@ -24,7 +24,7 @@ public class Student {
     @Embedded
     private Account account;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 
@@ -34,8 +34,7 @@ public class Student {
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<Registration> registrations = new ArrayList<>();
 
-    public Student(RegisterStudent student, Address address) {
+    public Student(RegisterStudent student) {
         this.account = new Account(student);
-        this.address = address;
     }
 }
