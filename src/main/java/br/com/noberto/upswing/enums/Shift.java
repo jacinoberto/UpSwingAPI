@@ -19,4 +19,13 @@ public enum Shift {
         }
         throw new IllegalArgumentException("Turno: " + data + " não encontrado!");
     }
+
+    public static Shift fromShift(String data){
+        for (Shift shifts : Shift.values()){
+            if (shifts.shift.equalsIgnoreCase(data)){
+                return shifts;
+            }
+        }
+        throw new IllegalArgumentException("Turno: " + data + " não encontrado!");
+    }
 }

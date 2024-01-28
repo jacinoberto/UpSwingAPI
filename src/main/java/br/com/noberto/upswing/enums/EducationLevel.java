@@ -12,12 +12,16 @@ public enum EducationLevel {
         this.educationLevel = educationLevel;
     }
 
-public static String fromString(String data){
-    for (EducationLevel levels : EducationLevel.values()){
-        if (levels.educationLevel.equalsIgnoreCase(data)){
-            return data;
-        }
+public static String fromString(EducationLevel data){
+    return data.educationLevel;
     }
+
+    public static EducationLevel fromEducationLevel(String data){
+        for (EducationLevel levels : EducationLevel.values()){
+            if (levels.educationLevel.equalsIgnoreCase(data)){
+                return levels;
+            }
+        }
         throw new IllegalArgumentException("Nível Educacional: " + data + " não encontrado!");
     }
 }

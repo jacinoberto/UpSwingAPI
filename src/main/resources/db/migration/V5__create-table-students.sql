@@ -10,7 +10,7 @@ CREATE TABLE tb_students(
     social_three VARCHAR(150),
     social_four VARCHAR(150),
     address_id UUID NOT NULL,
-    mail VARCHAR(150) UNIQUE NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
     password VARCHAR(16) NOT NULL,
     active_profile BOOLEAN NOT NULL,
 

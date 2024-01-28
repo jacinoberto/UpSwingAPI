@@ -19,4 +19,13 @@ public enum LearningMode {
         }
         throw new IllegalArgumentException("Modalidade: " + data + " não encontrada!");
     }
+
+    public static LearningMode fromLearningMode(String data){
+        for (LearningMode learningModes : LearningMode.values()){
+            if (learningModes.learningMode.equalsIgnoreCase(data)){
+                return learningModes;
+            }
+        }
+        throw new IllegalArgumentException("Modalidade: " + data + " não encontrada!");
+    }
 }

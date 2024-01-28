@@ -18,8 +18,8 @@ public class Company {
     @Column(name = "id_company")
     private UUID id;
 
-    @Column(name = "company_name")
-    private String companyName;
+    @Embedded
+    private Account account;
 
     @Column(name = "trading_name")
     private String tradingName;
@@ -29,21 +29,8 @@ public class Company {
     private String description;
     private String website;
 
-    @Column(name = "main_phone")
-    private String mainPhone;
-
-    @Column(name = "optional_phone")
-    private String optionalPhone;
-
     @Embedded
     private SocialNetworks socialNetworks;
-
-    @Column(unique = true)
-    private String mail;
-    private String password;
-
-    @Column(name = "active_profile")
-    private Boolean activeProfile;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "business_area_id")
@@ -54,15 +41,10 @@ public class Company {
     private Address address;
 
     public Company(RegisterCompany company) {
-        this.companyName = company.companyName();
+        this.account = new Account(company);
         this.tradingName = company.tradingName();
         this.companyCode = company.companyCode();
         this.description = company.description();
         this.website = company.website();
-        this.mainPhone = company.mainPhone();
-        this.optionalPhone = company.optionalPhone();
-        this.mail = company.mail();
-        this.password = company.password();
-        this.activeProfile = true;
     }
 }

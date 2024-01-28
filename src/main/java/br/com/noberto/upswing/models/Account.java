@@ -1,58 +1,76 @@
 package br.com.noberto.upswing.models;
 
 import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
+import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Embeddable
 @NoArgsConstructor @Data
 public class Account {
 
     private String name;
-    private LocalDate birthDate;
-    @Column(unique = true)
-    private String socialSecurity;
     private String mainPhone;
     private String optionalPhone;
     @Column(unique = true)
-    private String mail;
+    private String email;
     private String password;
     private Boolean activeProfile;
 
     public Account(RegisterStudent student) {
-        this.name = student.name();
-        this.birthDate = student.birthDate();
-        this.socialSecurity = student.socialSecurity();
-        this.mainPhone = student.mainPhone();
-        this.optionalPhone = student.optionalPhone();
-        this.mail = student.mail();
-        this.password = student.password();
+        this.name = student.account().getName();
+        this.mainPhone = student.account().getMainPhone();
+        this.optionalPhone = student.account().getOptionalPhone();
+        this.email = student.account().getEmail();
+        this.password = student.account().getPassword();
         this.activeProfile = true;
     }
 
     public Account(RegisterAdmin admin) {
-        this.name = admin.name();
-        this.birthDate = admin.birthDate();
-        this.socialSecurity = admin.socialSecurity();
-        this.mainPhone = admin.mainPhone();
-        this.optionalPhone = admin.optionalPhone();
-        this.mail = admin.mail();
-        this.password = admin.password();
+        this.name = admin.account().getName();
+        this.mainPhone = admin.account().getMainPhone();
+        this.optionalPhone = admin.account().getOptionalPhone();
+        this.email = admin.account().getEmail();
+        this.password = admin.account().getPassword();
+        this.activeProfile = true;
+    }
+
+    public Account(RegisterCompany company) {
+        this.name = company.account().getName();
+        this.mainPhone = company.account().getMainPhone();
+        this.optionalPhone = company.account().getOptionalPhone();
+        this.email = company.account().getEmail();
+        this.password = company.account().getPassword();
         this.activeProfile = true;
     }
 
     public Account(Admin admin) {
         this.name = admin.getAccount().getName();
-        this.birthDate = admin.getAccount().getBirthDate();
-        this.socialSecurity = admin.getAccount().getSocialSecurity();
         this.mainPhone = admin.getAccount().getMainPhone();
         this.optionalPhone = admin.getAccount().getOptionalPhone();
-        this.mail = admin.getAccount().getMail();
+        this.email = admin.getAccount().getEmail();
+        this.password = admin.getAccount().getPassword();
+        this.activeProfile = true;
+    }
+
+    public Account(Student student) {
+        this.name = student.getAccount().getName();
+        this.mainPhone = student.getAccount().getMainPhone();
+        this.optionalPhone = student.getAccount().getOptionalPhone();
+        this.email = student.getAccount().getEmail();
+        this.password = student.getAccount().getPassword();
+        this.activeProfile = true;
+    }
+
+    public Account(Company company) {
+        this.name = company.getAccount().getName();
+        this.mainPhone = company.getAccount().getMainPhone();
+        this.optionalPhone = company.getAccount().getOptionalPhone();
+        this.email = company.getAccount().getEmail();
+        this.password = company.getAccount().getPassword();
+        this.activeProfile = true;
     }
 }

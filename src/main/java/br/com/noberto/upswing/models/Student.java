@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +21,12 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_student")
     private UUID id;
+
+    @Column(name = "social_security")
+    private String socialSecurity;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
 
     @Embedded
     private Account account;
@@ -35,6 +42,8 @@ public class Student {
     private List<Registration> registrations = new ArrayList<>();
 
     public Student(RegisterStudent student) {
+        this.socialSecurity = student.socialSecurity();
+        this.birthDate = student.birthDate();
         this.account = new Account(student);
     }
 }

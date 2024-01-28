@@ -1,6 +1,6 @@
 CREATE TABLE tb_companies(
     id_company UUID,
-    company_name VARCHAR(150) NOT NULL,
+    name VARCHAR(150) NOT NULL,
     trading_name VARCHAR(150),
     company_code VARCHAR(15) NOT NULL,
     business_area_id UUID NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE tb_companies(
     social_two VARCHAR(150),
     social_three VARCHAR(150),
     social_four VARCHAR(150),
-    mail VARCHAR(150) NOT NULL,
+    email VARCHAR(150) NOT NULL,
     password VARCHAR(75) NOT NULL,
     active_profile BOOLEAN NOT NULL,
 

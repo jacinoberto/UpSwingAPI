@@ -10,10 +10,14 @@ public enum Contract {
         this.contract = contract;
     }
 
-    public static String fromString(String data){
+    public static String fromString(Contract data){
+        return data.contract;
+    }
+
+    public static Contract fromContract(String data){
         for (Contract contracts : Contract.values()){
             if (contracts.contract.equalsIgnoreCase(data)){
-                return data;
+                return contracts;
             }
         }
         throw new IllegalArgumentException("Contrato: " + data + " não encontrado!");
