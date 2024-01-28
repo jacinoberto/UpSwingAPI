@@ -1,7 +1,9 @@
 package br.com.noberto.upswing.controllers.register;
 
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
+import br.com.noberto.upswing.dtos.company.RegisterJobOffer;
 import br.com.noberto.upswing.models.Company;
+import br.com.noberto.upswing.models.JobOffer;
 import br.com.noberto.upswing.services.register.CompanyRegisterService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +31,13 @@ public class CompanyRegisterController {
         Company company = service.registerCompany(registerCompany);
         URI uri = uriBuilder.path("/api/register/company/{id}").buildAndExpand(company.getId()).toUri();
         return ResponseEntity.created(uri).body(new RegisterCompany(company));
+    }
+
+    @PostMapping("/job-offer")
+    @Transactional
+    public ResponseEntity<RegisterJobOffer> registerJobOffer(@RequestBody @Valid RegisterJobOffer registerJobOffer, UriComponentsBuilder uriBuilder){
+        JobOffer jobOffer = service.registerJobOffer(registerJobOffer);
+        URI uri = uriBuilder.path("/api/register/company/{id}").buildAndExpand(jobOffer.getId()).toUri();
+        return ResponseEntity.created(uri).body(new RegisterJobOffer(jobOffer));
     }
 }

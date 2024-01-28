@@ -1,5 +1,6 @@
 package br.com.noberto.upswing.models;
 
+import br.com.noberto.upswing.dtos.company.RegisterJobOffer;
 import br.com.noberto.upswing.enums.Contract;
 import br.com.noberto.upswing.enums.EducationLevel;
 import jakarta.persistence.*;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tb_job_offer")
+@Table(name = "tb_job_offers")
 @AllArgsConstructor @NoArgsConstructor @Data
 public class JobOffer {
 
@@ -20,49 +21,54 @@ public class JobOffer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_job_offer")
     private UUID id;
+
+    @Column(name = "job_position")
     private String position;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "education_level")
     private EducationLevel educationLevel;
 
     @Enumerated(EnumType.STRING)
     private Contract contract;
+
     private BigDecimal salary;
 
-    @Column(name = "disability")
-    private Boolean disability;
+    @Column(name = "disable_person")
+    private Boolean disablePerson;
 
-    @Column(name = "vacancies_number")
-    private Integer vacanciesNumber;
-    private LocalDate deadline;
-    private String description;
+    @Column(name = "offer_number")
+    private Integer offerNumber;
+
+    @Column(name = "work_schedule")
+    private String workSchedule;
 
     @Column(name = "assigned_functions")
     private String assignedFunctions;
 
-    @Column(name = "benefits_meal_voucher")
-    private Boolean benefitsMealVoucher;
+    @Column(name = "offer_description")
+    private String offerDescription;
 
-    @Column(name = "benefits_food_voucher")
-    private Boolean benefitsFoodVoucher;
-
-    @Column(name = "benefits_transport_allowance")
-    private Boolean benefitsTransportAllowance;
-
-    @Column(name = "benefits_culture")
-    private Boolean benefitsCulture;
-
-    @Column(name = "benefits_education")
-    private Boolean benefitsEducation;
-
-    @Column(name = "benefits_health_insurance")
-    private Boolean benefitsHealthInsurance;
+    private LocalDate deadline;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "area_of_operation_id")
+    @JoinColumn(name = "business_area_id")
     private BusinessArea businessArea;
+
+    public JobOffer(RegisterJobOffer jobOffer) {
+        this.position = jobOffer.position();
+        this.educationLevel = EducationLevel.fromEducationLevel(jobOffer.educationLevel());
+        this.contract = Contract.fromContract(jobOffer.contract());
+        this.salary = new BigDecimal(jobOffer.salary());
+        this.workSchedule = jobOffer.workSchedule();
+        this.disablePerson = jobOffer.disablePerson();
+        this.offerNumber = jobOffer.offerNumber();
+        this.deadline = jobOffer.deadline();
+        this.offerDescription = jobOffer.offerDescription();
+        this.assignedFunctions = jobOffer.offerDescription();
+    }
 }
