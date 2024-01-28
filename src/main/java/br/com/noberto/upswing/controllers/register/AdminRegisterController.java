@@ -1,9 +1,15 @@
 package br.com.noberto.upswing.controllers.register;
 
+import br.com.noberto.upswing.dtos.academic.ClassRequest;
+import br.com.noberto.upswing.dtos.academic.CourseRequest;
+import br.com.noberto.upswing.dtos.academic.SubjectRequest;
 import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import br.com.noberto.upswing.models.Admin;
+import br.com.noberto.upswing.models.Class;
+import br.com.noberto.upswing.models.Course;
 import br.com.noberto.upswing.models.Student;
+import br.com.noberto.upswing.models.Subject;
 import br.com.noberto.upswing.services.register.AdminRegisterService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -39,5 +45,29 @@ public class AdminRegisterController {
         Admin admin = service.registerAdmin(data);
         URI uri =uriBuilder.path("/api/register/admin/{id}").buildAndExpand(admin.getId()).toUri();
         return ResponseEntity.created(uri).body(new RegisterAdmin(admin));
+    }
+
+    @PostMapping("/course")
+    @Transactional
+    public ResponseEntity<CourseRequest> registerCourse(@RequestBody @Valid CourseRequest courseRequest, UriComponentsBuilder uriBuilder){
+        Course course = service.registerCourse(courseRequest);
+        URI uri = uriBuilder.path("/api/register/course/{id}").buildAndExpand(course.getId()).toUri();
+        return ResponseEntity.created(uri).body(new CourseRequest(course));
+    }
+
+    @PostMapping("/subject")
+    @Transactional
+    public ResponseEntity<SubjectRequest> registerCourse(@RequestBody @Valid SubjectRequest subjectRequest, UriComponentsBuilder uriBuilder){
+        Subject subject = service.registerSubject(subjectRequest);
+        URI uri = uriBuilder.path("/api/register/subject/{id}").buildAndExpand(subject.getId()).toUri();
+        return ResponseEntity.created(uri).body(new SubjectRequest(subject));
+    }
+
+    @PostMapping("/class")
+    @Transactional
+    public ResponseEntity<ClassRequest> registerCourse(@RequestBody @Valid ClassRequest classRequest, UriComponentsBuilder uriBuilder){
+        Class aClass = service.registerClass(classRequest);
+        URI uri = uriBuilder.path("/api/register/class/{id}").buildAndExpand(aClass.getId()).toUri();
+        return ResponseEntity.created(uri).body(new ClassRequest(aClass));
     }
 }

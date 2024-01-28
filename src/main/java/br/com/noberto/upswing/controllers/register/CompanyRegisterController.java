@@ -1,9 +1,11 @@
 package br.com.noberto.upswing.controllers.register;
 
+import br.com.noberto.upswing.dtos.academic.ClassRequest;
 import br.com.noberto.upswing.dtos.academic.CourseRequest;
 import br.com.noberto.upswing.dtos.academic.SubjectRequest;
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.company.RegisterJobOffer;
+import br.com.noberto.upswing.models.Class;
 import br.com.noberto.upswing.models.Company;
 import br.com.noberto.upswing.models.Course;
 import br.com.noberto.upswing.models.JobOffer;
@@ -43,21 +45,5 @@ public class CompanyRegisterController {
         JobOffer jobOffer = service.registerJobOffer(registerJobOffer);
         URI uri = uriBuilder.path("/api/register/job-offer/{id}").buildAndExpand(jobOffer.getId()).toUri();
         return ResponseEntity.created(uri).body(new RegisterJobOffer(jobOffer));
-    }
-
-    @PostMapping("/course")
-    @Transactional
-    public ResponseEntity<CourseRequest> registerCourse(@RequestBody @Valid CourseRequest courseRequest, UriComponentsBuilder uriBuilder){
-        Course course = service.registerCourse(courseRequest);
-        URI uri = uriBuilder.path("/api/register/course/{id}").buildAndExpand(course.getId()).toUri();
-        return ResponseEntity.created(uri).body(new CourseRequest(course));
-    }
-
-    @PostMapping("/subject")
-    @Transactional
-    public ResponseEntity<SubjectRequest> registerCourse(@RequestBody @Valid SubjectRequest subjectRequest, UriComponentsBuilder uriBuilder){
-        Subject subject = service.registerSubject(subjectRequest);
-        URI uri = uriBuilder.path("/api/register/subject/{id}").buildAndExpand(subject.getId()).toUri();
-        return ResponseEntity.created(uri).body(new SubjectRequest(subject));
     }
 }

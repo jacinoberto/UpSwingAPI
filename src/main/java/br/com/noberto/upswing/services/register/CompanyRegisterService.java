@@ -54,18 +54,7 @@ public class CompanyRegisterService {
         return jobOfferRepository.save(jobOffer);
     }
 
-    public Course registerCourse(CourseRequest courseRequest){
-        BusinessArea area = checkBusinessArea(courseRequest.businessAreaId());
-        Course course = new Course(courseRequest);
-        course.setBusinessArea(area);
 
-        return courseRepository.save(course);
-    }
-
-    public Subject registerSubject(SubjectRequest subjectRequest){
-        Course course = checkCourse(subjectRequest.courseId());
-        return subjectRepository.save(new Subject(subjectRequest, course));
-    }
 
     //METHODS
     private Address checkAddress(RegisterCompany data){
@@ -94,12 +83,5 @@ public class CompanyRegisterService {
         }
 
         throw new ValidationException("ID informado para Empresa é invalido!");
-    }
-
-    private Course checkCourse(UUID id){
-        if (courseRepository.existsById(id)){
-            return courseRepository.getReferenceById(id);
-        }
-        throw new ValidationException("ID informado para Disciplina é invalido");
     }
 }

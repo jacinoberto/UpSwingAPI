@@ -1,5 +1,6 @@
 package br.com.noberto.upswing.models;
 
+import br.com.noberto.upswing.dtos.academic.ClassRequest;
 import br.com.noberto.upswing.enums.LearningMode;
 import br.com.noberto.upswing.enums.Shift;
 import jakarta.persistence.*;
@@ -32,16 +33,26 @@ public class Class {
     @Column(name = "start_date")
     private LocalDate startDate;
 
-    @Column(name = "final_date")
-    private LocalDate finalDate;
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
-    @Column(name = "number_of_vacancies")
-    private Integer vacanciesNumber;
+    @Column(name = "vacancy_number")
+    private Integer vacancyNumber;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id")
     private Course course;
 
     @OneToMany(mappedBy = "aClass", fetch = FetchType.LAZY)
-    private List<Registration> matriculations = new ArrayList<>();
+    private List<Registration> registrations = new ArrayList<>();
+
+    public Class(ClassRequest classRequest, Integer code, Course course) {
+        this.code = code;
+        this.learningMode = LearningMode.fromLearningMode(classRequest.learningMode());
+        this.shift = Shift.fromShift(classRequest.shift());
+        this.startDate = classRequest.startDate();
+        this.endDate = classRequest.endDate();
+        this.vacancyNumber = classRequest.vacancyNumber();
+        this.course = course;
+    }
 }

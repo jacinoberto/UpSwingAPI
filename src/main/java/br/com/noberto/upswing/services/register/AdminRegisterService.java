@@ -1,28 +1,41 @@
 package br.com.noberto.upswing.services.register;
 
+import br.com.noberto.upswing.dtos.academic.ClassRequest;
+import br.com.noberto.upswing.dtos.academic.CourseRequest;
+import br.com.noberto.upswing.dtos.academic.SubjectRequest;
 import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
-import br.com.noberto.upswing.models.Address;
-import br.com.noberto.upswing.models.Admin;
-import br.com.noberto.upswing.models.Student;
-import br.com.noberto.upswing.models.ZipCode;
-import br.com.noberto.upswing.repositories.AdminRepository;
-import br.com.noberto.upswing.repositories.StudentRepository;
-import br.com.noberto.upswing.repositories.ZipCodeRepository;
+import br.com.noberto.upswing.models.*;
+import br.com.noberto.upswing.models.Class;
+import br.com.noberto.upswing.repositories.*;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class AdminRegisterService {
     private final AdminRepository repository;
     private final StudentRepository studentRepository;
     private final ZipCodeRepository zipCodeRepository;
+    private final BusinessAreaRepository businessAreaRepository;
+    private final CourseRepository courseRepository;
+    private final SubjectRepository subjectRepository;
+    private final ClassRepository classRepository;
 
     @Autowired
-    AdminRegisterService(AdminRepository repository, StudentRepository studentRepository, ZipCodeRepository zipCodeRepository){
+    AdminRegisterService(AdminRepository repository, StudentRepository studentRepository, ZipCodeRepository
+            zipCodeRepository, CourseRepository courseRepository, SubjectRepository subjectRepository, BusinessAreaRepository
+            businessAreaRepository, ClassRepository classRepository){
         this.repository = repository;
         this.studentRepository = studentRepository;
         this.zipCodeRepository = zipCodeRepository;
+        this.businessAreaRepository = businessAreaRepository;
+        this.courseRepository = courseRepository;
+        this.subjectRepository = subjectRepository;
+        this.classRepository = classRepository;
     }
 
     public Student registerStudent(RegisterStudent registerStudent){
@@ -37,7 +50,28 @@ public class AdminRegisterService {
         return repository.save(admin);
     }
 
-    //METHODS
+    public Course registerCourse(CourseRequest courseRequest){
+        BusinessArea area = checkBusinessArea(courseRequest.businessAreaId());
+        Course course = new Course(courseRequest);
+        course.setBusinessArea(area);
+
+        return courseRepository.save(course);
+    }
+
+    public Subject registerSubject(SubjectRequest subjectRequest){
+        Course course = checkCourse(subjectRequest.courseId());
+        return subjectRepository.save(new Subject(subjectRequest, course));
+    }
+
+    public Class registerClass(ClassRequest classRequest){
+        Course course = checkCourse(classRequest.courseId());
+        Integer code = generateRandomCode();
+        return classRepository.save(new Class(classRequest, code, course));
+    }
+
+    /*
+      METHODS
+    */
     private Address checkAddress(RegisterStudent data){
         ZipCode zipCode = null;
 
@@ -48,5 +82,30 @@ public class AdminRegisterService {
         }
 
         return new Address(data, zipCode);
+    }
+
+    private Course checkCourse(UUID id){
+        if (courseRepository.existsById(id)){
+            return courseRepository.getReferenceById(id);
+        }
+        throw new ValidationException("ID informado para Disciplina é invalido");
+    }
+
+    private BusinessArea checkBusinessArea(UUID id){
+        if (businessAreaRepository.existsById(id)){
+            return businessAreaRepository.getReferenceById(id);
+        }
+
+        throw new ValidationException("ID informado para Área de Atuação é invalido!");
+    }
+
+    private Integer generateRandomCode(){
+        Integer code;
+        Random random = new Random(System.currentTimeMillis());
+        do {
+            code = random.nextInt((1000000 - 1000) + 1000);
+        } while (classRepository.existsByCode(code));
+
+        return code;
     }
 }

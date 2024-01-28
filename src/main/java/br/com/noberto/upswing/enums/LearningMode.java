@@ -3,7 +3,7 @@ package br.com.noberto.upswing.enums;
 public enum LearningMode {
     REMOTE("EAD"),
     HYBRID("Híbrido"),
-    IN_PERSON("Pessoalmente");
+    IN_PERSON("Presencial");
 
     private final String learningMode;
 
@@ -11,13 +11,8 @@ public enum LearningMode {
         this.learningMode = learningMode;
     }
 
-    public static String fromString(String data){
-        for (LearningMode learningModes : LearningMode.values()){
-            if (learningModes.learningMode.equalsIgnoreCase(data)){
-                return data;
-            }
-        }
-        throw new IllegalArgumentException("Modalidade: " + data + " não encontrada!");
+    public static String fromString(LearningMode data){
+        return data.learningMode;
     }
 
     public static LearningMode fromLearningMode(String data){
