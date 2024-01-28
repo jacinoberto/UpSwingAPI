@@ -1,6 +1,7 @@
 package br.com.noberto.upswing.services.register;
 
 import br.com.noberto.upswing.dtos.academic.CourseRequest;
+import br.com.noberto.upswing.dtos.academic.SubjectRequest;
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.company.RegisterJobOffer;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
@@ -20,16 +21,18 @@ public class CompanyRegisterService {
     private final BusinessAreaRepository businessAreaRepository;
     private final JobOfferRepository jobOfferRepository;
     private final CourseRepository courseRepository;
+    private final SubjectRepository subjectRepository;
 
     @Autowired
     CompanyRegisterService(CompanyRepository repository, ZipCodeRepository zipCodeRepository, BusinessAreaRepository
-            businessAreaRepository, CompanyRepository companyRepository, JobOfferRepository jobOfferRepository,
-                           CourseRepository courseRepository){
+            businessAreaRepository, JobOfferRepository jobOfferRepository, CourseRepository courseRepository, SubjectRepository
+            subjectRepository){
         this.repository = repository;
         this.zipCodeRepository = zipCodeRepository;
         this.businessAreaRepository = businessAreaRepository;
         this.jobOfferRepository = jobOfferRepository;
         this.courseRepository = courseRepository;
+        this.subjectRepository = subjectRepository;
     }
 
     public Company registerCompany(RegisterCompany registerCompany){
@@ -59,6 +62,11 @@ public class CompanyRegisterService {
         return courseRepository.save(course);
     }
 
+    public Subject registerSubject(SubjectRequest subjectRequest){
+        Course course = checkCourse(subjectRequest.courseId());
+        return subjectRepository.save(new Subject(subjectRequest, course));
+    }
+
     //METHODS
     private Address checkAddress(RegisterCompany data){
         ZipCode zipCode = null;
@@ -86,5 +94,12 @@ public class CompanyRegisterService {
         }
 
         throw new ValidationException("ID informado para Empresa é invalido!");
+    }
+
+    private Course checkCourse(UUID id){
+        if (courseRepository.existsById(id)){
+            return courseRepository.getReferenceById(id);
+        }
+        throw new ValidationException("ID informado para Disciplina é invalido");
     }
 }

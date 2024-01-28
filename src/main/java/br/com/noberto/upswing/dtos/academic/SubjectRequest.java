@@ -1,12 +1,22 @@
 package br.com.noberto.upswing.dtos.academic;
 
+import br.com.noberto.upswing.models.Subject;
 import jakarta.validation.constraints.NotBlank;
+
+import java.util.UUID;
 
 public record SubjectRequest(
         @NotBlank
-        String subject,
+        String subjectName,
         @NotBlank
         String description,
-        CourseRequest course
+        UUID courseId
 ) {
+        public SubjectRequest(Subject subject) {
+                this(
+                        subject.getSubjectName(),
+                        subject.getDescription(),
+                        subject.getCourse().getId()
+                );
+        }
 }

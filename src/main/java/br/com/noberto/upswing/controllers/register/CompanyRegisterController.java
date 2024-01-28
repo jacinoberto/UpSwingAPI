@@ -1,11 +1,13 @@
 package br.com.noberto.upswing.controllers.register;
 
 import br.com.noberto.upswing.dtos.academic.CourseRequest;
+import br.com.noberto.upswing.dtos.academic.SubjectRequest;
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.company.RegisterJobOffer;
 import br.com.noberto.upswing.models.Company;
 import br.com.noberto.upswing.models.Course;
 import br.com.noberto.upswing.models.JobOffer;
+import br.com.noberto.upswing.models.Subject;
 import br.com.noberto.upswing.services.register.CompanyRegisterService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -49,5 +51,13 @@ public class CompanyRegisterController {
         Course course = service.registerCourse(courseRequest);
         URI uri = uriBuilder.path("/api/register/course/{id}").buildAndExpand(course.getId()).toUri();
         return ResponseEntity.created(uri).body(new CourseRequest(course));
+    }
+
+    @PostMapping("/subject")
+    @Transactional
+    public ResponseEntity<SubjectRequest> registerCourse(@RequestBody @Valid SubjectRequest subjectRequest, UriComponentsBuilder uriBuilder){
+        Subject subject = service.registerSubject(subjectRequest);
+        URI uri = uriBuilder.path("/api/register/subject/{id}").buildAndExpand(subject.getId()).toUri();
+        return ResponseEntity.created(uri).body(new SubjectRequest(subject));
     }
 }
