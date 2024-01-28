@@ -22,6 +22,8 @@ public class Student {
     @Column(name = "id_student")
     private UUID id;
 
+    private String occupation;
+
     @Column(name = "social_security")
     private String socialSecurity;
 
@@ -30,6 +32,9 @@ public class Student {
 
     @Embedded
     private Account account;
+
+    @Embedded
+    private SocialNetworks socialNetworks;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
@@ -44,6 +49,7 @@ public class Student {
     public Student(RegisterStudent student) {
         this.socialSecurity = student.socialSecurity();
         this.birthDate = student.birthDate();
+        this.occupation = getOccupation();
         this.account = new Account(student);
     }
 }

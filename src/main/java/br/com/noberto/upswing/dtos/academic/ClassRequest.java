@@ -3,7 +3,6 @@ package br.com.noberto.upswing.dtos.academic;
 import br.com.noberto.upswing.enums.LearningMode;
 import br.com.noberto.upswing.enums.Shift;
 import br.com.noberto.upswing.models.Class;
-import br.com.noberto.upswing.models.Course;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

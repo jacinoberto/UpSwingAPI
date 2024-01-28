@@ -29,9 +29,8 @@ public class AdminListController {
         return ResponseEntity.ok(new AdminResponse(service.getAdmin(id)));
     }
 
-    //@CrossOrigin(value = "*")
     @GetMapping("/admin")
-    public ResponseEntity<Page<AdminResponse>> adminById(@PageableDefault(size = 6) Pageable pagination){
+    public ResponseEntity<Page<AdminResponse>> adminAll(@PageableDefault(size = 6) Pageable pagination){
         var page = repository.findAllActiveProfileTrue(pagination)
                 .map(AdminResponse::new);
         return ResponseEntity.ok(page);

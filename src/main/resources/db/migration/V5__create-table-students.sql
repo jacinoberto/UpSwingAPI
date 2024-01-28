@@ -1,6 +1,7 @@
 CREATE TABLE tb_students(
     id_student UUID NOT NULL,
     name VARCHAR(150) NOT NULL,
+    occupation VARCHAR(75),
     birth_date DATE NOT NULL,
     social_security VARCHAR(15),
     main_phone VARCHAR(15) NOT NULL,

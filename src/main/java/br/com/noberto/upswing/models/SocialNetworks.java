@@ -14,4 +14,11 @@ public class SocialNetworks {
     private String socialTwo;
     private String socialThree;
     private String socialFour;
+
+    public SocialNetworks(Student student) {
+        this.socialOne = student.getSocialNetworks().getSocialOne();
+        this.socialTwo = student.getSocialNetworks().getSocialTwo();
+        this.socialThree = student.getSocialNetworks().getSocialThree();
+        this.socialFour = student.getSocialNetworks().getSocialFour();
+    }
 }
