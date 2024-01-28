@@ -5,6 +5,7 @@ import br.com.noberto.upswing.models.Admin;
 import br.com.noberto.upswing.repositories.AdminRepository;
 import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;

@@ -11,5 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, UUID> {
-    Page<Admin> findAll(Pageable pagination);
+
+    @Query("SELECT a FROM Admin a WHERE a.account.activeProfile = true")
+    Page<Admin> findAllActiveProfileTrue(Pageable pagination);
 }
