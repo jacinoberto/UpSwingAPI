@@ -1,13 +1,11 @@
 package br.com.noberto.upswing.services.register;
 
+import br.com.noberto.upswing.dtos.academic.CourseRequest;
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.company.RegisterJobOffer;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import br.com.noberto.upswing.models.*;
-import br.com.noberto.upswing.repositories.BusinessAreaRepository;
-import br.com.noberto.upswing.repositories.CompanyRepository;
-import br.com.noberto.upswing.repositories.JobOfferRepository;
-import br.com.noberto.upswing.repositories.ZipCodeRepository;
+import br.com.noberto.upswing.repositories.*;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,14 +19,17 @@ public class CompanyRegisterService {
     private final ZipCodeRepository zipCodeRepository;
     private final BusinessAreaRepository businessAreaRepository;
     private final JobOfferRepository jobOfferRepository;
+    private final CourseRepository courseRepository;
 
     @Autowired
     CompanyRegisterService(CompanyRepository repository, ZipCodeRepository zipCodeRepository, BusinessAreaRepository
-            businessAreaRepository, CompanyRepository companyRepository, JobOfferRepository jobOfferRepository){
+            businessAreaRepository, CompanyRepository companyRepository, JobOfferRepository jobOfferRepository,
+                           CourseRepository courseRepository){
         this.repository = repository;
         this.zipCodeRepository = zipCodeRepository;
         this.businessAreaRepository = businessAreaRepository;
         this.jobOfferRepository = jobOfferRepository;
+        this.courseRepository = courseRepository;
     }
 
     public Company registerCompany(RegisterCompany registerCompany){
@@ -48,6 +49,14 @@ public class CompanyRegisterService {
         jobOffer.setBusinessArea(businessArea);
 
         return jobOfferRepository.save(jobOffer);
+    }
+
+    public Course registerCourse(CourseRequest courseRequest){
+        BusinessArea area = checkBusinessArea(courseRequest.businessAreaId());
+        Course course = new Course(courseRequest);
+        course.setBusinessArea(area);
+
+        return courseRepository.save(course);
     }
 
     //METHODS

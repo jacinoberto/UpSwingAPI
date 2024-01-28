@@ -1,5 +1,6 @@
 package br.com.noberto.upswing.models;
 
+import br.com.noberto.upswing.dtos.academic.CourseRequest;
 import br.com.noberto.upswing.enums.EducationLevel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,12 +21,14 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_course")
     private UUID id;
-    private String course;
 
-    @Column(name = "education_level")
+    @Column(name = "course_name")
+    private String courseName;
+
     @Enumerated(EnumType.STRING)
-    private EducationLevel educationLevel;
-    private Integer workload;
+    private EducationLevel degree;
+
+    private Integer schedule;
 
     @Column(name = "monthly_cost")
     private BigDecimal monthlyCost;
@@ -41,5 +44,13 @@ public class Course {
     private List<Subject> subjects = new ArrayList<>();
 
     @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
-    private List<Course> courses = new ArrayList<>();
+    private List<Class> classes = new ArrayList<>();
+
+    public Course(CourseRequest course) {
+        this.courseName = course.courseName();
+        this.degree = EducationLevel.fromEducationLevel(course.degree());
+        this.schedule = course.schedule();
+        this.monthlyCost = course.monthlyCost();
+        this.totalCost = course.totalCost();
+    }
 }

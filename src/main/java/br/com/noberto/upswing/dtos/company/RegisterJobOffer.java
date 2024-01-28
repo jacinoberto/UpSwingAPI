@@ -6,6 +6,7 @@ import br.com.noberto.upswing.models.JobOffer;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -20,8 +21,8 @@ public record RegisterJobOffer(
         String educationLevel,
         @NotBlank
         String contract,
-        @NotBlank
-        String salary,
+        @NotNull
+        BigDecimal salary,
         Boolean disablePerson,
         @NotNull
         Integer offerNumber,
@@ -39,7 +40,7 @@ public record RegisterJobOffer(
                 jobOffer.getPosition(),
                 EducationLevel.fromString(jobOffer.getEducationLevel()),
                 Contract.fromString(jobOffer.getContract()),
-                jobOffer.getSalary().toString(),
+                jobOffer.getSalary(),
                 jobOffer.getDisablePerson(),
                 jobOffer.getOfferNumber(),
                 jobOffer.getWorkSchedule(),

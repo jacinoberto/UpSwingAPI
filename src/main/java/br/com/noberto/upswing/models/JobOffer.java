@@ -63,7 +63,7 @@ public class JobOffer {
         this.position = jobOffer.position();
         this.educationLevel = EducationLevel.fromEducationLevel(jobOffer.educationLevel());
         this.contract = Contract.fromContract(jobOffer.contract());
-        this.salary = new BigDecimal(jobOffer.salary());
+        this.salary = jobOffer.salary();
         this.workSchedule = jobOffer.workSchedule();
         this.disablePerson = jobOffer.disablePerson();
         this.offerNumber = jobOffer.offerNumber();
