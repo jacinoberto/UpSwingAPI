@@ -1,0 +1,1 @@
+UPDATE tb_students SET social_one = 'rede social', social_two = 'rede social', social_three = 'rede social', social_four = 'rede social';
