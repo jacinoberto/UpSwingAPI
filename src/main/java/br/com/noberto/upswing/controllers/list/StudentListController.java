@@ -1,8 +1,11 @@
 package br.com.noberto.upswing.controllers.list;
 
+import br.com.noberto.upswing.dtos.academic.CourseRequest;
+import br.com.noberto.upswing.dtos.academic.CourseResponse;
 import br.com.noberto.upswing.dtos.admin.AdminResponse;
 import br.com.noberto.upswing.dtos.student.StudentResponse;
 import br.com.noberto.upswing.models.Student;
+import br.com.noberto.upswing.repositories.CourseRepository;
 import br.com.noberto.upswing.repositories.StudentRepository;
 import br.com.noberto.upswing.services.list.StudentListService;
 import org.springframework.data.domain.Page;
@@ -21,10 +24,12 @@ import java.util.UUID;
 public class StudentListController {
     private final StudentRepository repository;
     private final StudentListService service;
+    private final CourseRepository courseRepository;
 
-    StudentListController(StudentRepository repository, StudentListService service){
+    StudentListController(StudentRepository repository, StudentListService service, CourseRepository courseRepository){
         this.repository = repository;
         this.service = service;
+        this.courseRepository = courseRepository;
     }
 
     @GetMapping("/student/{id}")
@@ -36,6 +41,13 @@ public class StudentListController {
     public ResponseEntity<Page<StudentResponse>> studentAll(@PageableDefault(size = 6) Pageable pagination){
         var page = repository.findAllActiveProfileTrue(pagination)
                 .map(StudentResponse::new);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/course/{id}")
+    public ResponseEntity<Page<CourseResponse>> studentAll(@PathVariable UUID id, @PageableDefault(size = 6) Pageable pagination){
+        var page = courseRepository.findAllBusinessAreaById(id, pagination)
+                .map(CourseResponse::new);
         return ResponseEntity.ok(page);
     }
 }

@@ -1,6 +1,7 @@
 package br.com.noberto.upswing.models;
 
 import br.com.noberto.upswing.dtos.academic.CourseRequest;
+import br.com.noberto.upswing.dtos.academic.CourseResponse;
 import br.com.noberto.upswing.enums.EducationLevel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -52,5 +53,13 @@ public class Course {
         this.schedule = course.schedule();
         this.monthlyCost = course.monthlyCost();
         this.totalCost = course.totalCost();
+    }
+
+    public Course(CourseResponse course) {
+        this.courseName = course.courseName();
+        this.degree = EducationLevel.valueOf(course.degree());
+        this.schedule = course.schedule();
+        this.subjects = course.subjects().stream()
+                .map(Subject::new).toList();
     }
 }

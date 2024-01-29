@@ -1,6 +1,7 @@
 package br.com.noberto.upswing.models;
 
 import br.com.noberto.upswing.dtos.academic.SubjectRequest;
+import br.com.noberto.upswing.dtos.academic.SubjectResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,5 +32,9 @@ public class Subject {
         this.subjectName = subject.subjectName();
         this.description = subject.description();
         this.course = course;
+    }
+
+    public Subject(SubjectResponse subject) {
+        this.subjectName = subject.subjectName();
     }
 }
