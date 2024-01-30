@@ -17,6 +17,7 @@ CREATE TABLE tb_job_offers(
     benefits_childcare BOOLEAN NOT NULL,
     benefits_meal BOOLEAN NOT NULL,
     benefits_cultural BOOLEAN NOT NULL,
+    approval BOOLEAN NOT NULL,
 
     PRIMARY KEY(id_job_offer),
     CONSTRAINT fk_company_job_offer_id FOREIGN KEY(company_id) REFERENCES tb_companies(id_company),
