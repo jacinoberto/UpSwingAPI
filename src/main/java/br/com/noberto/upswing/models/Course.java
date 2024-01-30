@@ -1,7 +1,7 @@
 package br.com.noberto.upswing.models;
 
 import br.com.noberto.upswing.dtos.academic.CourseRequest;
-import br.com.noberto.upswing.dtos.academic.CourseResponse;
+import br.com.noberto.upswing.dtos.academic.CourseByBusinessArea;
 import br.com.noberto.upswing.enums.EducationLevel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -55,7 +55,7 @@ public class Course {
         this.totalCost = course.totalCost();
     }
 
-    public Course(CourseResponse course) {
+    public Course(CourseByBusinessArea course) {
         this.courseName = course.courseName();
         this.educationLevel = EducationLevel.valueOf(course.educationalLevel());
         this.schedule = course.schedule();

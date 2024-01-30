@@ -5,16 +5,18 @@ import br.com.noberto.upswing.models.Course;
 
 import java.util.List;
 
-public record CourseResponse (
-        String courseName,
+public record CourseByBusinessArea(
+        String area,
         String educationalLevel,
+        String courseName,
         Integer schedule,
         List<SubjectResponse> subjects
 ){
-    public CourseResponse (Course course){
+    public CourseByBusinessArea(Course course){
         this(
-                course.getCourseName(),
+                course.getBusinessArea().getBusinessArea(),
                 EducationLevel.fromString(course.getEducationLevel()),
+                course.getCourseName(),
                 course.getSchedule(),
                 course.getSubjects().stream()
                         .map(SubjectResponse::new)

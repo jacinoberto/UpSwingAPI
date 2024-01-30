@@ -1,10 +1,8 @@
 package br.com.noberto.upswing.controllers.list;
 
-import br.com.noberto.upswing.dtos.academic.CourseRequest;
+import br.com.noberto.upswing.dtos.academic.CourseByBusinessArea;
 import br.com.noberto.upswing.dtos.academic.CourseResponse;
-import br.com.noberto.upswing.dtos.admin.AdminResponse;
 import br.com.noberto.upswing.dtos.student.StudentResponse;
-import br.com.noberto.upswing.models.Student;
 import br.com.noberto.upswing.repositories.CourseRepository;
 import br.com.noberto.upswing.repositories.StudentRepository;
 import br.com.noberto.upswing.services.list.StudentListService;
@@ -45,8 +43,15 @@ public class StudentListController {
     }
 
     @GetMapping("/course/{id}")
-    public ResponseEntity<Page<CourseResponse>> studentAll(@PathVariable UUID id, @PageableDefault(size = 6) Pageable pagination){
+    public ResponseEntity<Page<CourseByBusinessArea>> allCoursesByBusinessArea(@PathVariable UUID id, @PageableDefault(size = 6) Pageable pagination){
         var page = courseRepository.findAllBusinessAreaById(id, pagination)
+                .map(CourseByBusinessArea::new);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/my-course/{id}")
+    public ResponseEntity<Page<CourseResponse>> myCourses(@PathVariable UUID id, @PageableDefault(size = 6) Pageable pagination){
+        var page = courseRepository.findAllCourseStudentTrue(id, pagination)
                 .map(CourseResponse::new);
         return ResponseEntity.ok(page);
     }
