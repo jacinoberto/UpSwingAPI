@@ -11,15 +11,15 @@ import java.util.stream.Collectors;
 
 public record CourseResponse (
         String area,
-        String degree,
+        String educationalLevel,
         String courseName,
         Integer schedule,
         List<SubjectResponse> subjects
 ){
     public CourseResponse (Course course){
         this(
-                course.getBusinessArea().getArea(),
-                EducationLevel.fromString(course.getDegree()),
+                course.getBusinessArea().getBusinessArea(),
+                EducationLevel.fromString(course.getEducationLevel()),
                 course.getCourseName(),
                 course.getSchedule(),
                 course.getSubjects().stream()

@@ -18,12 +18,14 @@ public class AutoApply {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "enrolled_course")
-    private Boolean enrolledCourse;
     private Contract contract;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "offer_location")
     private Location offerLocation;
+
+    @Column(name = "enable_auto_apply")
+    private Boolean enableAutoApply;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id")

@@ -2,7 +2,7 @@ CREATE TABLE tb_courses(
     id_course UUID,
     course_name VARCHAR(150) NOT NULL,
     business_area_id UUID NOT NULL,
-    degree VARCHAR(75) NOT NULL,
+    educational_level VARCHAR(75) NOT NULL,
     schedule INT NOT NULL,
     monthly_cost NUMERIC(6,2),
     total_cost NUMERIC(6,2),

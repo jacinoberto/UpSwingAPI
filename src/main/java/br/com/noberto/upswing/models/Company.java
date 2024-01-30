@@ -24,7 +24,7 @@ public class Company {
     @Column(name = "trading_name")
     private String tradingName;
 
-    @Column(name = "companyCode", unique = true)
+    @Column(name = "company_code", unique = true)
     private String companyCode;
     private String description;
     private String website;

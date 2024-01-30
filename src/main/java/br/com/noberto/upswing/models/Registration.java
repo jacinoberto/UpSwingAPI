@@ -13,14 +13,13 @@ import java.util.UUID;
 public class Registration {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_matriculation")
-    private UUID id;
-    private Integer code;
+    private Long registration;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id")
     private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_id")
     private  Class aClass;
 }

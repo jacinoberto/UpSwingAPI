@@ -7,12 +7,12 @@ import java.util.UUID;
 
 public record BusinessAreaRequest(
         UUID id,
-        String area
+        String businessArea
 ) {
         public BusinessAreaRequest(BusinessArea area) {
                 this(
                         area.getId(),
-                        area.getArea()
+                        area.getBusinessArea()
                 );
         }
 }

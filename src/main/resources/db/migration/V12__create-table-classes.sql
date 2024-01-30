@@ -5,7 +5,7 @@ CREATE TABLE tb_classes(
 	learning_mode VARCHAR(50),
 	shift VARCHAR(50) NOT NULL,
 	start_date DATE NOT NULL,
-	end_date DATE NOT NULL,
+	closing_date DATE NOT NULL,
 	vacancy_number INT NOT NULL,
 
 	PRIMARY KEY(id_class),

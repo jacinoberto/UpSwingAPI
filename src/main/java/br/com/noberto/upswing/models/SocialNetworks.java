@@ -10,9 +10,17 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @AllArgsConstructor @NoArgsConstructor @Data
 public class SocialNetworks {
+
+    @Column(name = "social_one")
     private String socialOne;
+
+    @Column(name = "social_two")
     private String socialTwo;
+
+    @Column(name = "social_three")
     private String socialThree;
+
+    @Column(name = "social_four")
     private String socialFour;
 
     public SocialNetworks(Student student) {

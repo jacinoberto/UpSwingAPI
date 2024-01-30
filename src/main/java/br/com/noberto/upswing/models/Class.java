@@ -33,8 +33,8 @@ public class Class {
     @Column(name = "start_date")
     private LocalDate startDate;
 
-    @Column(name = "end_date")
-    private LocalDate endDate;
+    @Column(name = "closing_date")
+    private LocalDate closingDate;
 
     @Column(name = "vacancy_number")
     private Integer vacancyNumber;
@@ -51,7 +51,7 @@ public class Class {
         this.learningMode = LearningMode.fromLearningMode(classRequest.learningMode());
         this.shift = Shift.fromShift(classRequest.shift());
         this.startDate = classRequest.startDate();
-        this.endDate = classRequest.endDate();
+        this.closingDate = classRequest.closingDate();
         this.vacancyNumber = classRequest.vacancyNumber();
         this.course = course;
     }

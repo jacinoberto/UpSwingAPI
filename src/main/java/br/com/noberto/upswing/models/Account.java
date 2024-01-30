@@ -13,11 +13,19 @@ import lombok.NoArgsConstructor;
 public class Account {
 
     private String name;
+
+    @Column(name = "main_phone")
     private String mainPhone;
+
+    @Column(name = "optional_phone")
     private String optionalPhone;
+
     @Column(unique = true)
     private String email;
+
     private String password;
+
+    @Column(name = "active_profile")
     private Boolean activeProfile;
 
     public Account(RegisterStudent student) {

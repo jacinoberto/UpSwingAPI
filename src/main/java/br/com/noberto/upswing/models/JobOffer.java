@@ -3,6 +3,7 @@ package br.com.noberto.upswing.models;
 import br.com.noberto.upswing.dtos.company.RegisterJobOffer;
 import br.com.noberto.upswing.enums.Contract;
 import br.com.noberto.upswing.enums.EducationLevel;
+import br.com.noberto.upswing.enums.LearningMode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,23 +35,45 @@ public class JobOffer {
 
     private BigDecimal salary;
 
+    @Enumerated(EnumType.STRING)
+    LearningMode format;
+
     @Column(name = "disable_person")
     private Boolean disablePerson;
 
-    @Column(name = "offer_number")
-    private Integer offerNumber;
+    @Column(name = "offer_qty")
+    private Integer offerQty;
 
     @Column(name = "work_schedule")
     private String workSchedule;
 
-    @Column(name = "assigned_functions")
-    private String assignedFunctions;
-
     @Column(name = "offer_description")
     private String offerDescription;
 
-    private LocalDate deadline;
+    @Column(name = "closing_date")
+    private LocalDate closingDate;
 
+    @Column(name = "benefits_mobility")
+    private Boolean benefitsMobility;
+
+    @Column(name = "benefits_education")
+    private Boolean benefitsEducation;
+
+    @Column(name = "benefits_health_wellness")
+    private Boolean benefitsHealthWellness;
+
+    @Column(name = "benefits_childcare")
+    private Boolean benefitsChildcare;
+
+    @Column(name = "benefits_meal")
+    private Boolean benefitsMeal;
+
+    @Column(name = "benefits_cultural")
+    private Boolean benefitsCultural;
+
+    /*
+        RELATIONSHIPS
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
@@ -64,11 +87,17 @@ public class JobOffer {
         this.educationLevel = EducationLevel.fromEducationLevel(jobOffer.educationLevel());
         this.contract = Contract.fromContract(jobOffer.contract());
         this.salary = jobOffer.salary();
+        this.format = LearningMode.valueOf(jobOffer.format());
         this.workSchedule = jobOffer.workSchedule();
         this.disablePerson = jobOffer.disablePerson();
-        this.offerNumber = jobOffer.offerNumber();
-        this.deadline = jobOffer.deadline();
+        this.offerQty = jobOffer.offerQty();
+        this.closingDate = jobOffer.closingDate();
         this.offerDescription = jobOffer.offerDescription();
-        this.assignedFunctions = jobOffer.offerDescription();
+        this.benefitsMobility = jobOffer.benefitsMobility();
+        this.benefitsEducation = jobOffer.benefitsEducation();
+        this.benefitsHealthWellness = jobOffer.benefitsHealthWellness();
+        this.benefitsChildcare = jobOffer.benefitsChildcare();
+        this.benefitsMeal = jobOffer.benefitsMeal();
+        this.benefitsCultural = jobOffer.benefitsCultural();
     }
 }

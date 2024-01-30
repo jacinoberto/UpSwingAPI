@@ -18,7 +18,9 @@ public class BusinessArea {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_business_area")
     private UUID id;
-    private String area;
+
+    @Column(name = "business_area")
+    private String businessArea;
 
     @OneToMany(mappedBy = "businessArea")
     private List<Company> companies = new ArrayList<>();

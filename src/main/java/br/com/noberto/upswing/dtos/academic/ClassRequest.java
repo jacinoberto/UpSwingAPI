@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record ClassRequest(
+        @NotNull
         Integer code,
         @NotNull
         UUID courseId,
@@ -19,7 +20,7 @@ public record ClassRequest(
         String shift,
         @NotNull
         LocalDate startDate,
-        LocalDate endDate,
+        LocalDate closingDate,
         @NotNull
         Integer vacancyNumber
 ) {
@@ -30,7 +31,7 @@ public record ClassRequest(
                 LearningMode.fromString(aClass.getLearningMode()),
                 Shift.fromString(aClass.getShift()),
                 aClass.getStartDate(),
-                aClass.getEndDate(),
+                aClass.getClosingDate(),
                 aClass.getVacancyNumber()
         );
     }

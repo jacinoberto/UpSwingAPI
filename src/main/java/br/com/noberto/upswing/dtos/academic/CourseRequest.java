@@ -14,7 +14,7 @@ public record CourseRequest(
         String courseName,
         UUID businessAreaId,
         @NotBlank
-        String degree,
+        String educationalLevel,
         @NotNull
         Integer schedule,
         BigDecimal monthlyCost,
@@ -24,7 +24,7 @@ public record CourseRequest(
                this(
                         course.getCourseName(),
                         course.getBusinessArea().getId(),
-                       EducationLevel.fromString(course.getDegree()),
+                       EducationLevel.fromString(course.getEducationLevel()),
                         course.getSchedule(),
                         course.getMonthlyCost(),
                         course.getTotalCost()

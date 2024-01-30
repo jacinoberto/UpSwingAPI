@@ -27,7 +27,7 @@ public class Course {
     private String courseName;
 
     @Enumerated(EnumType.STRING)
-    private EducationLevel degree;
+    private EducationLevel educationLevel;
 
     private Integer schedule;
 
@@ -49,7 +49,7 @@ public class Course {
 
     public Course(CourseRequest course) {
         this.courseName = course.courseName();
-        this.degree = EducationLevel.fromEducationLevel(course.degree());
+        this.educationLevel = EducationLevel.fromEducationLevel(course.educationalLevel());
         this.schedule = course.schedule();
         this.monthlyCost = course.monthlyCost();
         this.totalCost = course.totalCost();
@@ -57,7 +57,7 @@ public class Course {
 
     public Course(CourseResponse course) {
         this.courseName = course.courseName();
-        this.degree = EducationLevel.valueOf(course.degree());
+        this.educationLevel = EducationLevel.valueOf(course.educationalLevel());
         this.schedule = course.schedule();
         this.subjects = course.subjects().stream()
                 .map(Subject::new).toList();

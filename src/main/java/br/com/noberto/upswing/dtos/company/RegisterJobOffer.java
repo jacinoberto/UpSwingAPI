@@ -2,6 +2,7 @@ package br.com.noberto.upswing.dtos.company;
 
 import br.com.noberto.upswing.enums.Contract;
 import br.com.noberto.upswing.enums.EducationLevel;
+import br.com.noberto.upswing.enums.LearningMode;
 import br.com.noberto.upswing.models.JobOffer;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,39 +14,62 @@ import java.util.UUID;
 public record RegisterJobOffer(
         @NotNull
         UUID companyId,
-        @NotNull
-        UUID businessAreaId,
         @NotBlank
         String position,
+        @NotNull
+        UUID businessAreaId,
         @NotBlank
         String educationLevel,
         @NotBlank
         String contract,
         @NotNull
         BigDecimal salary,
+        @NotBlank
+        String format,
+        @NotNull
         Boolean disablePerson,
         @NotNull
-        Integer offerNumber,
+        Integer offerQty,
         @NotBlank
         String workSchedule,
+        @NotBlank
         String offerDescription,
         @NotNull
-        LocalDate deadline
+        LocalDate closingDate,
+        @NotNull
+        Boolean benefitsMobility,
+        @NotNull
+        Boolean benefitsEducation,
+        @NotNull
+        Boolean benefitsHealthWellness,
+        @NotNull
+        Boolean benefitsChildcare,
+        @NotNull
+        Boolean benefitsMeal,
+        @NotNull
+        Boolean benefitsCultural
 
 ) {
     public RegisterJobOffer(JobOffer jobOffer) {
         this(
                 jobOffer.getCompany().getId(),
-                jobOffer.getBusinessArea().getId(),
                 jobOffer.getPosition(),
+                jobOffer.getBusinessArea().getId(),
                 EducationLevel.fromString(jobOffer.getEducationLevel()),
                 Contract.fromString(jobOffer.getContract()),
                 jobOffer.getSalary(),
+                LearningMode.fromString(jobOffer.getFormat()),
                 jobOffer.getDisablePerson(),
-                jobOffer.getOfferNumber(),
+                jobOffer.getOfferQty(),
                 jobOffer.getWorkSchedule(),
                 jobOffer.getOfferDescription(),
-                jobOffer.getDeadline()
+                jobOffer.getClosingDate(),
+                jobOffer.getBenefitsMobility(),
+                jobOffer.getBenefitsEducation(),
+                jobOffer.getBenefitsHealthWellness(),
+                jobOffer.getBenefitsChildcare(),
+                jobOffer.getBenefitsMeal(),
+                jobOffer.getBenefitsCultural()
         );
     }
 }
