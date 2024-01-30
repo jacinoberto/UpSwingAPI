@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/list")
+@RequestMapping("/api/list/student")
 public class StudentListController {
     private final StudentRepository repository;
     private final StudentListService service;
@@ -30,28 +30,28 @@ public class StudentListController {
         this.courseRepository = courseRepository;
     }
 
-    @GetMapping("/student/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<StudentResponse> studentById(@PathVariable UUID id){
         return ResponseEntity.ok(new StudentResponse(service.getStudent(id)));
     }
 
-    @GetMapping("/student")
+    @GetMapping()
     public ResponseEntity<Page<StudentResponse>> studentAll(@PageableDefault(size = 6) Pageable pagination){
         var page = repository.findAllActiveProfileTrue(pagination)
                 .map(StudentResponse::new);
         return ResponseEntity.ok(page);
     }
 
-    @GetMapping("/course/{id}")
-    public ResponseEntity<Page<CourseByBusinessArea>> allCoursesByBusinessArea(@PathVariable UUID id, @PageableDefault(size = 6) Pageable pagination){
-        var page = courseRepository.findAllBusinessAreaById(id, pagination)
+    @GetMapping("/course/{businessAreaId}")
+    public ResponseEntity<Page<CourseByBusinessArea>> allCoursesByBusinessArea(@PathVariable UUID businessAreaId, @PageableDefault(size = 6) Pageable pagination){
+        var page = courseRepository.findAllBusinessAreaById(businessAreaId, pagination)
                 .map(CourseByBusinessArea::new);
         return ResponseEntity.ok(page);
     }
 
-    @GetMapping("/my-course/{id}")
-    public ResponseEntity<Page<CourseResponse>> myCourses(@PathVariable UUID id, @PageableDefault(size = 6) Pageable pagination){
-        var page = courseRepository.findAllCourseStudentTrue(id, pagination)
+    @GetMapping("/my-course/{studentId}")
+    public ResponseEntity<Page<CourseResponse>> myCourses(@PathVariable UUID studentId, @PageableDefault(size = 6) Pageable pagination){
+        var page = courseRepository.findAllCourseStudentTrue(studentId, pagination)
                 .map(CourseResponse::new);
         return ResponseEntity.ok(page);
     }

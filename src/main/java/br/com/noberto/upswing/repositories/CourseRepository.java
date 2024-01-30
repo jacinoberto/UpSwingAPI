@@ -12,15 +12,15 @@ import java.util.UUID;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, UUID> {
-    @Query("SELECT c FROM Course c WHERE c.businessArea.id = :id")
-    Page<Course> findAllBusinessAreaById(UUID id, Pageable pagination);
+    @Query("SELECT c FROM Course c WHERE c.businessArea.id = :businessAreaId")
+    Page<Course> findAllBusinessAreaById(UUID businessAreaId, Pageable pagination);
 
     @Query("""
                 SELECT c FROM Course c
                 JOIN c.classes cl
                 JOIN cl.registrations r
                 JOIN r.student s
-                WHERE s.id = :id
+                WHERE s.id = :studentId
             """)
-    Page<Course> findAllCourseStudentTrue(UUID id, Pageable pagination);
+    Page<Course> findAllCourseStudentTrue(UUID studentId, Pageable pagination);
 }
