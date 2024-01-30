@@ -1,0 +1,1 @@
+INSERT INTO tb_registrations VALUES (2654, 'f93c26e5-d557-4785-87db-5662fbc91554', '2055bf21-93bc-4c3a-a176-85875acd779f');
