@@ -5,6 +5,7 @@ CREATE TABLE tb_job_offers(
     business_area_id UUID NOT NULL,
     education_level VARCHAR(150) NOT NULL,
     contract VARCHAR(150) NOT NULL,
+    format VARCHAR(75) NOT NULL,
     salary NUMERIC(6,2) NOT NULL,
     disable_person BOOLEAN NOT NULL,
     offer_qty INT NOT NULL,

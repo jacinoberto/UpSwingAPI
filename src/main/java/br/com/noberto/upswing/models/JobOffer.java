@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -81,6 +83,9 @@ public class JobOffer {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "business_area_id")
     private BusinessArea businessArea;
+
+    @OneToMany(mappedBy = "jobOffer", fetch = FetchType.LAZY)
+    private List<VacancyOffer> vacancyOffers = new ArrayList<>();
 
     public JobOffer(RegisterJobOffer jobOffer) {
         this.position = jobOffer.position();

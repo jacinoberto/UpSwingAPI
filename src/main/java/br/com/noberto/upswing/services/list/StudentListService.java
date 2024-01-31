@@ -1,5 +1,6 @@
 package br.com.noberto.upswing.services.list;
 
+import br.com.noberto.upswing.models.JobOffer;
 import br.com.noberto.upswing.models.Student;
 import br.com.noberto.upswing.repositories.StudentRepository;
 import jakarta.validation.ValidationException;
@@ -21,4 +22,5 @@ public class StudentListService {
         }
         throw new ValidationException("ID informado do Aluno é invalido!");
     }
+
 }

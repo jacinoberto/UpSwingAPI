@@ -2,8 +2,11 @@ package br.com.noberto.upswing.controllers.list;
 
 import br.com.noberto.upswing.dtos.academic.CourseByBusinessArea;
 import br.com.noberto.upswing.dtos.academic.CourseResponse;
+import br.com.noberto.upswing.dtos.company.JobOfferResponse;
 import br.com.noberto.upswing.dtos.student.StudentResponse;
+import br.com.noberto.upswing.models.JobOffer;
 import br.com.noberto.upswing.repositories.CourseRepository;
+import br.com.noberto.upswing.repositories.JobOfferRepository;
 import br.com.noberto.upswing.repositories.StudentRepository;
 import br.com.noberto.upswing.services.list.StudentListService;
 import org.springframework.data.domain.Page;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @RestController
@@ -23,11 +27,14 @@ public class StudentListController {
     private final StudentRepository repository;
     private final StudentListService service;
     private final CourseRepository courseRepository;
+    private final JobOfferRepository jobOfferRepository;
 
-    StudentListController(StudentRepository repository, StudentListService service, CourseRepository courseRepository){
+    StudentListController(StudentRepository repository, StudentListService service, CourseRepository courseRepository,
+                          JobOfferRepository jobOfferRepository){
         this.repository = repository;
         this.service = service;
         this.courseRepository = courseRepository;
+        this.jobOfferRepository = jobOfferRepository;
     }
 
     @GetMapping("/{id}")
@@ -53,6 +60,13 @@ public class StudentListController {
     public ResponseEntity<Page<CourseResponse>> myCourses(@PathVariable UUID studentId, @PageableDefault(size = 6) Pageable pagination){
         var page = courseRepository.findAllCourseStudentTrue(studentId, pagination)
                 .map(CourseResponse::new);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/my-job-offers/{studentId}")
+    public ResponseEntity<Page<JobOfferResponse>> myJobOffers(@PathVariable UUID studentId, @PageableDefault(size = 6) Pageable pagination){
+        var page = jobOfferRepository.findByStudentTrue(studentId, LocalDate.now(),pagination)
+                .map(JobOfferResponse::new);
         return ResponseEntity.ok(page);
     }
 }
