@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.br.CNPJ;
 
 public record RegisterCompany(
         @NotBlank
-        String tradingName,
+        String companyName,
         Account account,
         @NotBlank
         @CNPJ

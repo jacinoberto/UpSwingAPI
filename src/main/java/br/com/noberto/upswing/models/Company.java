@@ -46,7 +46,7 @@ public class Company {
 
     public Company(RegisterCompany company) {
         this.account = new Account(company);
-        this.tradingName = company.tradingName();
+        this.tradingName = company.companyName();
         this.companyCode = company.companyCode();
         this.description = company.description();
         this.website = company.website();
