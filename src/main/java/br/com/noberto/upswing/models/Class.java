@@ -1,7 +1,7 @@
 package br.com.noberto.upswing.models;
 
 import br.com.noberto.upswing.dtos.academic.ClassRequest;
-import br.com.noberto.upswing.enums.LearningMode;
+import br.com.noberto.upswing.enums.Mode;
 import br.com.noberto.upswing.enums.Shift;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class Class {
     private Integer code;
 
     @Enumerated(EnumType.STRING)
-    private LearningMode learningMode;
+    private Mode mode;
 
     @Enumerated(EnumType.STRING)
     private Shift shift;
@@ -48,7 +48,7 @@ public class Class {
 
     public Class(ClassRequest classRequest, Integer code, Course course) {
         this.code = code;
-        this.learningMode = LearningMode.fromLearningMode(classRequest.learningMode());
+        this.mode = Mode.fromLearningMode(classRequest.learningMode());
         this.shift = Shift.fromShift(classRequest.shift());
         this.startDate = classRequest.startDate();
         this.closingDate = classRequest.closingDate();

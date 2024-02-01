@@ -5,7 +5,7 @@ CREATE TABLE tb_job_offers(
     business_area_id UUID NOT NULL,
     education_level VARCHAR(150) NOT NULL,
     contract VARCHAR(150) NOT NULL,
-    format VARCHAR(75) NOT NULL,
+    journey VARCHAR(75) NOT NULL,
     salary NUMERIC(6,2) NOT NULL,
     disable_person BOOLEAN NOT NULL,
     offer_qty INT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE tb_job_offers(
     benefits_childcare BOOLEAN NOT NULL,
     benefits_meal BOOLEAN NOT NULL,
     benefits_cultural BOOLEAN NOT NULL,
-    approval BOOLEAN NOT NULL,
+    status VARCHAR(15) NOT NULL,
 
     PRIMARY KEY(id_job_offer),
     CONSTRAINT fk_company_job_offer_id FOREIGN KEY(company_id) REFERENCES tb_companies(id_company),

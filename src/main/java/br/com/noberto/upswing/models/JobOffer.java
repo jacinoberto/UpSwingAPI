@@ -3,7 +3,8 @@ package br.com.noberto.upswing.models;
 import br.com.noberto.upswing.dtos.company.RegisterJobOffer;
 import br.com.noberto.upswing.enums.Contract;
 import br.com.noberto.upswing.enums.EducationLevel;
-import br.com.noberto.upswing.enums.LearningMode;
+import br.com.noberto.upswing.enums.Mode;
+import br.com.noberto.upswing.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,7 +39,7 @@ public class JobOffer {
     private BigDecimal salary;
 
     @Enumerated(EnumType.STRING)
-    LearningMode format;
+    Mode journey;
 
     @Column(name = "disable_person")
     private Boolean disablePerson;
@@ -73,6 +74,9 @@ public class JobOffer {
     @Column(name = "benefits_cultural")
     private Boolean benefitsCultural;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     /*
         RELATIONSHIPS
      */
@@ -92,7 +96,7 @@ public class JobOffer {
         this.educationLevel = EducationLevel.fromEducationLevel(jobOffer.educationLevel());
         this.contract = Contract.fromContract(jobOffer.contract());
         this.salary = jobOffer.salary();
-        this.format = LearningMode.valueOf(jobOffer.format());
+        this.journey = Mode.valueOf(jobOffer.journey());
         this.workSchedule = jobOffer.workSchedule();
         this.disablePerson = jobOffer.disablePerson();
         this.offerQty = jobOffer.offerQty();
@@ -104,5 +108,6 @@ public class JobOffer {
         this.benefitsChildcare = jobOffer.benefitsChildcare();
         this.benefitsMeal = jobOffer.benefitsMeal();
         this.benefitsCultural = jobOffer.benefitsCultural();
+        this.status = Status.PENDING;
     }
 }

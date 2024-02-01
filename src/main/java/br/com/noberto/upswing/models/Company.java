@@ -1,6 +1,7 @@
 package br.com.noberto.upswing.models;
 
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
+import br.com.noberto.upswing.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +33,9 @@ public class Company {
     @Embedded
     private SocialNetworks socialNetworks;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "business_area_id")
     private BusinessArea businessArea;
@@ -46,5 +50,6 @@ public class Company {
         this.companyCode = company.companyCode();
         this.description = company.description();
         this.website = company.website();
+        this.status = Status.PENDING;
     }
 }

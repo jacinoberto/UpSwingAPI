@@ -2,7 +2,8 @@ package br.com.noberto.upswing.dtos.company;
 
 import br.com.noberto.upswing.enums.Contract;
 import br.com.noberto.upswing.enums.EducationLevel;
-import br.com.noberto.upswing.enums.LearningMode;
+import br.com.noberto.upswing.enums.Mode;
+import br.com.noberto.upswing.enums.Status;
 import br.com.noberto.upswing.models.JobOffer;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,7 +26,7 @@ public record RegisterJobOffer(
         @NotNull
         BigDecimal salary,
         @NotBlank
-        String format,
+        String journey,
         @NotNull
         Boolean disablePerson,
         @NotNull
@@ -47,7 +48,9 @@ public record RegisterJobOffer(
         @NotNull
         Boolean benefitsMeal,
         @NotNull
-        Boolean benefitsCultural
+        Boolean benefitsCultural,
+        @NotBlank
+        String status
 
 ) {
     public RegisterJobOffer(JobOffer jobOffer) {
@@ -58,7 +61,7 @@ public record RegisterJobOffer(
                 EducationLevel.fromString(jobOffer.getEducationLevel()),
                 Contract.fromString(jobOffer.getContract()),
                 jobOffer.getSalary(),
-                LearningMode.fromString(jobOffer.getFormat()),
+                Mode.fromString(jobOffer.getJourney()),
                 jobOffer.getDisablePerson(),
                 jobOffer.getOfferQty(),
                 jobOffer.getWorkSchedule(),
@@ -69,7 +72,8 @@ public record RegisterJobOffer(
                 jobOffer.getBenefitsHealthWellness(),
                 jobOffer.getBenefitsChildcare(),
                 jobOffer.getBenefitsMeal(),
-                jobOffer.getBenefitsCultural()
+                jobOffer.getBenefitsCultural(),
+                Status.fromString(jobOffer.getStatus())
         );
     }
 }
