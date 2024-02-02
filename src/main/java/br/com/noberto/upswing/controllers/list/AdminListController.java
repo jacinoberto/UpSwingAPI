@@ -3,9 +3,11 @@ package br.com.noberto.upswing.controllers.list;
 import br.com.noberto.upswing.dtos.academic.ClassResponseAdmin;
 import br.com.noberto.upswing.dtos.academic.CourseResponseAdmin;
 import br.com.noberto.upswing.dtos.admin.AdminResponse;
+import br.com.noberto.upswing.dtos.student.StudentResponseAdmin;
 import br.com.noberto.upswing.repositories.AdminRepository;
 import br.com.noberto.upswing.repositories.ClassRepository;
 import br.com.noberto.upswing.repositories.CourseRepository;
+import br.com.noberto.upswing.repositories.StudentRepository;
 import br.com.noberto.upswing.services.list.AdminListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,14 +25,16 @@ public class AdminListController {
     private final AdminRepository repository;
     private final CourseRepository courseRepository;
     private final ClassRepository classRepository;
+    private final StudentRepository studentRepository;
 
     @Autowired
     AdminListController(AdminListService service, AdminRepository repository, CourseRepository courseRepository,
-                        ClassRepository classRepository){
+                        ClassRepository classRepository, StudentRepository studentRepository){
         this.service = service;
         this.repository = repository;
         this.courseRepository = courseRepository;
         this.classRepository = classRepository;
+        this.studentRepository = studentRepository;
     }
 
     @GetMapping("/{id}")
@@ -58,4 +62,10 @@ public class AdminListController {
         return ResponseEntity.ok(page);
     }
 
+    @GetMapping("/students")
+    public ResponseEntity<Page<StudentResponseAdmin>> studentAll(@PageableDefault(size = 6, sort = {"account.name"}) Pageable pagination){
+        var page = studentRepository.findAll(pagination)
+                .map(StudentResponseAdmin::new);
+        return ResponseEntity.ok(page);
+    }
 }
