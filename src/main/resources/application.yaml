@@ -1,16 +1,14 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost/db_upswing
-    username: postgres
-    password: 123456
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-hibernate:
-  dialect: org.hibernate.dialect.HSQLDialect
+  spring:
+    datasource:
+      url: jdbc:postgresql://${DB_PATH}/${DATABASE}
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+      driver-class-name: org.postgresql.Driver
+    jpa:
+      show-sql: true
+      format-sql: true
+  hibernate:
+    dialect: org.hibernate.dialect.HSQLDialect
 
 #api:
 #  security:

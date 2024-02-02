@@ -37,14 +37,14 @@ public class Course {
     @Column(name = "total_cost")
     private BigDecimal totalCost;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "business_area_id")
     private BusinessArea businessArea;
 
-    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
     private List<Subject> subjects = new ArrayList<>();
 
-    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
     private List<Class> classes = new ArrayList<>();
 
     public Course(CourseRequest course) {
