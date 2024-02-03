@@ -44,6 +44,7 @@ public class AdminRegisterService {
         Address address = checkAddress(registerStudent);
         Student student = new Student(registerStudent);
         student.setAddress(address);
+        student.getAccount().setPassword(generatePassword(registerStudent));
         return studentRepository.save(student);
     }
 
@@ -111,7 +112,7 @@ public class AdminRegisterService {
         Integer code;
         Random random = new Random(System.currentTimeMillis());
         do {
-            code = random.nextInt((1000000 - 1000) + 1000);
+            code = random.nextInt((9999 - 1000) + 1000);
         } while (classRepository.existsByCode(code));
 
         return code;
@@ -129,5 +130,11 @@ public class AdminRegisterService {
             return classRepository.getReferenceById(id);
         }
         throw new ValidationException("Id informado para Turma é invalido!");
+    }
+
+    private String generatePassword(RegisterStudent student){
+        String name = student.account().getName().substring(0, 2);
+        String socialSecurity = student.socialSecurity().substring(0, 3);
+        return "#" + name + socialSecurity;
     }
 }
