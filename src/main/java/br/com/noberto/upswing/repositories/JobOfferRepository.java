@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -21,4 +22,11 @@ public interface JobOfferRepository extends JpaRepository<JobOffer, UUID> {
                 AND j.closingDate >= :date
             """)
     Page<JobOffer> findByStudentTrue(UUID studentId, LocalDate date, Pageable pagination);
+
+    @Query("""
+                SELECT jo FROM JobOffer jo
+                JOIN jo.company c
+                WHERE c.id = :companyId
+            """)
+    Page<JobOffer> findAllMyVacancies(UUID companyId, Pageable pagination);
 }

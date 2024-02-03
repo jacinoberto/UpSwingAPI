@@ -21,7 +21,7 @@ public record JobOfferRequest(
         @NotNull
         Boolean disability,
         @NotNull
-        Integer vacanciesNumber,
+        Integer offerQty,
         @NotNull
         LocalDate deadline,
         @NotBlank
