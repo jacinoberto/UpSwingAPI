@@ -2,6 +2,7 @@ package br.com.noberto.upswing.models;
 
 import br.com.noberto.upswing.dtos.address.AddressRequest;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
+import br.com.noberto.upswing.dtos.student.StudentResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -54,5 +55,12 @@ public class Student {
         this.birthDate = student.birthDate();
         this.occupation = getOccupation();
         this.account = new Account(student);
+    }
+
+    public Student(StudentResponse student) {
+        this.occupation = student.occupation();
+        this.account = new Account(student);
+        this.socialNetworks = student.socialNetworks();
+        this.address = new Address(student.address());
     }
 }

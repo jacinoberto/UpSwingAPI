@@ -25,4 +25,11 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
                 WHERE a.activeProfile = true
             """)
     Page<Student> findAllStudent(Pageable pagination);
+
+    @Query("""
+                SELECT s FROM Student s
+                JOIN s.account a
+                WHERE a.email = :email
+            """)
+    Optional<Student> getAccountByEmail(String email);
 }

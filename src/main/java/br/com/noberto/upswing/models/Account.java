@@ -3,6 +3,7 @@ package br.com.noberto.upswing.models;
 import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
+import br.com.noberto.upswing.dtos.student.StudentResponse;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
@@ -35,6 +36,12 @@ public class Account {
         this.email = student.account().getEmail();
         this.password = student.account().getPassword();
         this.activeProfile = true;
+    }
+
+    public Account(StudentResponse student) {
+        this.name = student.name();
+        this.mainPhone = student.mainPhone();
+        this.email = student.mail();
     }
 
     public Account(RegisterAdmin admin) {

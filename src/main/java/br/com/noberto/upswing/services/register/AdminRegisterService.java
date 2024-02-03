@@ -24,11 +24,12 @@ public class AdminRegisterService {
     private final CourseRepository courseRepository;
     private final SubjectRepository subjectRepository;
     private final ClassRepository classRepository;
+    private final RegistrationRepository registrationRepository;
 
     @Autowired
     AdminRegisterService(AdminRepository repository, StudentRepository studentRepository, ZipCodeRepository
             zipCodeRepository, CourseRepository courseRepository, SubjectRepository subjectRepository, BusinessAreaRepository
-            businessAreaRepository, ClassRepository classRepository){
+            businessAreaRepository, ClassRepository classRepository, RegistrationRepository registrationRepository){
         this.repository = repository;
         this.studentRepository = studentRepository;
         this.zipCodeRepository = zipCodeRepository;
@@ -36,6 +37,7 @@ public class AdminRegisterService {
         this.courseRepository = courseRepository;
         this.subjectRepository = subjectRepository;
         this.classRepository = classRepository;
+        this.registrationRepository = registrationRepository;
     }
 
     public Student registerStudent(RegisterStudent registerStudent){
@@ -67,6 +69,12 @@ public class AdminRegisterService {
         Course course = checkCourse(classRequest.courseId());
         Integer code = generateRandomCode();
         return classRepository.save(new Class(classRequest, code, course));
+    }
+
+    public Registration registrationStudent(String email, UUID classId){
+        Student student = checkStudent(email);
+        Class aClass = checkClass(classId);
+        return registrationRepository.save(new Registration(generateRandomCode(), student, aClass));
     }
 
     /*
@@ -107,5 +115,19 @@ public class AdminRegisterService {
         } while (classRepository.existsByCode(code));
 
         return code;
+    }
+
+    private Student checkStudent(String email){
+        if (studentRepository.getAccountByEmail(email).isPresent()){
+            return studentRepository.getAccountByEmail(email).get();
+        }
+        throw new ValidationException("Email é invalido!");
+    }
+
+    private Class checkClass(UUID id){
+        if (classRepository.existsById(id)){
+            return classRepository.getReferenceById(id);
+        }
+        throw new ValidationException("Id informado para Turma é invalido!");
     }
 }

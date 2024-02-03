@@ -2,14 +2,12 @@ package br.com.noberto.upswing.controllers.register;
 
 import br.com.noberto.upswing.dtos.academic.ClassRequest;
 import br.com.noberto.upswing.dtos.academic.CourseRequest;
+import br.com.noberto.upswing.dtos.academic.RegistrationRequest;
 import br.com.noberto.upswing.dtos.academic.SubjectRequest;
 import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
-import br.com.noberto.upswing.models.Admin;
+import br.com.noberto.upswing.models.*;
 import br.com.noberto.upswing.models.Class;
-import br.com.noberto.upswing.models.Course;
-import br.com.noberto.upswing.models.Student;
-import br.com.noberto.upswing.models.Subject;
 import br.com.noberto.upswing.services.register.AdminRegisterService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -69,5 +67,13 @@ public class AdminRegisterController {
         Class aClass = service.registerClass(classRequest);
         URI uri = uriBuilder.path("/api/register/class/{id}").buildAndExpand(aClass.getId()).toUri();
         return ResponseEntity.created(uri).body(new ClassRequest(aClass));
+    }
+
+    @PostMapping("/registration")
+    @Transactional
+    public ResponseEntity<RegistrationRequest> registerStudent(@RequestBody @Valid RegistrationRequest registrationRequest, UriComponentsBuilder uriBuilder){
+        Registration registration = service.registrationStudent(registrationRequest.email(), registrationRequest.id());
+        URI uri = uriBuilder.path("/api/register/registration/{id}").buildAndExpand(registration.getRegistration()).toUri();
+        return ResponseEntity.created(uri).body(new RegistrationRequest(registration));
     }
 }

@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Registration {
 
     @Id
-    private Long registration;
+    private Integer registration;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
