@@ -18,4 +18,10 @@ public interface CompanyRepository extends JpaRepository<Company, UUID> {
                 AND c.status = APPROVED
             """)
     Page<Company> findAllActiveProfileTrue(Pageable pagination);
+
+    @Query("""
+                SELECT c FROM Company c
+                WHERE c.status = PENDING
+            """)
+    Page<Company> findAllCompanyPending(Pageable pagination);
 }

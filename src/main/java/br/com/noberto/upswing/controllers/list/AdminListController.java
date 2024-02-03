@@ -3,11 +3,10 @@ package br.com.noberto.upswing.controllers.list;
 import br.com.noberto.upswing.dtos.academic.ClassResponseAdmin;
 import br.com.noberto.upswing.dtos.academic.CourseResponseAdmin;
 import br.com.noberto.upswing.dtos.admin.AdminResponse;
+import br.com.noberto.upswing.dtos.company.CompanyResponse;
+import br.com.noberto.upswing.dtos.company.JobOfferResponse;
 import br.com.noberto.upswing.dtos.student.StudentResponseAdmin;
-import br.com.noberto.upswing.repositories.AdminRepository;
-import br.com.noberto.upswing.repositories.ClassRepository;
-import br.com.noberto.upswing.repositories.CourseRepository;
-import br.com.noberto.upswing.repositories.StudentRepository;
+import br.com.noberto.upswing.repositories.*;
 import br.com.noberto.upswing.services.list.AdminListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,15 +25,20 @@ public class AdminListController {
     private final CourseRepository courseRepository;
     private final ClassRepository classRepository;
     private final StudentRepository studentRepository;
+    private final CompanyRepository companyRepository;
+    private final JobOfferRepository jobOfferRepository;
 
     @Autowired
     AdminListController(AdminListService service, AdminRepository repository, CourseRepository courseRepository,
-                        ClassRepository classRepository, StudentRepository studentRepository){
+                        ClassRepository classRepository, StudentRepository studentRepository, CompanyRepository
+                        companyRepository, JobOfferRepository jobOfferRepository){
         this.service = service;
         this.repository = repository;
         this.courseRepository = courseRepository;
         this.classRepository = classRepository;
         this.studentRepository = studentRepository;
+        this.companyRepository = companyRepository;
+        this.jobOfferRepository = jobOfferRepository;
     }
 
     @GetMapping("/{id}")
@@ -66,6 +70,20 @@ public class AdminListController {
     public ResponseEntity<Page<StudentResponseAdmin>> studentAll(@PageableDefault(size = 6, sort = {"account.name"}) Pageable pagination){
         var page = studentRepository.findAllStudent(pagination)
                 .map(StudentResponseAdmin::new);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/company-pending")
+    public ResponseEntity<Page<CompanyResponse>> companyAllPending(@PageableDefault(size = 6, sort = {"account.name"}) Pageable pagination){
+        var page = companyRepository.findAllCompanyPending(pagination)
+                .map(CompanyResponse::new);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/job-offer-pending")
+    public ResponseEntity<Page<JobOfferResponse>> jobOfferAllPending(@PageableDefault(size = 6, sort = {"company.account.name"}) Pageable pagination){
+        var page = jobOfferRepository.findAllJobPending(pagination)
+                .map(JobOfferResponse::new);
         return ResponseEntity.ok(page);
     }
 }

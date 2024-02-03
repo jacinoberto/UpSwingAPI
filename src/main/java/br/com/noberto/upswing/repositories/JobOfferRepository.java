@@ -31,4 +31,10 @@ public interface JobOfferRepository extends JpaRepository<JobOffer, UUID> {
                 AND jo.status = APPROVED
             """)
     Page<JobOffer> findAllMyVacancies(UUID companyId, Pageable pagination);
+
+    @Query("""
+                SELECT jo FROM JobOffer jo
+                WHERE jo.status = PENDING
+            """)
+    Page<JobOffer> findAllJobPending(Pageable pagination);
 }
