@@ -15,6 +15,7 @@ public interface CompanyRepository extends JpaRepository<Company, UUID> {
     @Query("""
                 SELECT c FROM Company c
                 WHERE c.account.activeProfile = true
+                AND c.status = APPROVED
             """)
     Page<Company> findAllActiveProfileTrue(Pageable pagination);
 }

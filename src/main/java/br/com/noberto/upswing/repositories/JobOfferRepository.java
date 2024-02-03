@@ -20,6 +20,7 @@ public interface JobOfferRepository extends JpaRepository<JobOffer, UUID> {
                 JOIN v.student s
                 WHERE s.id = :studentId
                 AND j.closingDate >= :date
+                AND j.status = APPROVED
             """)
     Page<JobOffer> findByStudentTrue(UUID studentId, LocalDate date, Pageable pagination);
 
@@ -27,6 +28,7 @@ public interface JobOfferRepository extends JpaRepository<JobOffer, UUID> {
                 SELECT jo FROM JobOffer jo
                 JOIN jo.company c
                 WHERE c.id = :companyId
+                AND jo.status = APPROVED
             """)
     Page<JobOffer> findAllMyVacancies(UUID companyId, Pageable pagination);
 }

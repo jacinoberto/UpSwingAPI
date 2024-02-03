@@ -12,7 +12,11 @@ import java.util.UUID;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, UUID> {
-    @Query("SELECT c FROM Course c WHERE c.businessArea.id = :businessAreaId")
+    @Query("""
+            SELECT c FROM Course c
+            WHERE c.businessArea.id = :businessAreaId
+            AND c.active = true
+            """)
     Page<Course> findAllBusinessAreaById(UUID businessAreaId, Pageable pagination);
 
     @Query("""
@@ -21,6 +25,13 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
                 JOIN cl.registrations r
                 JOIN r.student s
                 WHERE s.id = :studentId
+                AND c.active = true
             """)
     Page<Course> findAllCourseStudentTrue(UUID studentId, Pageable pagination);
+
+    @Query("""
+                SELECT c FROM Course c
+                WHERE c.active = true
+            """)
+    Page<Course> findAllCourse(Pageable pagination);
 }

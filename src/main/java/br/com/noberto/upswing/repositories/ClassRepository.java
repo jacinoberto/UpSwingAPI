@@ -13,6 +13,9 @@ import java.util.UUID;
 public interface ClassRepository extends JpaRepository<Class, UUID> {
     boolean existsByCode(Integer code);
 
-    @Query(value = "SELECT * FROM tb_classes ORDER BY code, mode", nativeQuery = true)
+    @Query("""
+                SELECT c FROM Class c
+                WHERE c.active = true
+            """)
     Page<Class> findAllClass(Pageable pagination);
 }

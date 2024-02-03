@@ -51,20 +51,20 @@ public class AdminListController {
 
     @GetMapping("/courses")
     public ResponseEntity<Page<CourseResponseAdmin>> courseAll(@PageableDefault(size = 6, sort = {"courseName"}) Pageable pagination){
-        var page = courseRepository.findAll(pagination)
+        var page = courseRepository.findAllCourse(pagination)
                 .map(CourseResponseAdmin::new);
         return ResponseEntity.ok(page);
     }
     @GetMapping("/classes")
     public ResponseEntity<Page<ClassResponseAdmin>> classesAll(@PageableDefault(size = 6, sort = {"code"}) Pageable pagination){
-        var page = classRepository.findAll(pagination)
+        var page = classRepository.findAllClass(pagination)
                 .map(ClassResponseAdmin::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/students")
     public ResponseEntity<Page<StudentResponseAdmin>> studentAll(@PageableDefault(size = 6, sort = {"account.name"}) Pageable pagination){
-        var page = studentRepository.findAll(pagination)
+        var page = studentRepository.findAllStudent(pagination)
                 .map(StudentResponseAdmin::new);
         return ResponseEntity.ok(page);
     }
