@@ -10,6 +10,22 @@
   hibernate:
     dialect: org.hibernate.dialect.HSQLDialect
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_UPSWING}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            enable: false
+    test-connection: true
+
 #api:
 #  security:
 #    token:
