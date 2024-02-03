@@ -6,6 +6,7 @@ CREATE TABLE tb_courses(
     schedule INT NOT NULL,
     monthly_cost NUMERIC(6,2),
     total_cost NUMERIC(6,2),
+    active BOOLEAN NOT NULL,
 
     PRIMARY KEY(id_course),
     CONSTRAINT fk_business_area_course_id FOREIGN KEY(business_area_id) REFERENCES tb_business_areas(id_business_area)

@@ -37,6 +37,8 @@ public class Course {
     @Column(name = "total_cost")
     private BigDecimal totalCost;
 
+    private Boolean active;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "business_area_id")
     private BusinessArea businessArea;
@@ -53,6 +55,7 @@ public class Course {
         this.schedule = course.schedule();
         this.monthlyCost = course.monthlyCost();
         this.totalCost = course.totalCost();
+        this.active = true;
     }
 
     public Course(CourseByBusinessArea course) {

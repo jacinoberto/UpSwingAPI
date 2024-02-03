@@ -39,6 +39,8 @@ public class Class {
     @Column(name = "vacancy_number")
     private Integer vacancyNumber;
 
+    private Boolean active;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course course;
@@ -54,5 +56,6 @@ public class Class {
         this.closingDate = classRequest.closingDate();
         this.vacancyNumber = classRequest.vacancyNumber();
         this.course = course;
+        this.active = true;
     }
 }

@@ -43,4 +43,18 @@ public class DisableController {
         service.disableJobOffer(jobOfferId);
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/class/{classId}")
+    @Transactional
+    public ResponseEntity<Void> disableClass(@PathVariable UUID classId){
+        service.disableClass(classId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/course/{courseId}")
+    @Transactional
+    public ResponseEntity<Void> disableCourse(@PathVariable UUID courseId){
+        service.disableCourse(courseId);
+        return ResponseEntity.ok().build();
+    }
 }
