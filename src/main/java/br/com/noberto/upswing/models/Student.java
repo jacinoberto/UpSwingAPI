@@ -3,6 +3,7 @@ package br.com.noberto.upswing.models;
 import br.com.noberto.upswing.dtos.address.AddressRequest;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import br.com.noberto.upswing.dtos.student.StudentResponse;
+import br.com.noberto.upswing.mail.EmailSender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -49,6 +50,9 @@ public class Student {
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<VacancyOffer> vacancyOffers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    private List<EmailSender> emails = new ArrayList<>();
 
     public Student(RegisterStudent student) {
         this.socialSecurity = student.socialSecurity();

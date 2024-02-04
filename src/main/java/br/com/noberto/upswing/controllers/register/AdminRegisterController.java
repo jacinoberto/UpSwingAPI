@@ -8,6 +8,7 @@ import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import br.com.noberto.upswing.models.*;
 import br.com.noberto.upswing.models.Class;
+import br.com.noberto.upswing.services.mail.EmailService;
 import br.com.noberto.upswing.services.register.AdminRegisterService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -24,15 +25,19 @@ import java.net.URI;
 @RequestMapping("/api/register")
 public class AdminRegisterController {
     private final AdminRegisterService service;
+    private final EmailService emailService;
 
-    AdminRegisterController(AdminRegisterService service){
+    AdminRegisterController(AdminRegisterService service, EmailService emailService)
+    {
         this.service = service;
+        this.emailService = emailService;
     }
 
     @PostMapping("/student")
     @Transactional
     public ResponseEntity<RegisterStudent> registerStudent(@RequestBody @Valid RegisterStudent data, UriComponentsBuilder uriBuilder){
         Student student = service.registerStudent(data);
+        emailService.emailBoasVindasAluno(student);
         URI uri =uriBuilder.path("/api/register/student/{id}").buildAndExpand(student.getId()).toUri();
         return ResponseEntity.created(uri).body(new RegisterStudent(student));
     }
