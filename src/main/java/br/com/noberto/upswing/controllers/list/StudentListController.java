@@ -5,10 +5,12 @@ import br.com.noberto.upswing.dtos.academic.CourseResponse;
 import br.com.noberto.upswing.dtos.company.JobOfferResponse;
 import br.com.noberto.upswing.dtos.student.StudentResponse;
 import br.com.noberto.upswing.models.JobOffer;
+import br.com.noberto.upswing.repositories.AutoApplyRepository;
 import br.com.noberto.upswing.repositories.CourseRepository;
 import br.com.noberto.upswing.repositories.JobOfferRepository;
 import br.com.noberto.upswing.repositories.StudentRepository;
 import br.com.noberto.upswing.services.list.StudentListService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -28,13 +30,19 @@ public class StudentListController {
     private final StudentListService service;
     private final CourseRepository courseRepository;
     private final JobOfferRepository jobOfferRepository;
+    private final AutoApplyRepository autoApplyRepository;
+    private final StudentRepository studentRepository;
 
+    @Autowired
     StudentListController(StudentRepository repository, StudentListService service, CourseRepository courseRepository,
-                          JobOfferRepository jobOfferRepository){
+                          JobOfferRepository jobOfferRepository, AutoApplyRepository autoApplyRepository, StudentRepository
+                          studentRepository){
         this.repository = repository;
         this.service = service;
         this.courseRepository = courseRepository;
         this.jobOfferRepository = jobOfferRepository;
+        this.autoApplyRepository = autoApplyRepository;
+        this.studentRepository = studentRepository;
     }
 
     @GetMapping("/{id}")
@@ -68,5 +76,10 @@ public class StudentListController {
         var page = jobOfferRepository.findByStudentTrue(studentId, LocalDate.now(),pagination)
                 .map(JobOfferResponse::new);
         return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/auto-apply/{studentId}")
+    public Boolean autoApplyResponse(@PathVariable UUID studentId){
+        return studentRepository.existsByStudent(studentId).isPresent();
     }
 }

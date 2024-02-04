@@ -97,7 +97,7 @@ public class AdminRegisterService {
         if (courseRepository.existsById(id)){
             return courseRepository.getReferenceById(id);
         }
-        throw new ValidationException("ID informado para Disciplina é invalido");
+        throw new ValidationException("ID informado para Curso é invalido");
     }
 
     private BusinessArea checkBusinessArea(UUID id){

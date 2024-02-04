@@ -50,7 +50,7 @@ public class Class {
 
     public Class(ClassRequest classRequest, Integer code, Course course) {
         this.code = code;
-        this.mode = Mode.fromLearningMode(classRequest.learningMode());
+        this.mode = Mode.fromLearningMode(classRequest.mode());
         this.shift = Shift.fromShift(classRequest.shift());
         this.startDate = classRequest.startDate();
         this.closingDate = classRequest.closingDate();

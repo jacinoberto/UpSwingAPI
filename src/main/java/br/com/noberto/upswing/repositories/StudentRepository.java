@@ -32,4 +32,11 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
                 WHERE a.email = :email
             """)
     Optional<Student> getAccountByEmail(String email);
+
+    @Query("""
+                SELECT s FROM Student s
+                JOIN s.autoApplies a
+                WHERE a.student.id = :studentId
+            """)
+    Optional<Student> existsByStudent(UUID studentId);
 }
