@@ -5,7 +5,7 @@ import br.com.noberto.upswing.models.Course;
 import java.util.UUID;
 
 public record CourseSelect(
-        UUID id,
+        UUID courseId,
         String courseName
 ) {
     public CourseSelect (Course course){

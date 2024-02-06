@@ -1,17 +1,14 @@
 package br.com.noberto.upswing.services.register;
 
-import br.com.noberto.upswing.dtos.academic.CourseRequest;
-import br.com.noberto.upswing.dtos.academic.SubjectRequest;
+import br.com.noberto.upswing.dtos.academic.CourseSelect;
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.company.RegisterJobOffer;
-import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import br.com.noberto.upswing.models.*;
 import br.com.noberto.upswing.repositories.*;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -21,18 +18,18 @@ public class CompanyRegisterService {
     private final BusinessAreaRepository businessAreaRepository;
     private final JobOfferRepository jobOfferRepository;
     private final CourseRepository courseRepository;
-    private final SubjectRepository subjectRepository;
+    private final VacancyAndCourseRepository vacancyAndCourserepository;
 
     @Autowired
     CompanyRegisterService(CompanyRepository repository, ZipCodeRepository zipCodeRepository, BusinessAreaRepository
-            businessAreaRepository, JobOfferRepository jobOfferRepository, CourseRepository courseRepository, SubjectRepository
-            subjectRepository){
+            businessAreaRepository, JobOfferRepository jobOfferRepository, CourseRepository courseRepository,
+                           VacancyAndCourseRepository vacancyAndCourserepository, SubjectRepository){
         this.repository = repository;
         this.zipCodeRepository = zipCodeRepository;
         this.businessAreaRepository = businessAreaRepository;
         this.jobOfferRepository = jobOfferRepository;
         this.courseRepository = courseRepository;
-        this.subjectRepository = subjectRepository;
+        this.vacancyAndCourserepository = vacancyAndCourserepository;
     }
 
     public Company registerCompany(RegisterCompany registerCompany){
@@ -47,11 +44,14 @@ public class CompanyRegisterService {
     public JobOffer registerJobOffer(RegisterJobOffer registerJobOffer){
         Company company = checkCompany(registerJobOffer.companyId());
         BusinessArea businessArea = checkBusinessArea(registerJobOffer.businessAreaId());
-        JobOffer jobOffer = new JobOffer(registerJobOffer);
-        jobOffer.setCompany(company);
-        jobOffer.setBusinessArea(businessArea);
+        JobOffer jobOffer = jobOfferRepository.save(new JobOffer(registerJobOffer, company, businessArea));
 
-        return jobOfferRepository.save(jobOffer);
+        for (CourseSelect courseSelect : registerJobOffer.courses()){
+            Course course = courseRepository.getReferenceById(courseSelect.courseId());
+            vacancyAndCourserepository.save(new VacancyAndCourse(jobOffer, course));
+        }
+
+        return jobOffer;
     }
 
 

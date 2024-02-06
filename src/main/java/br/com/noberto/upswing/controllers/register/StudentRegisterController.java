@@ -2,9 +2,9 @@ package br.com.noberto.upswing.controllers.register;
 
 import br.com.noberto.upswing.dtos.student.AutoApplyRequest;
 import br.com.noberto.upswing.models.AutoApply;
-import br.com.noberto.upswing.repositories.AutoApplyRepository;
 import br.com.noberto.upswing.services.register.StudentRegisterService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -21,6 +21,7 @@ public class StudentRegisterController {
     }
 
     @PostMapping("/auto-apply")
+    @Transactional
     public ResponseEntity<AutoApplyRequest> insertAutoApply(@RequestBody AutoApplyRequest applyRequest, UriComponentsBuilder uriBuilder){
         AutoApply autoApply = service.insertAutoApply(applyRequest);
         URI uri = uriBuilder.path("api/register/student/auto-apply/{id}").buildAndExpand(autoApply.getId()).toUri();

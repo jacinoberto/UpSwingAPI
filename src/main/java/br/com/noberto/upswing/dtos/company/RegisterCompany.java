@@ -22,9 +22,7 @@ public record RegisterCompany(
         @NotBlank
         String description,
         AddressRequest address,
-        String website,
-        @NotBlank
-        String status
+        String website
 ) {
         public RegisterCompany(Company company) {
                 this(
@@ -34,8 +32,7 @@ public record RegisterCompany(
                         new BusinessAreaRequest(company.getBusinessArea()),
                         company.getDescription(),
                         new AddressRequest(company.getAddress()),
-                        company.getWebsite(),
-                        Status.fromString(company.getStatus())
+                        company.getWebsite()
                 );
         }
 }

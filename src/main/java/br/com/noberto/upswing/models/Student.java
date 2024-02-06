@@ -1,9 +1,8 @@
 package br.com.noberto.upswing.models;
 
-import br.com.noberto.upswing.dtos.address.AddressRequest;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import br.com.noberto.upswing.dtos.student.StudentResponse;
-import br.com.noberto.upswing.mail.EmailSender;
+import br.com.noberto.upswing.email.EmailSender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

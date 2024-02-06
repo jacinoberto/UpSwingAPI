@@ -1,34 +1,33 @@
 package br.com.noberto.upswing.controllers.register;
 
-import br.com.noberto.upswing.dtos.academic.ClassRequest;
-import br.com.noberto.upswing.dtos.academic.CourseRequest;
-import br.com.noberto.upswing.dtos.academic.SubjectRequest;
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.company.RegisterJobOffer;
-import br.com.noberto.upswing.models.Class;
+import br.com.noberto.upswing.enums.Status;
 import br.com.noberto.upswing.models.Company;
-import br.com.noberto.upswing.models.Course;
 import br.com.noberto.upswing.models.JobOffer;
-import br.com.noberto.upswing.models.Subject;
+import br.com.noberto.upswing.repositories.JobOfferRepository;
+import br.com.noberto.upswing.services.mail.EmailService;
 import br.com.noberto.upswing.services.register.CompanyRegisterService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/register")
 public class CompanyRegisterController {
     private final CompanyRegisterService service;
+    private final EmailService emailService;
+    private final JobOfferRepository jobOfferRepository;
 
-    CompanyRegisterController(CompanyRegisterService service){
+    CompanyRegisterController(CompanyRegisterService service, EmailService emailService, JobOfferRepository jobOfferRepository){
         this.service = service;
+        this.emailService = emailService;
+        this.jobOfferRepository = jobOfferRepository;
     }
 
     @PostMapping("/company")
@@ -43,7 +42,17 @@ public class CompanyRegisterController {
     @Transactional
     public ResponseEntity<RegisterJobOffer> registerJobOffer(@RequestBody @Valid RegisterJobOffer registerJobOffer, UriComponentsBuilder uriBuilder){
         JobOffer jobOffer = service.registerJobOffer(registerJobOffer);
+
         URI uri = uriBuilder.path("/api/register/job-offer/{id}").buildAndExpand(jobOffer.getId()).toUri();
         return ResponseEntity.created(uri).body(new RegisterJobOffer(jobOffer));
+    }
+
+    @PatchMapping("/job-approved/{jobOfferId}")
+    @Transactional
+    public ResponseEntity<RegisterJobOffer> approvedJobOffer(@PathVariable UUID jobOfferId){
+        JobOffer job = jobOfferRepository.getReferenceById(jobOfferId);
+        job.setStatus(Status.APPROVED);
+        emailService.emailForJobApplication(job.getId());
+        return ResponseEntity.ok(new RegisterJobOffer(job));
     }
 }

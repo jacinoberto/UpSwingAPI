@@ -1,15 +1,19 @@
 package br.com.noberto.upswing.dtos.company;
 
+import br.com.noberto.upswing.dtos.academic.CourseSelect;
 import br.com.noberto.upswing.enums.Contract;
 import br.com.noberto.upswing.enums.EducationLevel;
 import br.com.noberto.upswing.enums.Mode;
 import br.com.noberto.upswing.enums.Status;
+import br.com.noberto.upswing.models.Course;
 import br.com.noberto.upswing.models.JobOffer;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public record RegisterJobOffer(
@@ -19,6 +23,7 @@ public record RegisterJobOffer(
         String position,
         @NotNull
         UUID businessAreaId,
+        List<CourseSelect> courses,
         @NotBlank
         String educationLevel,
         @NotBlank
@@ -48,9 +53,7 @@ public record RegisterJobOffer(
         @NotNull
         Boolean benefitsMeal,
         @NotNull
-        Boolean benefitsCultural,
-        @NotBlank
-        String status
+        Boolean benefitsCultural
 
 ) {
     public RegisterJobOffer(JobOffer jobOffer) {
@@ -58,6 +61,7 @@ public record RegisterJobOffer(
                 jobOffer.getCompany().getId(),
                 jobOffer.getPosition(),
                 jobOffer.getBusinessArea().getId(),
+                new ArrayList<>(),
                 EducationLevel.fromString(jobOffer.getEducationLevel()),
                 Contract.fromString(jobOffer.getContract()),
                 jobOffer.getSalary(),
@@ -72,8 +76,7 @@ public record RegisterJobOffer(
                 jobOffer.getBenefitsHealthWellness(),
                 jobOffer.getBenefitsChildcare(),
                 jobOffer.getBenefitsMeal(),
-                jobOffer.getBenefitsCultural(),
-                Status.fromString(jobOffer.getStatus())
+                jobOffer.getBenefitsCultural()
         );
     }
 }

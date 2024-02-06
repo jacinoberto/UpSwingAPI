@@ -1,4 +1,4 @@
-package br.com.noberto.upswing.mail;
+package br.com.noberto.upswing.email;
 
 import br.com.noberto.upswing.models.Company;
 import br.com.noberto.upswing.models.Student;

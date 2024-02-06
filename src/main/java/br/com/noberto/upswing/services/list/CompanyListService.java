@@ -1,15 +1,21 @@
 package br.com.noberto.upswing.services.list;
 
-import br.com.noberto.upswing.dtos.admin.AdminResponse;
-import br.com.noberto.upswing.models.Admin;
+import br.com.noberto.upswing.enums.Contract;
+import br.com.noberto.upswing.enums.Location;
+import br.com.noberto.upswing.models.AutoApply;
 import br.com.noberto.upswing.models.Company;
+import br.com.noberto.upswing.models.JobOffer;
+import br.com.noberto.upswing.models.Student;
+import br.com.noberto.upswing.repositories.AutoApplyRepository;
 import br.com.noberto.upswing.repositories.CompanyRepository;
+import br.com.noberto.upswing.repositories.JobOfferRepository;
+import br.com.noberto.upswing.repositories.StudentRepository;
 import jakarta.validation.ValidationException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
