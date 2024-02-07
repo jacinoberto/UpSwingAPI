@@ -37,7 +37,7 @@ public class AdminRegisterController {
     @Transactional
     public ResponseEntity<RegisterStudent> registerStudent(@RequestBody @Valid RegisterStudent data, UriComponentsBuilder uriBuilder){
         Student student = service.registerStudent(data);
-        emailService.emailBoasVindasAluno(student);
+        emailService.welcomeEmail(student);
         URI uri =uriBuilder.path("/api/register/student/{id}").buildAndExpand(student.getId()).toUri();
         return ResponseEntity.created(uri).body(new RegisterStudent(student));
     }
