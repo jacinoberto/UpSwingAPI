@@ -23,7 +23,7 @@ public class CompanyRegisterService {
     @Autowired
     CompanyRegisterService(CompanyRepository repository, ZipCodeRepository zipCodeRepository, BusinessAreaRepository
             businessAreaRepository, JobOfferRepository jobOfferRepository, CourseRepository courseRepository,
-                           VacancyAndCourseRepository vacancyAndCourserepository, SubjectRepository){
+                           VacancyAndCourseRepository vacancyAndCourserepository){
         this.repository = repository;
         this.zipCodeRepository = zipCodeRepository;
         this.businessAreaRepository = businessAreaRepository;

@@ -22,12 +22,10 @@ import java.util.UUID;
 public class CompanyRegisterController {
     private final CompanyRegisterService service;
     private final EmailService emailService;
-    private final JobOfferRepository jobOfferRepository;
 
-    CompanyRegisterController(CompanyRegisterService service, EmailService emailService, JobOfferRepository jobOfferRepository){
+    CompanyRegisterController(CompanyRegisterService service, EmailService emailService){
         this.service = service;
         this.emailService = emailService;
-        this.jobOfferRepository = jobOfferRepository;
     }
 
     @PostMapping("/company")
@@ -35,6 +33,7 @@ public class CompanyRegisterController {
     public ResponseEntity<RegisterCompany> registerCompany(@RequestBody @Valid RegisterCompany registerCompany, UriComponentsBuilder uriBuilder){
         Company company = service.registerCompany(registerCompany);
         URI uri = uriBuilder.path("/api/register/company/{id}").buildAndExpand(company.getId()).toUri();
+        emailService.emailForPendingProfile(company);
         return ResponseEntity.created(uri).body(new RegisterCompany(company));
     }
 
@@ -42,17 +41,8 @@ public class CompanyRegisterController {
     @Transactional
     public ResponseEntity<RegisterJobOffer> registerJobOffer(@RequestBody @Valid RegisterJobOffer registerJobOffer, UriComponentsBuilder uriBuilder){
         JobOffer jobOffer = service.registerJobOffer(registerJobOffer);
-
         URI uri = uriBuilder.path("/api/register/job-offer/{id}").buildAndExpand(jobOffer.getId()).toUri();
+        emailService.emailForPendingVacancy(jobOffer);
         return ResponseEntity.created(uri).body(new RegisterJobOffer(jobOffer));
-    }
-
-    @PatchMapping("/job-approved/{jobOfferId}")
-    @Transactional
-    public ResponseEntity<RegisterJobOffer> approvedJobOffer(@PathVariable UUID jobOfferId){
-        JobOffer job = jobOfferRepository.getReferenceById(jobOfferId);
-        job.setStatus(Status.APPROVED);
-        emailService.emailForJobApplication(job.getId());
-        return ResponseEntity.ok(new RegisterJobOffer(job));
     }
 }
