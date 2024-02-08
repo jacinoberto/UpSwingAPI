@@ -1,6 +1,7 @@
 package br.com.noberto.upswing.services.list;
 
 import br.com.noberto.upswing.models.JobOffer;
+import br.com.noberto.upswing.models.NullSocialNetworks;
 import br.com.noberto.upswing.models.Student;
 import br.com.noberto.upswing.repositories.StudentRepository;
 import jakarta.validation.ValidationException;
@@ -18,7 +19,11 @@ public class StudentListService {
 
     public Student getStudent(UUID id){
         if (repository.existsById(id)){
-            return repository.getReferenceById(id);
+            Student student = repository.getReferenceById(id);
+            if (student.getSocialNetworks() == null){
+                student.setSocialNetworks(new NullSocialNetworks());
+            }
+            return student;
         }
         throw new ValidationException("ID informado do Aluno é invalido!");
     }

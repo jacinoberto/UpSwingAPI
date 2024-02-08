@@ -20,7 +20,7 @@ public record StudentResponse(
                 student.getId(),
                 student.getAccount().getName(),
                 student.getOccupation(),
-                new SocialNetworks(student),
+                student.getSocialNetworks(),
                 student.getAccount().getMainPhone(),
                 student.getAccount().getEmail(),
                 new AddressRequest(student.getAddress())

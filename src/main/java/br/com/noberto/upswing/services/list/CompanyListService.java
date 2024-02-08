@@ -2,10 +2,7 @@ package br.com.noberto.upswing.services.list;
 
 import br.com.noberto.upswing.enums.Contract;
 import br.com.noberto.upswing.enums.Location;
-import br.com.noberto.upswing.models.AutoApply;
-import br.com.noberto.upswing.models.Company;
-import br.com.noberto.upswing.models.JobOffer;
-import br.com.noberto.upswing.models.Student;
+import br.com.noberto.upswing.models.*;
 import br.com.noberto.upswing.repositories.AutoApplyRepository;
 import br.com.noberto.upswing.repositories.CompanyRepository;
 import br.com.noberto.upswing.repositories.JobOfferRepository;
@@ -28,7 +25,11 @@ public class CompanyListService {
 
     public Company getCompany(UUID id){
         if (repository.existsById(id)){
-            return repository.getReferenceById(id);
+            Company company = repository.getReferenceById(id);
+            if (company.getSocialNetworks() == null){
+                company.setSocialNetworks(new NullSocialNetworks());
+            }
+            return company;
         }
         throw new ValidationException("ID informado da Empresa é invalido!");
     }

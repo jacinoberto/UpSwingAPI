@@ -63,7 +63,7 @@ public class Student {
     public Student(StudentResponse student) {
         this.occupation = student.occupation();
         this.account = new Account(student);
-        this.socialNetworks = student.socialNetworks();
+        this.socialNetworks = (student.socialNetworks() != null) ? student.socialNetworks() : new NullSocialNetworks();
         this.address = new Address(student.address());
     }
 }
