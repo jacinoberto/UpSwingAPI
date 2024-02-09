@@ -35,7 +35,7 @@ public class CompanyUpdateController {
     public ResponseEntity<RegisterJobOffer> approvedJobOffer(@PathVariable UUID jobOfferId){
         JobOffer jobOffer = jobOfferRepository.getReferenceById(jobOfferId);
         jobOffer.setStatus(Status.APPROVED);
-        emailService.emailForJobApplication(jobOffer.getId());
+        emailService.emailForJobApplication(jobOffer);
         emailService.emailForApprovedVacancy(jobOffer);
         return ResponseEntity.ok(new RegisterJobOffer(jobOffer));
     }
