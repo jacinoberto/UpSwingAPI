@@ -5,7 +5,7 @@ import br.com.noberto.upswing.models.JobOffer;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JobOfferEmailToSend implements IEmailToSend{
+public class JobOfferEmailToSendStrategy implements IEmailToSendStrategy {
     @Override
     public <T> EmailRequest emailPending(T object) {
         JobOffer jobOffer = (JobOffer) object;

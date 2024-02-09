@@ -5,7 +5,7 @@ import br.com.noberto.upswing.models.Company;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CompanyEmailToSend implements IEmailToSend{
+public class CompanyEmailToSendStrategy implements IEmailToSendStrategy {
     @Override
     public <T> EmailRequest emailPending(T object) {
         Company company = (Company) object;

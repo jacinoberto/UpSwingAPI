@@ -12,18 +12,20 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
-public class FilterStudentsByContractType {
+public class FilterStudentsByContractTypeStrategy implements IFilterStudentStrategy {
 
-    private static AutoApplyRepository autoApplyRepository;
+    private final AutoApplyRepository autoApplyRepository;
+    private final FilterStudentByAddressStrategy filterStudentByAddress;
 
     @Autowired
-    public FilterStudentsByContractType(AutoApplyRepository autoApplyRepository) {
-        FilterStudentsByContractType.autoApplyRepository = autoApplyRepository;
+    public FilterStudentsByContractTypeStrategy(AutoApplyRepository autoApplyRepository, FilterStudentByAddressStrategy filterStudentByAddress) {
+        this.autoApplyRepository = autoApplyRepository;
+        this.filterStudentByAddress = filterStudentByAddress;
     }
 
-    public static List<Student> filterStudentByContractType(JobOffer jobOffer){
+    public List<Student> filterStudents(JobOffer jobOffer){
         List<Student> qualifiedStudents = new ArrayList<>();
-        List<Student> students = FilterStudentByAddress.filterStudentsByAddressAndContract(jobOffer);
+        List<Student> students = filterStudentByAddress.filterStudents(jobOffer);
 
         for (Student student : students){
             AutoApply autoApply = autoApplyRepository.findByStudentPresentAutoApply(student.getId());

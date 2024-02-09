@@ -4,10 +4,10 @@ import br.com.noberto.upswing.email.EmailRequest;
 import br.com.noberto.upswing.email.EmailSender;
 import br.com.noberto.upswing.models.*;
 import br.com.noberto.upswing.repositories.*;
-import br.com.noberto.upswing.util.emails.CompanyEmailToSend;
-import br.com.noberto.upswing.util.emails.JobOfferEmailToSend;
+import br.com.noberto.upswing.util.emails.CompanyEmailToSendStrategy;
+import br.com.noberto.upswing.util.emails.JobOfferEmailToSendStrategy;
 import br.com.noberto.upswing.util.emails.StudentEmailToSend;
-import br.com.noberto.upswing.util.filters.FilterStudentsByContractType;
+import br.com.noberto.upswing.util.filters.FilterStudentsByContractTypeStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -21,13 +21,14 @@ public class EmailService {
     private final EmailRepository repository;
     private final StudentRepository studentRepository;
     private final CompanyRepository companyRepository;
-    private final JobOfferEmailToSend jobOfferEmailToSend;
-    private final CompanyEmailToSend companyEmailToSend;
+    private final JobOfferEmailToSendStrategy jobOfferEmailToSend;
+    private final CompanyEmailToSendStrategy companyEmailToSend;
     private final StudentEmailToSend studentEmailToSend;
+    private final FilterStudentsByContractTypeStrategy filterStudentsByContractType;
 
     @Autowired
     public EmailService(EmailRepository repository, StudentRepository studentRepository, JavaMailSender mailSender,
-                        CompanyRepository companyRepository, JobOfferEmailToSend jobOfferEmailToSend, CompanyEmailToSend companyEmailToSend, StudentEmailToSend studentEmailToSend) {
+                        CompanyRepository companyRepository, JobOfferEmailToSendStrategy jobOfferEmailToSend, CompanyEmailToSendStrategy companyEmailToSend, StudentEmailToSend studentEmailToSend, FilterStudentsByContractTypeStrategy filterStudentsByContractType) {
         this.repository = repository;
         this.studentRepository = studentRepository;
         this.mailSender = mailSender;
@@ -35,6 +36,7 @@ public class EmailService {
         this.jobOfferEmailToSend = jobOfferEmailToSend;
         this.companyEmailToSend = companyEmailToSend;
         this.studentEmailToSend = studentEmailToSend;
+        this.filterStudentsByContractType = filterStudentsByContractType;
     }
 
     public void welcomeEmail(Student studentData){
@@ -54,7 +56,7 @@ public class EmailService {
     public void emailForJobApplication(JobOffer jobOffer){
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         Company company = companyRepository.getReferenceById(jobOffer.getCompany().getId());
-        List<Student> students = FilterStudentsByContractType.filterStudentByContractType(jobOffer);
+        List<Student> students = filterStudentsByContractType.filterStudents(jobOffer);
 
         for (Student studentData : students){
             Student student = studentRepository.getReferenceById(studentData.getId());
