@@ -11,7 +11,10 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import java.util.UUID;
+
 public record RegisterCompany(
+        UUID id,
         @NotBlank
         String companyName,
         Account account,
@@ -26,6 +29,7 @@ public record RegisterCompany(
 ) {
         public RegisterCompany(Company company) {
                 this(
+                        company.getId(),
                         company.getTradingName(),
                         new Account(company),
                         company.getCompanyCode(),

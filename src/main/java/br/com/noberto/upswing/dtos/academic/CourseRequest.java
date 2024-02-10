@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record CourseRequest(
+        UUID id,
         @NotBlank
         String courseName,
         UUID businessAreaId,
@@ -22,6 +23,7 @@ public record CourseRequest(
 ) {
         public CourseRequest(Course course) {
                this(
+                       course.getId(),
                         course.getCourseName(),
                         course.getBusinessArea().getId(),
                        EducationLevel.fromString(course.getEducationLevel()),

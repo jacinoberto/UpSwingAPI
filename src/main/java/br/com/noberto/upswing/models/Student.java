@@ -64,6 +64,6 @@ public class Student {
         this.occupation = student.occupation();
         this.account = new Account(student);
         this.socialNetworks = (student.socialNetworks() != null) ? student.socialNetworks() : new NullSocialNetworks();
-        this.address = new Address(student.address());
+        this.address = new Address(student.address(), new ZipCode(student.address().zipCode()));
     }
 }

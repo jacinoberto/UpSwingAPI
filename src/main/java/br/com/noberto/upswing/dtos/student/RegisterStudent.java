@@ -9,8 +9,10 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public record RegisterStudent(
+        UUID id,
         @NotNull
         LocalDate birthDate,
         @NotBlank
@@ -22,6 +24,7 @@ public record RegisterStudent(
 ) {
         public RegisterStudent(Student student) {
                 this(
+                        student.getId(),
                         student.getBirthDate(),
                         student.getSocialSecurity(),
                         new Account(student),
