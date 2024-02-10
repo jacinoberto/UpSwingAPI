@@ -30,18 +30,15 @@ public class StudentListController {
     private final StudentListService service;
     private final CourseRepository courseRepository;
     private final JobOfferRepository jobOfferRepository;
-    private final AutoApplyRepository autoApplyRepository;
     private final StudentRepository studentRepository;
 
     @Autowired
     StudentListController(StudentRepository repository, StudentListService service, CourseRepository courseRepository,
-                          JobOfferRepository jobOfferRepository, AutoApplyRepository autoApplyRepository, StudentRepository
-                          studentRepository){
+                          JobOfferRepository jobOfferRepository, StudentRepository studentRepository){
         this.repository = repository;
         this.service = service;
         this.courseRepository = courseRepository;
         this.jobOfferRepository = jobOfferRepository;
-        this.autoApplyRepository = autoApplyRepository;
         this.studentRepository = studentRepository;
     }
 

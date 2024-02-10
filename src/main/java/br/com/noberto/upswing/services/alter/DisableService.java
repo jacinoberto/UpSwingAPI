@@ -1,4 +1,4 @@
-package br.com.noberto.upswing.services.delete;
+package br.com.noberto.upswing.services.alter;
 
 import br.com.noberto.upswing.enums.Status;
 import br.com.noberto.upswing.models.*;

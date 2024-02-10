@@ -47,7 +47,7 @@ public class AdminListController {
     }
 
     @GetMapping()
-    public ResponseEntity<Page<AdminResponse>> adminAll(@PageableDefault(size = 6) Pageable pagination){
+    public ResponseEntity<Page<AdminResponse>> adminAll(@PageableDefault(size = 6, sort = {"account.name"}) Pageable pagination){
         var page = repository.findAllActiveProfileTrue(pagination)
                 .map(AdminResponse::new);
         return ResponseEntity.ok(page);
@@ -80,9 +80,23 @@ public class AdminListController {
         return ResponseEntity.ok(page);
     }
 
+    @GetMapping("/company-approved")
+    public ResponseEntity<Page<CompanyResponse>> companyAllApproved(@PageableDefault(size = 6, sort = {"account.name"}) Pageable pagination){
+        var page = companyRepository.findAllCompanyApproved(pagination)
+                .map(CompanyResponse::new);
+        return ResponseEntity.ok(page);
+    }
+
     @GetMapping("/job-offer-pending")
     public ResponseEntity<Page<JobOfferResponse>> jobOfferAllPending(@PageableDefault(size = 6, sort = {"company.account.name"}) Pageable pagination){
         var page = jobOfferRepository.findAllJobPending(pagination)
+                .map(JobOfferResponse::new);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/job-offer-approved")
+    public ResponseEntity<Page<JobOfferResponse>> jobOfferAllApproved(@PageableDefault(size = 6, sort = {"company.account.name"}) Pageable pagination){
+        var page = jobOfferRepository.findAllJobApproved(pagination)
                 .map(JobOfferResponse::new);
         return ResponseEntity.ok(page);
     }

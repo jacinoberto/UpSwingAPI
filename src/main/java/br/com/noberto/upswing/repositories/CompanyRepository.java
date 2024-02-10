@@ -14,14 +14,15 @@ import java.util.UUID;
 public interface CompanyRepository extends JpaRepository<Company, UUID> {
     @Query("""
                 SELECT c FROM Company c
-                WHERE c.account.activeProfile = true
-                AND c.status = APPROVED
+                WHERE c.status = PENDING
+                AND c.activeProfile = true
             """)
-    Page<Company> findAllActiveProfileTrue(Pageable pagination);
+    Page<Company> findAllCompanyPending(Pageable pagination);
 
     @Query("""
                 SELECT c FROM Company c
-                WHERE c.status = PENDING
+                WHERE c.status = APPROVED
+                AND c.activeProfile = true
             """)
-    Page<Company> findAllCompanyPending(Pageable pagination);
+    Page<Company> findAllCompanyApproved(Pageable pagination);
 }

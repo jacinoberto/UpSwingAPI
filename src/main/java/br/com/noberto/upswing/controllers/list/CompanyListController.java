@@ -41,13 +41,6 @@ public class CompanyListController {
         return ResponseEntity.ok(new CompanyResponse(service.getCompany(id)));
     }
 
-    @GetMapping()
-    public ResponseEntity<Page<CompanyResponse>> companyAll(@PageableDefault(size = 6) Pageable pagination){
-        var page = repository.findAllActiveProfileTrue(pagination)
-                .map(CompanyResponse::new);
-        return ResponseEntity.ok(page);
-    }
-
     @GetMapping("/my-vacancies/{companyId}")
     public ResponseEntity<Page<JobOfferResponseCompany>> vacancyAll(@PathVariable UUID companyId, @PageableDefault(size = 6) Pageable pagination){
         var page = jobOfferRepository.findAllMyVacancies(companyId, pagination)
