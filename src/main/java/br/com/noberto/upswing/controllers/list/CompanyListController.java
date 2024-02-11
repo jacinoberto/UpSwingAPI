@@ -8,7 +8,11 @@ import br.com.noberto.upswing.models.Student;
 import br.com.noberto.upswing.repositories.*;
 import br.com.noberto.upswing.services.list.CompanyListService;
 import br.com.noberto.upswing.util.filters.FilterStudentByAddressStrategy;
+<<<<<<< HEAD
 import br.com.noberto.upswing.util.filters.FilterStudentsByContractTypeStrategy;
+=======
+import br.com.noberto.upswing.util.filters.FilterStudentsWithCompatibilityStrategy;
+>>>>>>> 05b5d2520ad07188ad0e2dddf953d8048b6363d4
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +32,7 @@ public class CompanyListController {
     private final CompanyListService service;
     private final CompanyRepository repository;
     private final JobOfferRepository jobOfferRepository;
+<<<<<<< HEAD
     private final StudentRepository studentRepository;
     private final FilterStudentsByContractTypeStrategy filter;
 
@@ -37,6 +42,15 @@ public class CompanyListController {
         this.repository = repository;
         this.jobOfferRepository = jobOfferRepository;
         this.studentRepository = studentRepository;
+=======
+    private final FilterStudentsWithCompatibilityStrategy filter;
+
+    @Autowired
+    CompanyListController(CompanyListService service, CompanyRepository repository, JobOfferRepository jobOfferRepository, FilterStudentsWithCompatibilityStrategy filter){
+        this.service = service;
+        this.repository = repository;
+        this.jobOfferRepository = jobOfferRepository;
+>>>>>>> 05b5d2520ad07188ad0e2dddf953d8048b6363d4
         this.filter = filter;
     }
 
@@ -56,7 +70,10 @@ public class CompanyListController {
     public ResponseEntity<List<StudentResponse>> vacancyAll(@PathVariable UUID id){
         JobOffer jobOffer = jobOfferRepository.getReferenceById(id);
         List<Student> students = filter.filterStudents(jobOffer);
+<<<<<<< HEAD
 //        List<Student> students = studentRepository.findByStateTrue(jobOffer.getCompany().getId());
+=======
+>>>>>>> 05b5d2520ad07188ad0e2dddf953d8048b6363d4
         List<StudentResponse> studentResponses = students.stream().map(StudentResponse::new).toList();
         return ResponseEntity.ok(studentResponses);
     }
