@@ -31,29 +31,12 @@ public class FilterStudentByAddressStrategy implements IFilterStudentStrategy {
         Company company = companyRepository.getReferenceById(jobOffer.getCompany().getId());
 
         List<Student> studentsByAddress = new ArrayList<>();
-<<<<<<< HEAD
-        for (Student x : filterStudentsWithCompatibility.filterStudents(jobOffer)) {
-            AutoApply autoApply = autoApplyRepository.findByStudentPresentAutoApply(x.getId());
-
-            if (autoApply.getOfferLocation() == Location.STATE){
-                studentsByAddress.add(studentRepository.getReferenceById(x.getId()));
-            }
-            if (autoApply.getOfferLocation() == Location.CITY){
-                Student student = studentRepository.getReferenceById(x.getId());
-                if (Objects.equals(student.getAddress().getZipCode().getCity(), company.getAddress().getZipCode().getCity()))
-                    studentsByAddress.add(student);
-            }
-            if (autoApply.getOfferLocation() == Location.AREA){
-                Student student = studentRepository.getReferenceById(x.getId());
-                if (Objects.equals(student.getAddress().getZipCode().getArea(), company.getAddress().getZipCode().getArea()))
-                    studentsByAddress.add(student);
-=======
         for (Student student : filterStudentsWithCompatibility.filterStudents(jobOffer)) {
 
-            if (autoApplyRepository.findByStudentPresentAutoApply(student.getId()) != null){
+            if (autoApplyRepository.findByStudentPresentAutoApply(student.getId()) != null) {
                 AutoApply autoApply = autoApplyRepository.findByStudentPresentAutoApply(student.getId());
 
-                switch (autoApply.getOfferLocation()){
+                switch (autoApply.getOfferLocation()) {
                     case CITY -> {
                         if (Objects.equals(student.getAddress().getZipCode().getCity(), company.getAddress().getZipCode()
                                 .getCity())) studentsByAddress.add(student);
@@ -64,13 +47,9 @@ public class FilterStudentByAddressStrategy implements IFilterStudentStrategy {
                     }
                     default -> studentsByAddress.add(student);
                 }
->>>>>>> 05b5d2520ad07188ad0e2dddf953d8048b6363d4
             }
 
-            return  studentsByAddress;
-            }
-            throw new IllegalArgumentException("Aluno não cadastrado no autoapply");
+        }
+        return studentsByAddress;
     }
-
-
 }
