@@ -2,6 +2,7 @@ package br.com.noberto.upswing.util.filters;
 
 import br.com.noberto.upswing.models.*;
 import br.com.noberto.upswing.repositories.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,22 +33,26 @@ public class FilterStudentByAddressStrategy implements IFilterStudentStrategy {
         condicionais feitas*/
         List<Student> studentsByAddress = new ArrayList<>();
         for (Student student : filterStudentsWithCompatibility.filterStudents(jobOffer)) {
-            AutoApply autoApply = autoApplyRepository.findByStudentPresentAutoApply(student.getId());
 
-            switch (autoApply.getOfferLocation()){
-                case CITY -> {
-                    if (Objects.equals(student.getAddress().getZipCode().getCity(), company.getAddress().getZipCode()
-                            .getCity())) studentsByAddress.add(student);
+            if (autoApplyRepository.findByStudentPresentAutoApply(student.getId()) != null){
+                AutoApply autoApply = autoApplyRepository.findByStudentPresentAutoApply(student.getId());
+
+                switch (autoApply.getOfferLocation()){
+                    case CITY -> {
+                        if (Objects.equals(student.getAddress().getZipCode().getCity(), company.getAddress().getZipCode()
+                                .getCity())) studentsByAddress.add(student);
+                    }
+                    case AREA -> {
+                        if (Objects.equals(student.getAddress().getZipCode().getArea(), company.getAddress().getZipCode()
+                                .getArea())) studentsByAddress.add(student);
+                    }
+                    default -> studentsByAddress.add(student);
                 }
-                case AREA -> {
-                    if (Objects.equals(student.getAddress().getZipCode().getArea(), company.getAddress().getZipCode()
-                            .getArea())) studentsByAddress.add(student);
-                }
-                default -> studentsByAddress.add(student);
             }
-        }
 
-        return  studentsByAddress;
+            return  studentsByAddress;
+            }
+            throw new IllegalArgumentException("Aluno não cadastrado no autoapply");
     }
 
 
