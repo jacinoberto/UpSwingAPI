@@ -1,14 +1,14 @@
 package br.com.noberto.upswing.controllers.list;
 
-import br.com.noberto.upswing.dtos.academic.CourseSelect;
 import br.com.noberto.upswing.dtos.company.CompanyResponse;
 import br.com.noberto.upswing.dtos.company.JobOfferResponseCompany;
 import br.com.noberto.upswing.dtos.student.StudentResponse;
-import br.com.noberto.upswing.models.Course;
+import br.com.noberto.upswing.models.JobOffer;
 import br.com.noberto.upswing.models.Student;
 import br.com.noberto.upswing.repositories.*;
 import br.com.noberto.upswing.services.list.CompanyListService;
-import br.com.noberto.upswing.services.mail.EmailService;
+import br.com.noberto.upswing.util.filters.FilterStudentByAddressStrategy;
+import br.com.noberto.upswing.util.filters.FilterStudentsByContractTypeStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,12 +28,16 @@ public class CompanyListController {
     private final CompanyListService service;
     private final CompanyRepository repository;
     private final JobOfferRepository jobOfferRepository;
+    private final StudentRepository studentRepository;
+    private final FilterStudentsByContractTypeStrategy filter;
 
     @Autowired
-    CompanyListController(CompanyListService service, CompanyRepository repository, JobOfferRepository jobOfferRepository){
+    CompanyListController(CompanyListService service, CompanyRepository repository, JobOfferRepository jobOfferRepository, StudentRepository studentRepository, FilterStudentsByContractTypeStrategy filter){
         this.service = service;
         this.repository = repository;
         this.jobOfferRepository = jobOfferRepository;
+        this.studentRepository = studentRepository;
+        this.filter = filter;
     }
 
     @GetMapping("/{id}")
@@ -46,5 +50,14 @@ public class CompanyListController {
         var page = jobOfferRepository.findAllMyVacancies(companyId, pagination)
                 .map(JobOfferResponseCompany::new);
         return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/teste/{id}")
+    public ResponseEntity<List<StudentResponse>> vacancyAll(@PathVariable UUID id){
+        JobOffer jobOffer = jobOfferRepository.getReferenceById(id);
+        List<Student> students = filter.filterStudents(jobOffer);
+//        List<Student> students = studentRepository.findByStateTrue(jobOffer.getCompany().getId());
+        List<StudentResponse> studentResponses = students.stream().map(StudentResponse::new).toList();
+        return ResponseEntity.ok(studentResponses);
     }
 }

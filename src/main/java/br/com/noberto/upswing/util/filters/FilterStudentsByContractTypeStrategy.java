@@ -4,8 +4,12 @@ import br.com.noberto.upswing.models.AutoApply;
 import br.com.noberto.upswing.models.JobOffer;
 import br.com.noberto.upswing.models.Student;
 import br.com.noberto.upswing.repositories.AutoApplyRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +22,12 @@ public class FilterStudentsByContractTypeStrategy implements IFilterStudentStrat
     private final FilterStudentByAddressStrategy filterStudentByAddress;
 
     @Autowired
-    public FilterStudentsByContractTypeStrategy(AutoApplyRepository autoApplyRepository, FilterStudentByAddressStrategy filterStudentByAddress) {
+    public FilterStudentsByContractTypeStrategy(AutoApplyRepository autoApplyRepository, FilterStudentByAddressStrategy filterStudentByAddress, EntityManager entityManager) {
         this.autoApplyRepository = autoApplyRepository;
         this.filterStudentByAddress = filterStudentByAddress;
     }
 
+    @Transactional
     public List<Student> filterStudents(JobOffer jobOffer){
         List<Student> qualifiedStudents = new ArrayList<>();
         List<Student> students = filterStudentByAddress.filterStudents(jobOffer);

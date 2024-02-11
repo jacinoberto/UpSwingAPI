@@ -1,5 +1,6 @@
 package br.com.noberto.upswing.util.filters;
 
+import br.com.noberto.upswing.enums.Location;
 import br.com.noberto.upswing.models.*;
 import br.com.noberto.upswing.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,22 +29,22 @@ public class FilterStudentByAddressStrategy implements IFilterStudentStrategy {
     public List<Student> filterStudents(JobOffer jobOffer) {
         Company company = companyRepository.getReferenceById(jobOffer.getCompany().getId());
 
-        /*Percorre toda lista 'students' mantendo em 'studentsByAddress' apenas os alunos que retornam verdadeiro para as
-        condicionais feitas*/
         List<Student> studentsByAddress = new ArrayList<>();
-        for (Student student : filterStudentsWithCompatibility.filterStudents(jobOffer)) {
-            AutoApply autoApply = autoApplyRepository.findByStudentPresentAutoApply(student.getId());
+        for (Student x : filterStudentsWithCompatibility.filterStudents(jobOffer)) {
+            AutoApply autoApply = autoApplyRepository.findByStudentPresentAutoApply(x.getId());
 
-            switch (autoApply.getOfferLocation()){
-                case CITY -> {
-                    if (Objects.equals(student.getAddress().getZipCode().getCity(), company.getAddress().getZipCode()
-                            .getCity())) studentsByAddress.add(student);
-                }
-                case AREA -> {
-                    if (Objects.equals(student.getAddress().getZipCode().getArea(), company.getAddress().getZipCode()
-                            .getArea())) studentsByAddress.add(student);
-                }
-                default -> studentsByAddress.add(student);
+            if (autoApply.getOfferLocation() == Location.STATE){
+                studentsByAddress.add(studentRepository.getReferenceById(x.getId()));
+            }
+            if (autoApply.getOfferLocation() == Location.CITY){
+                Student student = studentRepository.getReferenceById(x.getId());
+                if (Objects.equals(student.getAddress().getZipCode().getCity(), company.getAddress().getZipCode().getCity()))
+                    studentsByAddress.add(student);
+            }
+            if (autoApply.getOfferLocation() == Location.AREA){
+                Student student = studentRepository.getReferenceById(x.getId());
+                if (Objects.equals(student.getAddress().getZipCode().getArea(), company.getAddress().getZipCode().getArea()))
+                    studentsByAddress.add(student);
             }
         }
 

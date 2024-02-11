@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/register")
@@ -34,7 +35,6 @@ public class AdminRegisterController {
     }
 
     @PostMapping("/student")
-    @Transactional
     public ResponseEntity<RegisterStudent> registerStudent(@RequestBody @Valid RegisterStudent data, UriComponentsBuilder uriBuilder){
         Student student = service.registerStudent(data);
         emailService.welcomeEmail(student);

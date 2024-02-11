@@ -1,72 +1,47 @@
 package br.com.noberto.upswing.util.verifications;
 
 import br.com.noberto.upswing.dtos.address.AddressRequest;
-import br.com.noberto.upswing.models.*;
+import br.com.noberto.upswing.models.Address;
+import br.com.noberto.upswing.models.BusinessArea;
 import br.com.noberto.upswing.models.Class;
+import br.com.noberto.upswing.models.Company;
+import br.com.noberto.upswing.models.Student;
 import br.com.noberto.upswing.repositories.*;
-import jakarta.validation.ValidationException;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Component
-public class AdminCheck implements ICheckObjectStrategy{
-    private final BusinessAreaRepository businessAreaRepository;
-    private final ZipCodeRepository zipCodeRepository;
-    private final CourseRepository courseRepository;
-    private final StudentRepository studentRepository;
-    private final ClassRepository classRepository;
+public class AdminCheck extends AbstractCheckObject{
 
-    public AdminCheck(BusinessAreaRepository businessAreaRepository, ZipCodeRepository zipCodeRepository, CourseRepository
-            courseRepository, StudentRepository studentRepository, ClassRepository classRepository) {
-        this.businessAreaRepository = businessAreaRepository;
-        this.zipCodeRepository = zipCodeRepository;
-        this.courseRepository = courseRepository;
-        this.studentRepository = studentRepository;
-        this.classRepository = classRepository;
+    public AdminCheck(ZipCodeRepository zipCodeRepository, BusinessAreaRepository businessAreaRepository, StudentRepository
+            studentRepository, ClassRepository classRepository, CompanyRepository companyRepository, CourseRepository courseRepository, EntityManager entityManager) {
+        super(zipCodeRepository, businessAreaRepository, studentRepository, classRepository, companyRepository, courseRepository, entityManager);
     }
-
 
     @Override
     public Address checkZipCode(AddressRequest address) {
-        ZipCode zipCode = null;
-
-        if (zipCodeRepository.existsById(address.zipCode().zipCode())){
-            zipCode = zipCodeRepository.getReferenceById(address.zipCode().zipCode());
-        } else {
-            zipCode = zipCodeRepository.save(new ZipCode(address.zipCode()));
-        }
-
-        return new Address(address, zipCode);
+        return super.checkZipCode(address);
     }
 
     @Override
     public BusinessArea checkBusinessArea(UUID businessAreaId) {
-        if (businessAreaRepository.existsById(businessAreaId)){
-            return businessAreaRepository.getReferenceById(businessAreaId);
-        }
-
-        throw new ValidationException("ID informado para Área de Atuação é invalido !");
+        return super.checkBusinessArea(businessAreaId);
     }
 
-    public Course checkCourse(UUID id){
-        if (courseRepository.existsById(id)){
-            return courseRepository.getReferenceById(id);
-        }
-        throw new ValidationException("ID informado para Curso é invalido");
+    @Override
+    public Company checkCompany(UUID companyId) {
+        return super.checkCompany(companyId);
     }
 
-    public Student checkStudent(String email){
-        if (studentRepository.getAccountByEmail(email).isPresent()){
-            return studentRepository.getAccountByEmail(email).get();
-        }
-        throw new ValidationException("Email é invalido!");
+    @Override
+    public Student checkStudent(String email) {
+        return super.checkStudent(email);
     }
 
-    public Class checkClass(UUID id){
-        if (classRepository.existsById(id)){
-            return classRepository.getReferenceById(id);
-        }
-        throw new ValidationException("Id informado para Turma é invalido!");
+    @Override
+    public Class checkClass(UUID id) {
+        return super.checkClass(id);
     }
 }
