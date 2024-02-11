@@ -68,6 +68,7 @@ public class EmailService {
     }
 
     @Async("threadPoolTaskExecutor")
+    @Transactional
     public void emailForJobApplication(JobOffer jobOffer){
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         Company company = companyRepository.findById(jobOffer.getCompany().getId())
@@ -159,10 +160,12 @@ public class EmailService {
 
     @Async("threadPoolTaskExecutor")
     @Transactional
-    public void emailForApprovedVacancy(JobOffer jobOffer){
+    public void emailForApprovedVacancy(JobOffer jobOfferData){
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        Company company = companyRepository.findById(jobOffer.getCompany().getId())
+        Company company = companyRepository.findById(jobOfferData.getCompany().getId())
                 .orElseThrow(() -> new EntityExistsException("ID informado para Empresa é invalido!"));
+        JobOffer jobOffer = jobOfferRepository.findById(jobOfferData.getId())
+                .orElseThrow(() -> new EntityExistsException("Vaga invalida"));
         EmailRequest emailRequest = jobOfferEmailToSend.emailApproved(jobOffer);
         entityManager.flush();
         mailMessage.setFrom(emailRequest.getEmailFrom());
