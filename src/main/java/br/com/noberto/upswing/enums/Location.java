@@ -11,13 +11,8 @@ public enum Location {
         this.location = location;
     }
 
-    public static String fromString(String data){
-        for (Location locations : Location.values()){
-            if (locations.location.equalsIgnoreCase(data)){
-                return data;
-            }
-        }
-        throw new IllegalArgumentException("Local: " + data + " não encontrado!");
+    public static String fromString(Location data){
+        return data.location;
     }
     public static Location fromLocation(String data){
         for (Location locations : Location.values()){

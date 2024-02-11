@@ -4,8 +4,10 @@ import br.com.noberto.upswing.enums.EducationLevel;
 import br.com.noberto.upswing.models.Course;
 
 import java.util.List;
+import java.util.UUID;
 
 public record CourseResponse (
+        UUID courseId,
         String courseName,
         String educationalLevel,
         Integer schedule,
@@ -13,6 +15,7 @@ public record CourseResponse (
 ){
     public CourseResponse (Course course){
         this(
+                course.getId(),
                 course.getCourseName(),
                 EducationLevel.fromString(course.getEducationLevel()),
                 course.getSchedule(),

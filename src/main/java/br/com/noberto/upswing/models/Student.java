@@ -1,8 +1,8 @@
 package br.com.noberto.upswing.models;
 
-import br.com.noberto.upswing.dtos.address.AddressRequest;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import br.com.noberto.upswing.dtos.student.StudentResponse;
+import br.com.noberto.upswing.email.EmailSender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -50,6 +50,9 @@ public class Student {
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<VacancyOffer> vacancyOffers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    private List<EmailSender> emails = new ArrayList<>();
+
     public Student(RegisterStudent student) {
         this.socialSecurity = student.socialSecurity();
         this.birthDate = student.birthDate();
@@ -60,7 +63,7 @@ public class Student {
     public Student(StudentResponse student) {
         this.occupation = student.occupation();
         this.account = new Account(student);
-        this.socialNetworks = student.socialNetworks();
-        this.address = new Address(student.address());
+        this.socialNetworks = (student.socialNetworks() != null) ? student.socialNetworks() : new NullSocialNetworks();
+        this.address = new Address(student.address(), new ZipCode(student.address().zipCode()));
     }
 }

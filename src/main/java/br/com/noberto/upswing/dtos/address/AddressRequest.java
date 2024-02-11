@@ -4,7 +4,10 @@ import br.com.noberto.upswing.models.Address;
 import br.com.noberto.upswing.models.ZipCode;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.UUID;
+
 public record AddressRequest(
+        UUID id,
         @NotNull
         Integer number,
         String complement,
@@ -12,6 +15,7 @@ public record AddressRequest(
 ) {
         public AddressRequest(Address address) {
                 this(
+                        address.getId(),
                         address.getNumber(),
                         address.getComplement(),
                         new ZipCodeRequest(address.getZipCode())

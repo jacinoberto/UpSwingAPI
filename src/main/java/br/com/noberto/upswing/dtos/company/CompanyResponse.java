@@ -2,13 +2,11 @@ package br.com.noberto.upswing.dtos.company;
 
 import br.com.noberto.upswing.dtos.address.AddressRequest;
 import br.com.noberto.upswing.models.Company;
+import br.com.noberto.upswing.models.SocialNetworks;
 
 public record CompanyResponse(
         String name,
-        String socialOne,
-        String socialTwo,
-        String socialThree,
-        String socialFour,
+        SocialNetworks socialNetworks,
         String mainPhone,
         String email,
         String companyCode,
@@ -17,10 +15,7 @@ public record CompanyResponse(
     public CompanyResponse (Company company){
         this(
                 company.getAccount().getName(),
-                company.getSocialNetworks().getSocialOne(),
-                company.getSocialNetworks().getSocialTwo(),
-                company.getSocialNetworks().getSocialThree(),
-                company.getSocialNetworks().getSocialFour(),
+                company.getSocialNetworks(),
                 company.getAccount().getMainPhone(),
                 company.getAccount().getEmail(),
                 company.getCompanyCode(),

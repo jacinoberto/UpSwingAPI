@@ -49,6 +49,9 @@ public class Course {
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
     private List<Class> classes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    private List<VacancyAndCourse> vacancyAndCourses = new ArrayList<>();
+
     public Course(CourseRequest course) {
         this.courseName = course.courseName();
         this.educationLevel = EducationLevel.fromEducationLevel(course.educationalLevel());

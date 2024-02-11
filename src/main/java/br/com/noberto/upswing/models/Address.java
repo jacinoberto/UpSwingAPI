@@ -1,6 +1,7 @@
 package br.com.noberto.upswing.models;
 
 import br.com.noberto.upswing.dtos.address.AddressRequest;
+import br.com.noberto.upswing.dtos.address.ZipCodeRequest;
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import br.com.noberto.upswing.dtos.student.StudentResponse;
@@ -44,9 +45,9 @@ public class Address {
         this.zipCode = zipCode;
     }
 
-    public Address(AddressRequest address) {
+    public Address(AddressRequest address, ZipCode zipCode) {
         this.number = address.number();
         this.complement = address.complement();
-        this.zipCode = new ZipCode(address.zipCode());
+        this.zipCode = zipCode;
     }
 }

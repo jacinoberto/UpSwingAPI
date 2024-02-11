@@ -2,11 +2,14 @@ package br.com.noberto.upswing.models;
 
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.enums.Status;
+import br.com.noberto.upswing.email.EmailSender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -43,6 +46,9 @@ public class Company {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
+
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    private List<EmailSender> emails = new ArrayList<>();
 
     public Company(RegisterCompany company) {
         this.account = new Account(company);

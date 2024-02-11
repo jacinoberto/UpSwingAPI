@@ -91,7 +91,13 @@ public class JobOffer {
     @OneToMany(mappedBy = "jobOffer", fetch = FetchType.LAZY)
     private List<VacancyOffer> vacancyOffers = new ArrayList<>();
 
-    public JobOffer(RegisterJobOffer jobOffer) {
+    @OneToMany(mappedBy = "jobOffer", fetch = FetchType.LAZY)
+    private List<VacancyAndCourse> vacancyAndCourses = new ArrayList<>();
+
+    @Transient
+    private List<Course> courses = new ArrayList<>();
+
+    public JobOffer(RegisterJobOffer jobOffer, Company company, BusinessArea businessArea) {
         this.position = jobOffer.position();
         this.educationLevel = EducationLevel.fromEducationLevel(jobOffer.educationLevel());
         this.contract = Contract.fromContract(jobOffer.contract());
@@ -109,5 +115,7 @@ public class JobOffer {
         this.benefitsMeal = jobOffer.benefitsMeal();
         this.benefitsCultural = jobOffer.benefitsCultural();
         this.status = Status.PENDING;
+        this.company = company;
+        this.businessArea = businessArea;
     }
 }

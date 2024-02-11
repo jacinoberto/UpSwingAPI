@@ -2,7 +2,8 @@ package br.com.noberto.upswing.enums;
 
 public enum Contract {
     INTERNSHIP("Estágio"),
-    FIXED("Efetivo");
+    FIXED("Efetivo"),
+    BOTH("Ambos");
 
     private final String contract;
 

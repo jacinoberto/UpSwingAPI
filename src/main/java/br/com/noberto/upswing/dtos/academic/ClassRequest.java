@@ -11,11 +11,9 @@ import java.util.UUID;
 
 public record ClassRequest(
         @NotNull
-        Integer code,
-        @NotNull
         UUID courseId,
         @NotBlank
-        String learningMode,
+        String mode,
         @NotBlank
         String shift,
         @NotNull
@@ -26,7 +24,6 @@ public record ClassRequest(
 ) {
     public ClassRequest (Class aClass) {
         this(
-                aClass.getCode(),
                 aClass.getCourse().getId(),
                 Mode.fromString(aClass.getMode()),
                 Shift.fromString(aClass.getShift()),
