@@ -2,13 +2,11 @@ package br.com.noberto.upswing.controllers.update;
 
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.company.RegisterJobOffer;
-import br.com.noberto.upswing.enums.Status;
 import br.com.noberto.upswing.models.Company;
 import br.com.noberto.upswing.models.JobOffer;
-import br.com.noberto.upswing.services.alter.ApprovalService;
+import br.com.noberto.upswing.services.update.ApprovalService;
 import br.com.noberto.upswing.services.mail.EmailService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
