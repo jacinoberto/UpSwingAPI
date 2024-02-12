@@ -3,7 +3,8 @@ package br.com.noberto.upswing.controllers.list;
 import br.com.noberto.upswing.dtos.company.CompanyResponse;
 import br.com.noberto.upswing.dtos.company.JobOfferResponseCompany;
 import br.com.noberto.upswing.dtos.company.VacancyOfferResponse;
-import br.com.noberto.upswing.models.VacancyOffer;
+import br.com.noberto.upswing.dtos.student.StudentResponseCompany;
+import br.com.noberto.upswing.models.Student;
 import br.com.noberto.upswing.repositories.*;
 import br.com.noberto.upswing.services.list.CompanyListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,13 @@ public class CompanyListController {
     private final CompanyListService service;
     private final JobOfferRepository jobOfferRepository;
     private final VacancyOfferRepository vacancyOfferRepository;
+    private final StudentRepository studentRepository;
     @Autowired
-    CompanyListController(CompanyListService service, JobOfferRepository jobOfferRepository, VacancyOfferRepository vacancyOfferRepository){
+    CompanyListController(CompanyListService service, JobOfferRepository jobOfferRepository, VacancyOfferRepository vacancyOfferRepository, StudentRepository studentRepository){
         this.service = service;
         this.jobOfferRepository = jobOfferRepository;
         this.vacancyOfferRepository = vacancyOfferRepository;
+        this.studentRepository = studentRepository;
     }
 
     @GetMapping("/{id}")
@@ -48,5 +51,11 @@ public class CompanyListController {
         var page = vacancyOfferRepository.findAllCandidates(companyId, pagination)
                 .map(VacancyOfferResponse::new);
         return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/candidate/{vacancyOfferId}")
+    public ResponseEntity<StudentResponseCompany> candidatesById(@PathVariable UUID vacancyOfferId){
+        Student student = studentRepository.findStudentByVacancyOffer(vacancyOfferId);
+        return ResponseEntity.ok(new StudentResponseCompany(student));
     }
 }

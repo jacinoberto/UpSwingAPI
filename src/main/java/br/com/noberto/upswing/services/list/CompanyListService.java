@@ -1,18 +1,14 @@
 package br.com.noberto.upswing.services.list;
 
-import br.com.noberto.upswing.enums.Contract;
-import br.com.noberto.upswing.enums.Location;
+import br.com.noberto.upswing.dtos.academic.CourseSelect;
+import br.com.noberto.upswing.dtos.student.StudentResponseCompany;
 import br.com.noberto.upswing.models.*;
-import br.com.noberto.upswing.repositories.AutoApplyRepository;
-import br.com.noberto.upswing.repositories.CompanyRepository;
-import br.com.noberto.upswing.repositories.JobOfferRepository;
-import br.com.noberto.upswing.repositories.StudentRepository;
+import br.com.noberto.upswing.repositories.*;
 import jakarta.validation.ValidationException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
