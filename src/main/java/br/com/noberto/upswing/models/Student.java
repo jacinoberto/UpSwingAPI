@@ -53,6 +53,10 @@ public class Student {
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<EmailSender> emails = new ArrayList<>();
 
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    private List<JobOfferAndStudent> jobOfferAndStudents = new ArrayList<>();
+
+
     public Student(RegisterStudent student) {
         this.socialSecurity = student.socialSecurity();
         this.birthDate = student.birthDate();

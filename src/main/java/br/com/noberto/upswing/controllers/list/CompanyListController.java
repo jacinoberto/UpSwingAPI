@@ -50,13 +50,4 @@ public class CompanyListController {
                 .map(JobOfferResponseCompany::new);
         return ResponseEntity.ok(page);
     }
-
-//    @GetMapping("/teste/{id}")
-//    public ResponseEntity<List<StudentResponse>> vacancyAll(@PathVariable UUID id){
-//        JobOffer jobOffer = jobOfferRepository.getReferenceById(id);
-//        List<Student> students = filter.filterStudents(jobOffer);
-////        List<Student> students = studentRepository.findByStateTrue(jobOffer.getCompany().getId());
-//        List<StudentResponse> studentResponses = students.stream().map(StudentResponse::new).toList();
-//        return ResponseEntity.ok(studentResponses);
-//    }
 }

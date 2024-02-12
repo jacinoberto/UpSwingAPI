@@ -94,6 +94,9 @@ public class JobOffer {
     @OneToMany(mappedBy = "jobOffer", fetch = FetchType.LAZY)
     private List<VacancyAndCourse> vacancyAndCourses = new ArrayList<>();
 
+    @OneToMany(mappedBy = "jobOffer", fetch = FetchType.LAZY)
+    private List<JobOfferAndStudent> jobOfferAndStudents = new ArrayList<>();
+
     @Transient
     private List<Course> courses = new ArrayList<>();
 
