@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -27,6 +29,9 @@ public class Subject {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course course;
+
+    @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY)
+    private List<CompletedSubject> completedSubjects = new ArrayList<>();
 
     public Subject(SubjectRequest subject, Course course) {
         this.subjectName = subject.subjectName();
