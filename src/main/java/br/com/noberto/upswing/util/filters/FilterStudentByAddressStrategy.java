@@ -1,5 +1,6 @@
 package br.com.noberto.upswing.util.filters;
 
+import br.com.noberto.upswing.enums.Location;
 import br.com.noberto.upswing.models.*;
 import br.com.noberto.upswing.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,15 +30,13 @@ public class FilterStudentByAddressStrategy implements IFilterStudentStrategy {
     public List<Student> filterStudents(JobOffer jobOffer) {
         Company company = companyRepository.getReferenceById(jobOffer.getCompany().getId());
 
-        /*Percorre toda lista 'students' mantendo em 'studentsByAddress' apenas os alunos que retornam verdadeiro para as
-        condicionais feitas*/
         List<Student> studentsByAddress = new ArrayList<>();
         for (Student student : filterStudentsWithCompatibility.filterStudents(jobOffer)) {
 
-            if (autoApplyRepository.findByStudentPresentAutoApply(student.getId()) != null){
+            if (autoApplyRepository.findByStudentPresentAutoApply(student.getId()) != null) {
                 AutoApply autoApply = autoApplyRepository.findByStudentPresentAutoApply(student.getId());
 
-                switch (autoApply.getOfferLocation()){
+                switch (autoApply.getOfferLocation()) {
                     case CITY -> {
                         if (Objects.equals(student.getAddress().getZipCode().getCity(), company.getAddress().getZipCode()
                                 .getCity())) studentsByAddress.add(student);
@@ -50,10 +49,7 @@ public class FilterStudentByAddressStrategy implements IFilterStudentStrategy {
                 }
             }
 
-            return  studentsByAddress;
-            }
-            throw new IllegalArgumentException("Aluno não cadastrado no autoapply");
+        }
+        return studentsByAddress;
     }
-
-
 }

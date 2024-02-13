@@ -1,11 +1,25 @@
 package br.com.noberto.upswing.util.emails;
 
 import br.com.noberto.upswing.email.EmailRequest;
+import br.com.noberto.upswing.models.Company;
 import br.com.noberto.upswing.models.JobOffer;
+import br.com.noberto.upswing.repositories.CompanyRepository;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JobOfferEmailToSendStrategy implements IEmailToSendStrategy {
+    private final CompanyRepository companyRepository;
+    @PersistenceContext
+    private final EntityManager entityManager;
+
+    public JobOfferEmailToSendStrategy(CompanyRepository companyRepository, EntityManager entityManager) {
+        this.companyRepository = companyRepository;
+        this.entityManager = entityManager;
+    }
+
     @Override
     public <T> EmailRequest emailPending(T object) {
         JobOffer jobOffer = (JobOffer) object;
@@ -33,7 +47,11 @@ public class JobOfferEmailToSendStrategy implements IEmailToSendStrategy {
         JobOffer jobOffer = (JobOffer) object;
         EmailRequest emailRequest = new EmailRequest();
 
-        emailRequest.setEmailTo(jobOffer.getCompany().getAccount().getEmail());
+        Company company = companyRepository.findById(jobOffer.getCompany().getId())
+                        .orElseThrow(() -> new EntityExistsException("Empresa informada é invalida!"));
+        entityManager.flush();
+
+        emailRequest.setEmailTo(company.getAccount().getEmail());
         emailRequest.setSubject("Sua Vaga foi aprovada!");
         emailRequest.setMessage("Olá " + jobOffer.getCompany().getAccount().getName() + ", \n\n" +
                 "Pasando para informar que sua vaga para " + jobOffer.getPosition() + " foi aprovada e está agora disponível" +

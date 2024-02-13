@@ -5,83 +5,62 @@ import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.company.RegisterJobOffer;
 import br.com.noberto.upswing.models.*;
 import br.com.noberto.upswing.repositories.*;
+import br.com.noberto.upswing.util.verifications.AbstractCheckObject;
 import br.com.noberto.upswing.util.verifications.CompanyCheck;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CompanyRegisterService {
     private final CompanyRepository repository;
-    private final ZipCodeRepository zipCodeRepository;
-    private final BusinessAreaRepository businessAreaRepository;
     private final JobOfferRepository jobOfferRepository;
     private final CourseRepository courseRepository;
     private final VacancyAndCourseRepository vacancyAndCourserepository;
-    private final CompanyCheck check;
+    private final AbstractCheckObject companyCheck;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
 
     @Autowired
     CompanyRegisterService(CompanyRepository repository, ZipCodeRepository zipCodeRepository, BusinessAreaRepository
             businessAreaRepository, JobOfferRepository jobOfferRepository, CourseRepository courseRepository,
-                           VacancyAndCourseRepository vacancyAndCourserepository, CompanyCheck check){
+                           VacancyAndCourseRepository vacancyAndCourserepository, StudentRepository studentRepository,
+                           ClassRepository classRepository, CompanyRepository companyRepository, EntityManager entityManager){
         this.repository = repository;
-        this.zipCodeRepository = zipCodeRepository;
-        this.businessAreaRepository = businessAreaRepository;
         this.jobOfferRepository = jobOfferRepository;
         this.courseRepository = courseRepository;
         this.vacancyAndCourserepository = vacancyAndCourserepository;
-        this.check = check;
+        this.companyCheck = new CompanyCheck(zipCodeRepository, businessAreaRepository, studentRepository, classRepository, companyRepository, courseRepository, entityManager);
     }
 
+    @Transactional
     public Company registerCompany(RegisterCompany registerCompany){
-        Address address = check.checkZipCode(registerCompany.address());
+        Address address = companyCheck.checkZipCode(registerCompany.address());
         Company company = new Company(registerCompany);
-        company.setBusinessArea(check.checkBusinessArea(registerCompany.businessArea().id()));
+        company.setBusinessArea(companyCheck.checkBusinessArea(registerCompany.businessArea().id()));
         company.setAddress(address);
-
+        entityManager.flush();
         return repository.save(company);
     }
 
+    @Transactional
     public JobOffer registerJobOffer(RegisterJobOffer registerJobOffer){
-        Company company = check.checkCompany(registerJobOffer.companyId());
-        BusinessArea businessArea = check.checkBusinessArea(registerJobOffer.businessAreaId());
+        Company company = companyCheck.checkCompany(registerJobOffer.companyId());
+        BusinessArea businessArea = companyCheck.checkBusinessArea(registerJobOffer.businessAreaId());
         JobOffer jobOffer = jobOfferRepository.save(new JobOffer(registerJobOffer, company, businessArea));
 
         for (CourseSelect courseSelect : registerJobOffer.courses()){
-            Course course = courseRepository.getReferenceById(courseSelect.courseId());
+            Course course = courseRepository.findById(courseSelect.courseId())
+                            .orElseThrow(() -> new EntityExistsException("ID informado para Curso é invalido!"));
+
             vacancyAndCourserepository.save(new VacancyAndCourse(jobOffer, course));
         }
-
+        entityManager.flush();
         return jobOffer;
     }
-
-
-
-    //METHODS
-//    private Address checkAddress(RegisterCompany data){
-//        ZipCode zipCode = null;
-//
-//        if (zipCodeRepository.existsById(data.address().zipCode().zipCode())){
-//            zipCode = zipCodeRepository.getReferenceById(data.address().zipCode().zipCode());
-//        } else {
-//            zipCode = zipCodeRepository.save(new ZipCode(data));
-//        }
-//
-//        return new Address(data, zipCode);
-//    }
-//
-//    private BusinessArea checkBusinessArea(UUID id){
-//        if (businessAreaRepository.existsById(id)){
-//            return businessAreaRepository.getReferenceById(id);
-//        }
-//
-//        throw new ValidationException("ID informado para Área de Atuação é invalido!");
-//    }
-//
-//    private Company checkCompany(UUID id){
-//        if (repository.existsById(id)){
-//            return repository.getReferenceById(id);
-//        }
-//
-//        throw new ValidationException("ID informado para Empresa é invalido!");
-//    }
 }

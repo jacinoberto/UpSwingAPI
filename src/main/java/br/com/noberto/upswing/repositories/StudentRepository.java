@@ -78,4 +78,14 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
                 )
             """)
     List<Student> findByStudentsExistsInCourse(UUID courseId);
+
+    @Query("""
+                SELECT s FROM Student s
+                WHERE EXISTS(
+                    SELECT vo from VacancyOffer vo
+                    WHERE vo.id = :vacancyOfferId
+                    AND s = vo.student
+                )
+            """)
+    Student findStudentByVacancyOffer(UUID vacancyOfferId);
 }

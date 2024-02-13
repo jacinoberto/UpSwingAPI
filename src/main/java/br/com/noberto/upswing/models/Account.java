@@ -1,5 +1,6 @@
 package br.com.noberto.upswing.models;
 
+import br.com.noberto.upswing.dtos.admin.AdminUpdate;
 import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
@@ -51,6 +52,13 @@ public class Account {
         this.email = admin.account().getEmail();
         this.password = admin.account().getPassword();
         this.activeProfile = true;
+    }
+
+    public Account(AdminUpdate admin) {
+        this.name = admin.account().getName();
+        this.mainPhone = admin.account().getMainPhone();
+        this.optionalPhone = admin.account().getOptionalPhone();
+        this.email = admin.account().getEmail();
     }
 
     public Account(RegisterCompany company) {

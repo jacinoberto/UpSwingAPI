@@ -48,28 +48,28 @@ public class StudentListController {
     }
 
     @GetMapping()
-    public ResponseEntity<Page<StudentResponse>> studentAll(@PageableDefault(size = 6) Pageable pagination){
+    public ResponseEntity<Page<StudentResponse>> studentAll(@PageableDefault(size = 8) Pageable pagination){
         var page = repository.findAllActiveProfileTrue(pagination)
                 .map(StudentResponse::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/course/{businessAreaId}")
-    public ResponseEntity<Page<CourseByBusinessArea>> allCoursesByBusinessArea(@PathVariable UUID businessAreaId, @PageableDefault(size = 6) Pageable pagination){
+    public ResponseEntity<Page<CourseByBusinessArea>> allCoursesByBusinessArea(@PathVariable UUID businessAreaId, @PageableDefault(size = 8) Pageable pagination){
         var page = courseRepository.findAllBusinessAreaById(businessAreaId, pagination)
                 .map(CourseByBusinessArea::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/my-course/{studentId}")
-    public ResponseEntity<Page<CourseResponse>> myCourses(@PathVariable UUID studentId, @PageableDefault(size = 6) Pageable pagination){
+    public ResponseEntity<Page<CourseResponse>> myCourses(@PathVariable UUID studentId, @PageableDefault(size = 8) Pageable pagination){
         var page = courseRepository.findAllCourseStudentTrue(studentId, pagination)
                 .map(CourseResponse::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/my-job-offers/{studentId}")
-    public ResponseEntity<Page<JobOfferResponse>> myJobOffers(@PathVariable UUID studentId, @PageableDefault(size = 6) Pageable pagination){
+    public ResponseEntity<Page<JobOfferResponse>> myJobOffers(@PathVariable UUID studentId, @PageableDefault(size = 8) Pageable pagination){
         var page = jobOfferRepository.findByStudentTrue(studentId, LocalDate.now(),pagination)
                 .map(JobOfferResponse::new);
         return ResponseEntity.ok(page);

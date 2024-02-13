@@ -47,55 +47,55 @@ public class AdminListController {
     }
 
     @GetMapping()
-    public ResponseEntity<Page<AdminResponse>> adminAll(@PageableDefault(size = 6, sort = {"account.name"}) Pageable pagination){
+    public ResponseEntity<Page<AdminResponse>> adminAll(@PageableDefault(size = 8, sort = {"account.name"}) Pageable pagination){
         var page = repository.findAllActiveProfileTrue(pagination)
                 .map(AdminResponse::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/courses")
-    public ResponseEntity<Page<CourseResponseAdmin>> courseAll(@PageableDefault(size = 6, sort = {"courseName"}) Pageable pagination){
+    public ResponseEntity<Page<CourseResponseAdmin>> courseAll(@PageableDefault(size = 8, sort = {"courseName"}) Pageable pagination){
         var page = courseRepository.findAllCourse(pagination)
                 .map(CourseResponseAdmin::new);
         return ResponseEntity.ok(page);
     }
     @GetMapping("/classes")
-    public ResponseEntity<Page<ClassResponseAdmin>> classesAll(@PageableDefault(size = 6, sort = {"code"}) Pageable pagination){
+    public ResponseEntity<Page<ClassResponseAdmin>> classesAll(@PageableDefault(size = 8, sort = {"code"}) Pageable pagination){
         var page = classRepository.findAllClass(pagination)
                 .map(ClassResponseAdmin::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/students")
-    public ResponseEntity<Page<StudentResponseAdmin>> studentAll(@PageableDefault(size = 6, sort = {"account.name"}) Pageable pagination){
+    public ResponseEntity<Page<StudentResponseAdmin>> studentAll(@PageableDefault(size = 8, sort = {"account.name"}) Pageable pagination){
         var page = studentRepository.findAllStudent(pagination)
                 .map(StudentResponseAdmin::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/company-pending")
-    public ResponseEntity<Page<CompanyResponse>> companyAllPending(@PageableDefault(size = 6, sort = {"account.name"}) Pageable pagination){
+    public ResponseEntity<Page<CompanyResponse>> companyAllPending(@PageableDefault(size = 8, sort = {"account.name"}) Pageable pagination){
         var page = companyRepository.findAllCompanyPending(pagination)
                 .map(CompanyResponse::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/company-approved")
-    public ResponseEntity<Page<CompanyResponse>> companyAllApproved(@PageableDefault(size = 6, sort = {"account.name"}) Pageable pagination){
+    public ResponseEntity<Page<CompanyResponse>> companyAllApproved(@PageableDefault(size = 8, sort = {"account.name"}) Pageable pagination){
         var page = companyRepository.findAllCompanyApproved(pagination)
                 .map(CompanyResponse::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/job-offer-pending")
-    public ResponseEntity<Page<JobOfferResponse>> jobOfferAllPending(@PageableDefault(size = 6, sort = {"company.account.name"}) Pageable pagination){
+    public ResponseEntity<Page<JobOfferResponse>> jobOfferAllPending(@PageableDefault(size = 8, sort = {"company.account.name"}) Pageable pagination){
         var page = jobOfferRepository.findAllJobPending(pagination)
                 .map(JobOfferResponse::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/job-offer-approved")
-    public ResponseEntity<Page<JobOfferResponse>> jobOfferAllApproved(@PageableDefault(size = 6, sort = {"company.account.name"}) Pageable pagination){
+    public ResponseEntity<Page<JobOfferResponse>> jobOfferAllApproved(@PageableDefault(size = 8, sort = {"company.account.name"}) Pageable pagination){
         var page = jobOfferRepository.findAllJobApproved(pagination)
                 .map(JobOfferResponse::new);
         return ResponseEntity.ok(page);

@@ -1,6 +1,6 @@
 package br.com.noberto.upswing.controllers.delete;
 
-import br.com.noberto.upswing.services.alter.DisableService;
+import br.com.noberto.upswing.services.update.DisableService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;

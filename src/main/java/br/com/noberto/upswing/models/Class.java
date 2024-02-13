@@ -48,6 +48,9 @@ public class Class {
     @OneToMany(mappedBy = "aClass", fetch = FetchType.LAZY)
     private List<Registration> registrations = new ArrayList<>();
 
+    @OneToMany(mappedBy = "aClass", fetch = FetchType.LAZY)
+    private List<CompletedSubject> completedSubjects = new ArrayList<>();
+
     public Class(ClassRequest classRequest, Integer code, Course course) {
         this.code = code;
         this.mode = Mode.fromLearningMode(classRequest.mode());

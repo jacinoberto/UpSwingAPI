@@ -29,7 +29,6 @@ public class CompanyRegisterController {
     }
 
     @PostMapping("/company")
-    @Transactional
     public ResponseEntity<RegisterCompany> registerCompany(@RequestBody @Valid RegisterCompany registerCompany, UriComponentsBuilder uriBuilder){
         Company company = service.registerCompany(registerCompany);
         URI uri = uriBuilder.path("/api/register/company/{id}").buildAndExpand(company.getId()).toUri();
@@ -38,7 +37,6 @@ public class CompanyRegisterController {
     }
 
     @PostMapping("/job-offer")
-    @Transactional
     public ResponseEntity<RegisterJobOffer> registerJobOffer(@RequestBody @Valid RegisterJobOffer registerJobOffer, UriComponentsBuilder uriBuilder){
         JobOffer jobOffer = service.registerJobOffer(registerJobOffer);
         URI uri = uriBuilder.path("/api/register/job-offer/{id}").buildAndExpand(jobOffer.getId()).toUri();

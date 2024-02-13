@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,6 +29,16 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
                 AND c.active = true
             """)
     Page<Course> findAllCourseStudentTrue(UUID studentId, Pageable pagination);
+
+    @Query("""
+                SELECT c FROM Course c
+                JOIN c.classes cl
+                JOIN cl.registrations r
+                JOIN r.student s
+                WHERE s.id = :studentId
+                AND c.active = true
+            """)
+    List<Course> findAllCourseStudentTrue(UUID studentId);
 
     @Query("""
                 SELECT c FROM Course c

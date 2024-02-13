@@ -1,5 +1,6 @@
 package br.com.noberto.upswing.models;
 
+import br.com.noberto.upswing.dtos.admin.AdminUpdate;
 import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,4 +29,10 @@ public class Admin {
         this.position = admin.position();
         this.account = new Account(admin);
     }
+
+    public Admin(AdminUpdate admin) {
+        this.position = admin.position();
+        this.account = new Account(admin);
+    }
+
 }
