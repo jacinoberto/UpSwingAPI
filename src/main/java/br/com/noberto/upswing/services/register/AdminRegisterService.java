@@ -1,6 +1,7 @@
 package br.com.noberto.upswing.services.register;
 
 import br.com.noberto.upswing.dtos.academic.ClassRequest;
+import br.com.noberto.upswing.dtos.academic.CompletedSubjectRequest;
 import br.com.noberto.upswing.dtos.academic.CourseRequest;
 import br.com.noberto.upswing.dtos.academic.SubjectRequest;
 import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
@@ -30,6 +31,7 @@ public class AdminRegisterService {
     private final SubjectRepository subjectRepository;
     private final ClassRepository classRepository;
     private final RegistrationRepository registrationRepository;
+    private final CompletedSubjectRepository completedSubjectRepository;
     private final AbstractCheckObject adminCheck;
     private final IRandomCodeStrategy codeForClass;
     private final IRandomCodeStrategy codeForRegistration;
@@ -41,7 +43,7 @@ public class AdminRegisterService {
     @Autowired
     AdminRegisterService(AdminRepository repository, StudentRepository studentRepository, CourseRepository courseRepository,
                          SubjectRepository subjectRepository, ClassRepository classRepository, RegistrationRepository
-                         registrationRepository, CompanyRepository companyRepository, BusinessAreaRepository businessAreaRepository,
+                         registrationRepository, CompletedSubjectRepository completedSubjectRepository, CompanyRepository companyRepository, BusinessAreaRepository businessAreaRepository,
                          ZipCodeRepository zipCodeRepository, GeneratePassword password, EntityManager entityManager){
         this.repository = repository;
         this.studentRepository = studentRepository;
@@ -51,6 +53,7 @@ public class AdminRegisterService {
         this.registrationRepository = registrationRepository;
         this.codeForClass = new RandomCodeForClass(classRepository);
         this.codeForRegistration = new RandomCodeForRegistration(registrationRepository);
+        this.completedSubjectRepository = completedSubjectRepository;
         this.adminCheck = new AdminCheck(zipCodeRepository, businessAreaRepository, studentRepository, classRepository, companyRepository, courseRepository, entityManager);
         this.password = password;
     }
@@ -94,5 +97,13 @@ public class AdminRegisterService {
         Student student = adminCheck.checkStudent(email);
         Class aClass = adminCheck.checkClass(classId);
         return registrationRepository.save(new Registration(codeForRegistration.randomCode(), student, aClass));
+    }
+
+    public CompletedSubject saveCompletedSubjects(CompletedSubjectRequest completedSubjectRequest){
+        CompletedSubject completedSubject = new CompletedSubject();
+        completedSubject.setSubject(subjectRepository.getReferenceById(completedSubjectRequest.subjectId()));
+        completedSubject.setAClass(classRepository.getReferenceById(completedSubjectRequest.classId()));
+        completedSubject.setComplete(completedSubjectRequest.complete());
+        return completedSubjectRepository.save(completedSubject);
     }
 }

@@ -1,9 +1,6 @@
 package br.com.noberto.upswing.controllers.register;
 
-import br.com.noberto.upswing.dtos.academic.ClassRequest;
-import br.com.noberto.upswing.dtos.academic.CourseRequest;
-import br.com.noberto.upswing.dtos.academic.RegistrationRequest;
-import br.com.noberto.upswing.dtos.academic.SubjectRequest;
+import br.com.noberto.upswing.dtos.academic.*;
 import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import br.com.noberto.upswing.models.*;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/register")
@@ -80,5 +76,13 @@ public class AdminRegisterController {
         Registration registration = service.registrationStudent(registrationRequest.email(), registrationRequest.id());
         URI uri = uriBuilder.path("/api/register/registration/{id}").buildAndExpand(registration.getRegistration()).toUri();
         return ResponseEntity.created(uri).body(new RegistrationRequest(registration));
+    }
+
+    @PostMapping("/completed-subject")
+    @Transactional
+    public ResponseEntity<CompletedSubjectResponse> saveCompletedSubjects(@RequestBody CompletedSubjectRequest completedSubjectRequest, UriComponentsBuilder uriBuilder){
+        CompletedSubject completedSubject = service.saveCompletedSubjects(completedSubjectRequest);
+        URI uri = uriBuilder.path("api/register/completed-subject/{completedSubjectId}").buildAndExpand(completedSubject.getId()).toUri();
+        return ResponseEntity.created(uri).body(new CompletedSubjectResponse(completedSubject));
     }
 }

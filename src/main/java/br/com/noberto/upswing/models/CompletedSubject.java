@@ -1,5 +1,7 @@
 package br.com.noberto.upswing.models;
 
+import br.com.noberto.upswing.dtos.academic.CompletedSubjectRequest;
+import br.com.noberto.upswing.repositories.CompletedSubjectRepository;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +18,8 @@ public class CompletedSubject {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_completed_subject")
     private UUID id;
+
+    private Boolean complete;
 
     @ManyToOne
     @JoinColumn(name = "class_id")
