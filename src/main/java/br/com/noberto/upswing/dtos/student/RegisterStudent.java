@@ -13,21 +13,19 @@ import java.util.UUID;
 
 public record RegisterStudent(
         UUID id,
-        @NotNull
+        Account account,@NotNull
         LocalDate birthDate,
         @NotBlank
         @CPF
         String socialSecurity,
-
-        Account account,
         AddressRequest address
 ) {
         public RegisterStudent(Student student) {
                 this(
                         student.getId(),
+                        new Account(student),
                         student.getBirthDate(),
                         student.getSocialSecurity(),
-                        new Account(student),
                         new AddressRequest(student.getAddress())
                 );
         }

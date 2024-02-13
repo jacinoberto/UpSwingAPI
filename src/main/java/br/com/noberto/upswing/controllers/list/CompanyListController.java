@@ -40,14 +40,14 @@ public class CompanyListController {
     }
 
     @GetMapping("/my-vacancies/{companyId}")
-    public ResponseEntity<Page<JobOfferResponseCompany>> vacancyAll(@PathVariable UUID companyId, @PageableDefault(size = 6) Pageable pagination){
+    public ResponseEntity<Page<JobOfferResponseCompany>> vacancyAll(@PathVariable UUID companyId, @PageableDefault(size = 8) Pageable pagination){
         var page = jobOfferRepository.findAllMyVacancies(companyId, pagination)
                 .map(JobOfferResponseCompany::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/my-candidates/{companyId}")
-    public ResponseEntity<Page<VacancyOfferResponse>> candidatesAll(@PathVariable UUID companyId, @PageableDefault(size = 6) Pageable pagination){
+    public ResponseEntity<Page<VacancyOfferResponse>> candidatesAll(@PathVariable UUID companyId, @PageableDefault(size = 8) Pageable pagination){
         var page = vacancyOfferRepository.findAllCandidates(companyId, pagination)
                 .map(VacancyOfferResponse::new);
         return ResponseEntity.ok(page);
