@@ -1,17 +1,16 @@
 package br.com.noberto.upswing.controllers.update;
 
 import br.com.noberto.upswing.dtos.academic.CourseRequest;
-import br.com.noberto.upswing.dtos.address.AddressRequest;
 import br.com.noberto.upswing.dtos.admin.AdminResponse;
 import br.com.noberto.upswing.dtos.admin.AdminUpdate;
+import br.com.noberto.upswing.dtos.company.RegisterCompany;
+import br.com.noberto.upswing.dtos.company.RegisterJobOffer;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
-import br.com.noberto.upswing.dtos.student.StudentResponse;
 import br.com.noberto.upswing.dtos.student.StudentUpdate;
-import br.com.noberto.upswing.models.Address;
-import br.com.noberto.upswing.models.Admin;
-import br.com.noberto.upswing.models.Course;
-import br.com.noberto.upswing.models.Student;
+import br.com.noberto.upswing.models.*;
+import br.com.noberto.upswing.services.mail.EmailService;
 import br.com.noberto.upswing.services.update.AdminUpdateService;
+import br.com.noberto.upswing.services.update.ApprovalService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +21,13 @@ import java.util.UUID;
 @RequestMapping("api/alter")
 public class AdminUpdateController {
     private final AdminUpdateService service;
+    private final ApprovalService approvalService;
+    private final EmailService emailService;
 
-    public AdminUpdateController(AdminUpdateService service) {
+    public AdminUpdateController(AdminUpdateService service, ApprovalService approvalService, EmailService emailService) {
         this.service = service;
+        this.approvalService = approvalService;
+        this.emailService = emailService;
     }
 
     @PatchMapping("/admin/{adminId}")
@@ -48,10 +51,32 @@ public class AdminUpdateController {
         return ResponseEntity.ok(new CourseRequest(course));
     }
 
-//    @PatchMapping("/address/{addressId}")
-//    @Transactional
-//    public ResponseEntity<AddressRequest> addressUpdate(@PathVariable UUID addressId, @RequestBody AddressRequest addressRequest){
-//        Address address = service.addressUpdate(addressId, addressRequest.zipCode());
-//        return ResponseEntity.ok(new AddressRequest(address));
-//    }
+    @PatchMapping("/job-approved/{jobOfferId}")
+    public ResponseEntity<RegisterJobOffer> approvedJobOffer(@PathVariable UUID jobOfferId){
+        JobOffer jobOffer = approvalService.approvedJobOffer(jobOfferId);
+        emailService.emailForJobApplication(jobOffer);
+        emailService.emailForApprovedVacancy(jobOffer);
+        return ResponseEntity.ok(new RegisterJobOffer(jobOffer));
+    }
+
+    @PatchMapping("/job-not-approved/{jobOfferId}")
+    public ResponseEntity<RegisterJobOffer> notApprovedJobOffer(@PathVariable UUID jobOfferId){
+        JobOffer jobOffer = approvalService.notApprovedJobOffer(jobOfferId);
+        emailService.emailForNotApprovedVacancy(jobOffer);
+        return ResponseEntity.ok(new RegisterJobOffer(jobOffer));
+    }
+
+    @PatchMapping("/company-approved/{companyId}")
+    public ResponseEntity<RegisterCompany> approvedCompany(@PathVariable UUID companyId){
+        Company company = approvalService.approvedProfile(companyId);
+        emailService.emailForApprovedProfile(company);
+        return ResponseEntity.ok(new RegisterCompany(company));
+    }
+
+    @PatchMapping("/company-not-approved/{companyId}")
+    public ResponseEntity<RegisterCompany> notApprovedCompany(@PathVariable UUID companyId){
+        Company company = approvalService.notApprovedProfile(companyId);
+        emailService.emailForNotApprovedProfile(company);
+        return ResponseEntity.ok(new RegisterCompany(company));
+    }
 }

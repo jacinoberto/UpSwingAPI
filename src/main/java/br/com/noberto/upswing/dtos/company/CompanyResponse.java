@@ -4,7 +4,10 @@ import br.com.noberto.upswing.dtos.address.AddressRequest;
 import br.com.noberto.upswing.models.Company;
 import br.com.noberto.upswing.models.SocialNetworks;
 
+import java.util.UUID;
+
 public record CompanyResponse(
+        UUID id,
         String name,
         SocialNetworks socialNetworks,
         String mainPhone,
@@ -14,6 +17,7 @@ public record CompanyResponse(
 ) {
     public CompanyResponse (Company company){
         this(
+                company.getId(),
                 company.getAccount().getName(),
                 company.getSocialNetworks(),
                 company.getAccount().getMainPhone(),
