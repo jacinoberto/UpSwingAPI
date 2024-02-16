@@ -29,21 +29,21 @@ public class DisableService {
         this.courseRepository = courseRepository;
     }
 
-    public void disableStudent(UUID id){
+    public void disableStudent(String id){
         Student student = studentRepository.getReferenceById(id);
         Account account = new Account(student);
         account.setActiveProfile(false);
         student.setAccount(account);
     }
 
-    public void disableAdmin(UUID id){
+    public void disableAdmin(String id){
         Admin admin = repository.getReferenceById(id);
         Account account = new Account(admin);
         account.setActiveProfile(false);
         admin.setAccount(account);
     }
 
-    public void disableCompany(UUID id){
+    public void disableCompany(String id){
         Company company = companyRepository.getReferenceById(id);
         Account account = new Account(company);
         account.setActiveProfile(false);

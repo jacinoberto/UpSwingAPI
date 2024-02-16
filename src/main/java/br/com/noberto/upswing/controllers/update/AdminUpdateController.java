@@ -32,14 +32,14 @@ public class AdminUpdateController {
 
     @PatchMapping("/admin/{adminId}")
     @Transactional
-    public ResponseEntity<AdminResponse> adminUpdate(@PathVariable UUID adminId, @RequestBody AdminUpdate adminUpdate){
+    public ResponseEntity<AdminResponse> adminUpdate(@PathVariable String adminId, @RequestBody AdminUpdate adminUpdate){
         Admin admin = service.updateAdmin(adminId, adminUpdate);
         return ResponseEntity.ok(new AdminResponse(admin));
     }
 
     @PatchMapping("/student/{studentId}")
     @Transactional
-    public ResponseEntity<RegisterStudent> studentUpdate(@PathVariable UUID studentId, @RequestBody StudentUpdate studentUpdate){
+    public ResponseEntity<RegisterStudent> studentUpdate(@PathVariable String studentId, @RequestBody StudentUpdate studentUpdate){
        Student student = service.updateStudent(studentId, studentUpdate);
         return ResponseEntity.ok(new RegisterStudent(student));
     }
@@ -67,14 +67,14 @@ public class AdminUpdateController {
     }
 
     @PatchMapping("/company-approved/{companyId}")
-    public ResponseEntity<RegisterCompany> approvedCompany(@PathVariable UUID companyId){
+    public ResponseEntity<RegisterCompany> approvedCompany(@PathVariable String companyId){
         Company company = approvalService.approvedProfile(companyId);
         emailService.emailForApprovedProfile(company);
         return ResponseEntity.ok(new RegisterCompany(company));
     }
 
     @PatchMapping("/company-not-approved/{companyId}")
-    public ResponseEntity<RegisterCompany> notApprovedCompany(@PathVariable UUID companyId){
+    public ResponseEntity<RegisterCompany> notApprovedCompany(@PathVariable String companyId){
         Company company = approvalService.notApprovedProfile(companyId);
         emailService.emailForNotApprovedProfile(company);
         return ResponseEntity.ok(new RegisterCompany(company));

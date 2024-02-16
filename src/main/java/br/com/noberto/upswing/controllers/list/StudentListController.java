@@ -43,7 +43,7 @@ public class StudentListController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudentResponse> studentById(@PathVariable UUID id){
+    public ResponseEntity<StudentResponse> studentById(@PathVariable String id){
         return ResponseEntity.ok(new StudentResponse(service.getStudent(id)));
     }
 
@@ -76,7 +76,7 @@ public class StudentListController {
     }
 
     @GetMapping("/auto-apply/{studentId}")
-    public Boolean autoApplyResponse(@PathVariable UUID studentId){
+    public Boolean autoApplyResponse(@PathVariable String studentId){
         return studentRepository.existsByStudent(studentId).isPresent();
     }
 }

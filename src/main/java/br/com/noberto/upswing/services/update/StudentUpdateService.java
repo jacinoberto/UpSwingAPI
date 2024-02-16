@@ -17,7 +17,7 @@ public class StudentUpdateService{
         this.studentRepository = studentRepository;
     }
 
-    public Student studentUpdateSocialNetworks(UUID studentId, SocialNetworksUpdate socialNetworksUpdate){
+    public Student studentUpdateSocialNetworks(String studentId, SocialNetworksUpdate socialNetworksUpdate){
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new EntityExistsException("Aluno não encontrado!"));
         SocialNetworks socialNetworks = student.getSocialNetworks();

@@ -1,6 +1,6 @@
 CREATE TABLE tb_job_offers(
     id_job_offer UUID,
-    company_id UUID NOT NULL,
+    company_id VARCHAR(100) NOT NULL,
     job_position VARCHAR(75),
     business_area_id UUID NOT NULL,
     education_level VARCHAR(150) NOT NULL,

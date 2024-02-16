@@ -35,7 +35,7 @@ public class CompanyListController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CompanyResponse> adminById(@PathVariable UUID id){
+    public ResponseEntity<CompanyResponse> adminById(@PathVariable String id){
         return ResponseEntity.ok(new CompanyResponse(service.getCompany(id)));
     }
 

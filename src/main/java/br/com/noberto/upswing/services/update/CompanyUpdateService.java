@@ -18,7 +18,7 @@ public class CompanyUpdateService {
         this.companyRepository = companyRepository;
     }
 
-    public Company companyUpdateSocialNetworks(UUID companyId, SocialNetworksUpdate socialNetworksUpdate){
+    public Company companyUpdateSocialNetworks(String companyId, SocialNetworksUpdate socialNetworksUpdate){
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityExistsException("Empresa não encontrada!"));
         SocialNetworks socialNetworks = company.getSocialNetworks();

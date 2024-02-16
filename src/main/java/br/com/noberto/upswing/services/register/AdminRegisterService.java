@@ -18,6 +18,7 @@ import br.com.noberto.upswing.util.verifications.AdminCheck;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,13 +64,14 @@ public class AdminRegisterService {
         Address address = adminCheck.checkZipCode(registerStudent.address());
         Student student = new Student(registerStudent);
         student.setAddress(address);
-        student.getAccount().setPassword(password.generatePassword(registerStudent));
+        student.getAccount().setPassword(new BCryptPasswordEncoder().encode(password.generatePassword(registerStudent)));
         entityManager.flush();
         return studentRepository.save(student);
     }
 
     public Admin registerAdmin(RegisterAdmin registerAdmin){
         Admin admin = new Admin(registerAdmin);
+        admin.getAccount().setPassword(new BCryptPasswordEncoder().encode(registerAdmin.account().getPassword()));
         return repository.save(admin);
     }
 

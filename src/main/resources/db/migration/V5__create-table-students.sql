@@ -1,5 +1,5 @@
 CREATE TABLE tb_students(
-    id_student UUID NOT NULL,
+    id_student VARCHAR(255) NOT NULL,
     name VARCHAR(150) NOT NULL,
     occupation VARCHAR(75),
     birth_date DATE NOT NULL,
@@ -12,8 +12,9 @@ CREATE TABLE tb_students(
     social_four VARCHAR(150),
     address_id UUID NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
-    password VARCHAR(16) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     active_profile BOOLEAN NOT NULL,
+    role VARCHAR(20) NOT NULL,
 
     PRIMARY KEY(id_student),
     CONSTRAINT fk_address_student_id FOREIGN KEY(address_id) REFERENCES tb_addresses(id_address)

@@ -14,7 +14,7 @@ public class StudentCheck extends AbstractCheckObject{
     }
 
     @Override
-    public Student checkStudent(UUID studentId) {
+    public Student checkStudent(String studentId) {
         return super.checkStudent(studentId);
     }
 }

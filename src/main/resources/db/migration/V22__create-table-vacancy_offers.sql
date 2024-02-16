@@ -1,6 +1,6 @@
 CREATE TABLE tb_vacancy_offers(
     id_vacancy_offer UUID,
-    student_id UUID NOT NULL,
+    student_id VARCHAR(100) NOT NULL,
     job_offer_id UUID NOT NULL,
 
     PRIMARY KEY(id_vacancy_offer),

@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.br.CNPJ;
 import java.util.UUID;
 
 public record RegisterCompany(
-        UUID id,
+        String id,
         @NotBlank
         String companyName,
         Account account,

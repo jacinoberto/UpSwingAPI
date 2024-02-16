@@ -17,7 +17,7 @@ public class StudentListService {
         this.repository = repository;
     }
 
-    public Student getStudent(UUID id){
+    public Student getStudent(String id){
         if (repository.existsById(id)){
             Student student = repository.getReferenceById(id);
             if (student.getSocialNetworks() == null){

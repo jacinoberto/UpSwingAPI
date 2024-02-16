@@ -3,25 +3,30 @@ package br.com.noberto.upswing.models;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
 import br.com.noberto.upswing.dtos.student.StudentResponse;
 import br.com.noberto.upswing.email.EmailSender;
+import br.com.noberto.upswing.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "tb_students")
 @AllArgsConstructor @NoArgsConstructor @Data
-public class Student {
+public class Student implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_student")
-    private UUID id;
+    private String id;
 
     private String occupation;
 
@@ -41,6 +46,9 @@ public class Student {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
     @OneToMany(mappedBy = "student")
     private List<AutoApply> autoApplies = new ArrayList<>();
 
@@ -59,6 +67,7 @@ public class Student {
         this.birthDate = student.birthDate();
         this.occupation = getOccupation();
         this.account = new Account(student);
+        this.role = UserRole.STUDENT;
     }
 
     public Student(StudentResponse student) {
@@ -66,5 +75,41 @@ public class Student {
         this.account = new Account(student);
         this.socialNetworks = (student.socialNetworks() != null) ? student.socialNetworks() : new NullSocialNetworks();
         this.address = new Address(student.address(), new ZipCode(student.address().zipCode()));
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == UserRole.STUDENT) return List.of(new SimpleGrantedAuthority("ROLE_STUDENT"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_COMPANY"));
+    }
+
+    @Override
+    public String getPassword() {
+        return account.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return account.getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

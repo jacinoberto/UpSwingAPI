@@ -28,7 +28,7 @@ public class CompanyUpdateController {
 
     @PatchMapping("/social-networks/{companyId}")
     @Transactional
-    public ResponseEntity<CompanyResponse> studentUpdateSocialNetworks(@PathVariable UUID companyId, @RequestBody SocialNetworksUpdate socialNetworksUpdate){
+    public ResponseEntity<CompanyResponse> studentUpdateSocialNetworks(@PathVariable String companyId, @RequestBody SocialNetworksUpdate socialNetworksUpdate){
         Company company = service.companyUpdateSocialNetworks(companyId, socialNetworksUpdate);
         return ResponseEntity.ok(new CompanyResponse(company));
     }

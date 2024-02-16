@@ -14,5 +14,5 @@ public interface AutoApplyRepository extends JpaRepository<AutoApply, UUID> {
                 SELECT a FROM AutoApply a
                 WHERE a.student.id = :studentId
             """)
-    AutoApply findByStudentPresentAutoApply(UUID studentId);
+    AutoApply findByStudentPresentAutoApply(String studentId);
 }

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record RegisterStudent(
-        UUID id,
+        String id,
         Account account,@NotNull
         LocalDate birthDate,
         @NotBlank

@@ -59,7 +59,7 @@ public abstract class AbstractCheckObject{
     }
 
     @Transactional
-    public Company checkCompany(UUID companyId){
+    public Company checkCompany(String companyId){
         entityManager.flush();
         return companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityExistsException("ID informado para Empresa é invalido!"));
@@ -75,14 +75,16 @@ public abstract class AbstractCheckObject{
     @Transactional
     public Student checkStudent(String email){
         entityManager.flush();
-        return studentRepository.getAccountByEmail(email)
-                .orElseThrow(() -> new EntityExistsException("Email informado para aluno é invalido!"));
-    }
+        Student student = new Student();
+        if (studentRepository.getAccountByEmail(email) != null){
+            student =  studentRepository.getAccountByEmail(email)
+                    .orElseThrow(() -> new EntityExistsException("Email informado para aluno é invalido!"));
+        }
+        if (studentRepository.findById(email).isPresent()){
+            student = studentRepository.findById(email)
+                    .orElseThrow(() -> new EntityExistsException("ID informado para Aluno é invalido!"));
+        }
 
-    @Transactional
-    public Student checkStudent(UUID studentId){
-        entityManager.flush();
-        return studentRepository.findById(studentId)
-                .orElseThrow(() -> new EntityExistsException("ID informado para Aluno é invalido!"));
+        return student;
     }
 }

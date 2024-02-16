@@ -5,13 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface CompanyRepository extends JpaRepository<Company, UUID> {
+public interface CompanyRepository extends JpaRepository<Company, String> {
     @Query("""
                 SELECT c FROM Company c
                 WHERE c.status = PENDING
@@ -25,4 +26,10 @@ public interface CompanyRepository extends JpaRepository<Company, UUID> {
                 AND c.account.activeProfile = true
             """)
     Page<Company> findAllCompanyApproved(Pageable pagination);
+
+    @Query("""
+                SELECT c FROM Company c
+                WHERE c.account.email = :email
+            """)
+    UserDetails findByEmail(String email);
 }

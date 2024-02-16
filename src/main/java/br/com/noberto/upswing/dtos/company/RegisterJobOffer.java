@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public record RegisterJobOffer(
         @NotNull
-        UUID companyId,
+        String companyId,
         @NotBlank
         String position,
         @NotNull

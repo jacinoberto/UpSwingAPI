@@ -5,8 +5,8 @@ CREATE TABLE tb_emails(
     subject VARCHAR(150) NOT NULL,
     message TEXT NOT NULL,
     date_of_dispatch DATE NOT NULL,
-    student_id UUID,
-    company_id UUID,
+    student_id VARCHAR(100),
+    company_id VARCHAR(100),
 
     PRIMARY KEY(id_email),
     CONSTRAINT fk_student_email_id FOREIGN KEY(student_id) REFERENCES tb_students(id_student),

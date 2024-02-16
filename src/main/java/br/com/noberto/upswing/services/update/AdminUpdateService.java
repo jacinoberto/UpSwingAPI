@@ -32,7 +32,7 @@ public class AdminUpdateService {
         this.courseRepository = courseRepository;
     }
 
-    public Admin updateAdmin(UUID adminId, AdminUpdate adminUpdate){
+    public Admin updateAdmin(String adminId, AdminUpdate adminUpdate){
         Admin admin = adminRepository.findById(adminId)
                 .orElseThrow(() -> new EntityExistsException("Administrador não encontrado!"));
         Account account = admin.getAccount();
@@ -47,7 +47,7 @@ public class AdminUpdateService {
         return admin;
     }
 
-    public Student updateStudent(UUID studentId, StudentUpdate studentUpdate){
+    public Student updateStudent(String studentId, StudentUpdate studentUpdate){
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new EntityExistsException("Aluno não encontrado!"));
         Account account = student.getAccount();

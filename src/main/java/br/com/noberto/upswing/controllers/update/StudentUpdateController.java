@@ -21,7 +21,7 @@ public class StudentUpdateController {
 
     @PatchMapping("/social-networks/{studentId}")
     @Transactional
-    public ResponseEntity<StudentResponse> studentUpdateSocialNetworks(@PathVariable UUID studentId, @RequestBody SocialNetworksUpdate socialNetworksUpdate){
+    public ResponseEntity<StudentResponse> studentUpdateSocialNetworks(@PathVariable String studentId, @RequestBody SocialNetworksUpdate socialNetworksUpdate){
         Student student = service.studentUpdateSocialNetworks(studentId, socialNetworksUpdate);
         return ResponseEntity.ok(new StudentResponse(student));
     }

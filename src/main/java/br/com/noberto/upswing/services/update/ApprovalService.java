@@ -28,7 +28,7 @@ public class ApprovalService {
     }
 
     @Transactional
-    public Company approvedProfile(UUID companyId){
+    public Company approvedProfile(String companyId){
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityExistsException("ID informado para Empresa é invalido"));
         company.setStatus(Status.APPROVED);
@@ -37,7 +37,7 @@ public class ApprovalService {
     }
 
     @Transactional
-    public Company notApprovedProfile(UUID companyId){
+    public Company notApprovedProfile(String companyId){
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityExistsException("ID informado para Empresa é invalido"));
         company.setStatus(Status.NOT_APPROVED);

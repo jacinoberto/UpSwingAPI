@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 public record StudentResponseCompany(
-        UUID id,
+        String id,
         String name,
         String occupation,
         String status,

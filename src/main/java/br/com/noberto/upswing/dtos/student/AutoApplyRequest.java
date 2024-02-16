@@ -12,7 +12,7 @@ public record AutoApplyRequest(
         String contract,
         String offerLocation,
         Boolean enableAutoApply,
-        UUID studentId
+        String studentId
 ) {
         public AutoApplyRequest(AutoApply autoApply){
                 this(

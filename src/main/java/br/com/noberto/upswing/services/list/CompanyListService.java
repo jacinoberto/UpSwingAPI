@@ -19,7 +19,7 @@ public class CompanyListService {
         this.repository = repository;
     }
 
-    public Company getCompany(UUID id){
+    public Company getCompany(String id){
         if (repository.existsById(id)){
             Company company = repository.getReferenceById(id);
             if (company.getSocialNetworks() == null){

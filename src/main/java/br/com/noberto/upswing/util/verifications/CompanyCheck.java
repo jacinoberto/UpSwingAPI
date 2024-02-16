@@ -29,7 +29,7 @@ public class CompanyCheck extends AbstractCheckObject{
     }
 
     @Override
-    public Company checkCompany(UUID companyId) {
+    public Company checkCompany(String companyId) {
         return super.checkCompany(companyId);
     }
 }

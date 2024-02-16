@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, UUID> {
+public interface StudentRepository extends JpaRepository<Student, String> {
     @Query("""
             SELECT s FROM Student s
             WHERE s.account.activeProfile = true
@@ -39,7 +40,7 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
                 JOIN s.autoApplies a
                 WHERE a.student.id = :studentId
             """)
-    Optional<Student> existsByStudent(UUID studentId);
+    Optional<Student> existsByStudent(String studentId);
 
     @Query("""
                 SELECT s FROM Student s
@@ -49,7 +50,7 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
                     AND c.address.zipCode.state = s.address.zipCode.state
                 )
             """)
-    List<Student> findByStateTrue(UUID companyId);
+    List<Student> findByStateTrue(String companyId);
 
     @Query("""
                 SELECT s FROM Student s
@@ -88,4 +89,10 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
                 )
             """)
     Student findStudentByVacancyOffer(UUID vacancyOfferId);
+
+    @Query("""
+                SELECT s FROM Student s
+                WHERE s.account.email = :email
+            """)
+    UserDetails findByEmail(String email);
 }

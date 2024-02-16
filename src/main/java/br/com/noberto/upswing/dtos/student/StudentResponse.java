@@ -7,7 +7,7 @@ import br.com.noberto.upswing.models.Student;
 import java.util.UUID;
 
 public record StudentResponse(
-        UUID id,
+        String id,
         String name,
         String occupation,
         SocialNetworks socialNetworks,

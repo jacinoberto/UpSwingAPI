@@ -1,5 +1,5 @@
 CREATE TABLE tb_companies(
-    id_company UUID,
+    id_company VARCHAR(255),
     name VARCHAR(150) NOT NULL,
     trading_name VARCHAR(150),
     company_code VARCHAR(15) NOT NULL,
@@ -14,9 +14,10 @@ CREATE TABLE tb_companies(
     social_three VARCHAR(150),
     social_four VARCHAR(150),
     email VARCHAR(150) NOT NULL,
-    password VARCHAR(75) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     active_profile BOOLEAN NOT NULL,
     status VARCHAR(15) NOT NULL,
+    role VARCHAR(20) NOT NULL,
 
     PRIMARY KEY(id_company),
     CONSTRAINT fk_business_area_company_id FOREIGN KEY(business_area_id) REFERENCES tb_business_areas(id_business_area),

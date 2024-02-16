@@ -1,6 +1,6 @@
 CREATE TABLE tb_registrations(
     registration INT,
-    student_id UUID NOT NULL,
+    student_id VARCHAR(100) NOT NULL,
     class_id UUID NOT NULL,
 
     PRIMARY KEY(registration),

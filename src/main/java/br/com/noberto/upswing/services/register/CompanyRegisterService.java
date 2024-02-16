@@ -11,6 +11,7 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,7 @@ public class CompanyRegisterService {
     public Company registerCompany(RegisterCompany registerCompany){
         Address address = companyCheck.checkZipCode(registerCompany.address());
         Company company = new Company(registerCompany);
+        company.getAccount().setPassword(new BCryptPasswordEncoder().encode(registerCompany.account().getPassword()));
         company.setBusinessArea(companyCheck.checkBusinessArea(registerCompany.businessArea().id()));
         company.setAddress(address);
         entityManager.flush();

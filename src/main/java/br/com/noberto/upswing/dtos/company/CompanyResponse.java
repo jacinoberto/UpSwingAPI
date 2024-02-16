@@ -7,7 +7,7 @@ import br.com.noberto.upswing.models.SocialNetworks;
 import java.util.UUID;
 
 public record CompanyResponse(
-        UUID id,
+        String id,
         String name,
         SocialNetworks socialNetworks,
         String mainPhone,

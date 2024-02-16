@@ -6,7 +6,7 @@ import br.com.noberto.upswing.models.Admin;
 import java.util.UUID;
 
 public record AdminResponse(
-        UUID id,
+        String id,
         String position,
         AccountResponse account
 ) {

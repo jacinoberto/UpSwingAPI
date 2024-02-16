@@ -42,7 +42,7 @@ public class AdminListController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AdminResponse> adminById(@PathVariable UUID id){
+    public ResponseEntity<AdminResponse> adminById(@PathVariable String id){
         return ResponseEntity.ok(new AdminResponse(service.getAdmin(id)));
     }
 

@@ -18,21 +18,21 @@ public class DisableController {
 
     @PatchMapping("/admin/{adminId}")
     @Transactional
-    public ResponseEntity<Void> disableAdmin(@PathVariable UUID adminId){
+    public ResponseEntity<Void> disableAdmin(@PathVariable String adminId){
         service.disableAdmin(adminId);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/student/{studentId}")
     @Transactional
-    public ResponseEntity<Void> disableStudent(@PathVariable UUID studentId){
+    public ResponseEntity<Void> disableStudent(@PathVariable String studentId){
         service.disableStudent(studentId);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/company/{companyId}")
     @Transactional
-    public ResponseEntity<Void> disableCompany(@PathVariable UUID companyId){
+    public ResponseEntity<Void> disableCompany(@PathVariable String companyId){
         service.disableCompany(companyId);
         return ResponseEntity.ok().build();
     }
