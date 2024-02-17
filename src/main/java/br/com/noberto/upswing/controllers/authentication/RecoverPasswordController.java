@@ -1,14 +1,13 @@
 package br.com.noberto.upswing.controllers.authentication;
 
+import br.com.noberto.upswing.dtos.authorization.RecoverPassword;
 import br.com.noberto.upswing.dtos.authorization.TokenResponse;
 import br.com.noberto.upswing.services.authentication.RecoverPasswordService;
 import br.com.noberto.upswing.services.mail.EmailService;
 import jakarta.mail.MessagingException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/recover-password")
@@ -26,5 +25,12 @@ public class RecoverPasswordController {
         String token = service.tokenForPasswordRecovery(email);
         emailService.emailRecoverPassword(token, email);
         return ResponseEntity.ok(new TokenResponse(token));
+    }
+
+    @PatchMapping("/{userId}")
+    @Transactional
+    public ResponseEntity<Void> newPassword(@PathVariable String userId, @RequestBody RecoverPassword recoverPassword){
+        service.newPassword(userId, recoverPassword);
+        return ResponseEntity.ok().build();
     }
 }
