@@ -95,4 +95,10 @@ public interface StudentRepository extends JpaRepository<Student, String> {
                 WHERE s.account.email = :email
             """)
     UserDetails findByEmail(String email);
+
+    @Query("""
+                SELECT s FROM Student s
+                WHERE s.account.email = :email
+            """)
+    Optional<Student> findStudentByEmail(String email);
 }

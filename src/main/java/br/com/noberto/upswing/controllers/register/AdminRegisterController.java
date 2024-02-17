@@ -7,6 +7,7 @@ import br.com.noberto.upswing.models.*;
 import br.com.noberto.upswing.models.Class;
 import br.com.noberto.upswing.services.mail.EmailService;
 import br.com.noberto.upswing.services.register.AdminRegisterService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +32,7 @@ public class AdminRegisterController {
     }
 
     @PostMapping("/student")
-    public ResponseEntity<RegisterStudent> registerStudent(@RequestBody @Valid RegisterStudent data, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<RegisterStudent> registerStudent(@RequestBody @Valid RegisterStudent data, UriComponentsBuilder uriBuilder) throws MessagingException {
         Student student = service.registerStudent(data);
         emailService.welcomeEmail(student);
         URI uri =uriBuilder.path("/api/register/student/{id}").buildAndExpand(student.getId()).toUri();

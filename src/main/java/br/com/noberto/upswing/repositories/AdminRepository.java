@@ -22,4 +22,10 @@ public interface AdminRepository extends JpaRepository<Admin, String> {
                 WHERE a.account.email = :email
             """)
     UserDetails findByEmail(String email);
+
+    @Query("""
+                SELECT a FROM Admin a
+                WHERE a.account.email = :email
+            """)
+    Optional<Admin> findAdminByEmail(String email);
 }

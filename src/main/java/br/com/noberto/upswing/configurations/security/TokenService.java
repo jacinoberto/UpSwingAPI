@@ -33,7 +33,7 @@ public class TokenService {
         }
     }
 
-    public String generateTokenCompany(Student student){
+    public String generateTokenStudent(Student student){
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()

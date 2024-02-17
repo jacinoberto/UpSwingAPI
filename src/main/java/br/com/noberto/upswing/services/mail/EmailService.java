@@ -5,17 +5,21 @@ import br.com.noberto.upswing.email.EmailSender;
 import br.com.noberto.upswing.models.*;
 import br.com.noberto.upswing.repositories.*;
 import br.com.noberto.upswing.util.emails.CompanyEmailToSendStrategy;
+import br.com.noberto.upswing.util.emails.EmailRecoverPassword;
 import br.com.noberto.upswing.util.emails.JobOfferEmailToSendStrategy;
 import br.com.noberto.upswing.util.emails.StudentEmailToSend;
 import br.com.noberto.upswing.util.filters.FilterStudentsByContractTypeStrategy;
 import br.com.noberto.upswing.util.verifications.AbstractCheckObject;
 import br.com.noberto.upswing.util.verifications.CompanyCheck;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,12 +38,13 @@ public class EmailService {
     private final StudentEmailToSend studentEmailToSend;
     private final FilterStudentsByContractTypeStrategy filterStudentsByContractType;
     private final AbstractCheckObject companyCheck;
+    private final EmailRecoverPassword emailRecoverPassword;
     @PersistenceContext
     private final EntityManager entityManager;
 
     @Autowired
     public EmailService(EmailRepository repository, StudentRepository studentRepository, JavaMailSender mailSender,
-                        CompanyRepository companyRepository, JobOfferRepository jobOfferRepository, ZipCodeRepository zipCodeRepository, BusinessAreaRepository businessAreaRepository, CourseRepository courseRepository, ClassRepository classRepository, JobOfferEmailToSendStrategy jobOfferEmailToSend, CompanyEmailToSendStrategy companyEmailToSend, StudentEmailToSend studentEmailToSend, FilterStudentsByContractTypeStrategy filterStudentsByContractType, AbstractCheckObject companyCheck, EntityManager entityManager) {
+                        CompanyRepository companyRepository, JobOfferRepository jobOfferRepository, ZipCodeRepository zipCodeRepository, BusinessAreaRepository businessAreaRepository, CourseRepository courseRepository, ClassRepository classRepository, JobOfferEmailToSendStrategy jobOfferEmailToSend, CompanyEmailToSendStrategy companyEmailToSend, StudentEmailToSend studentEmailToSend, FilterStudentsByContractTypeStrategy filterStudentsByContractType, AbstractCheckObject companyCheck, EntityManager entityManager, EmailRecoverPassword emailRecoverPassword) {
         this.repository = repository;
         this.studentRepository = studentRepository;
         this.mailSender = mailSender;
@@ -49,22 +54,35 @@ public class EmailService {
         this.companyEmailToSend = companyEmailToSend;
         this.studentEmailToSend = studentEmailToSend;
         this.filterStudentsByContractType = filterStudentsByContractType;
+        this.emailRecoverPassword = emailRecoverPassword;
         this.companyCheck = new CompanyCheck(zipCodeRepository, businessAreaRepository, studentRepository, classRepository, companyRepository, courseRepository, entityManager);
         this.entityManager = entityManager;
     }
 
-    @Async("threadPoolTaskExecutor")
-    public void welcomeEmail(Student studentData){
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        Student student = studentRepository.findById(studentData.getId()).orElseThrow(() -> new EntityExistsException("ID informado para Aluno é invalido!"));
-        EmailRequest emailRequest = studentEmailToSend.getWelcomeEmail(student);
+//    @Async("threadPoolTaskExecutor")
+//    public void welcomeEmail(Student studentData){
+//        SimpleMailMessage mailMessage = new SimpleMailMessage();
+//        Student student = studentRepository.findById(studentData.getId()).orElseThrow(() -> new EntityExistsException("ID informado para Aluno é invalido!"));
+//        EmailRequest emailRequest = studentEmailToSend.getWelcomeEmail(student);
+//
+//        mailMessage.setFrom(emailRequest.getEmailFrom());
+//        mailMessage.setTo(student.getAccount().getEmail());
+//        mailMessage.setSubject(emailRequest.getSubject());
+//        mailMessage.setText(emailRequest.getMessage());
+//        mailSender.send(mailMessage);
+//        repository.save(new EmailSender(emailRequest));
+//    }
 
-        mailMessage.setFrom(emailRequest.getEmailFrom());
-        mailMessage.setTo(student.getAccount().getEmail());
-        mailMessage.setSubject(emailRequest.getSubject());
-        mailMessage.setText(emailRequest.getMessage());
-        mailSender.send(mailMessage);
-        repository.save(new EmailSender(emailRequest));
+    @Async("threadPoolTaskExecutor")
+    public void welcomeEmail(Student studentData) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        Student student = studentRepository.findById(studentData.getId()).orElseThrow(() -> new EntityExistsException("ID informado para Aluno é invalido!"));
+
+        helper.setTo(student.getAccount().getEmail());
+        helper.setSubject("Upswing te dá as boas vindas!");
+        helper.setText(studentEmailToSend.getWelcomeEmail(student), true);
+        mailSender.send(message);
     }
 
     @Async("threadPoolTaskExecutor")
@@ -195,5 +213,16 @@ public class EmailService {
 
         mailSender.send(mailMessage);
         repository.save(new EmailSender(emailRequest));
+    }
+
+    @Async("threadPoolTaskExecutor")
+    public void emailRecoverPassword(String token, String email) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setTo(email);
+        helper.setSubject("Recupere sua senha");
+        helper.setText(emailRecoverPassword.emailRecoverPassword(token), true);
+        mailSender.send(message);
     }
 }

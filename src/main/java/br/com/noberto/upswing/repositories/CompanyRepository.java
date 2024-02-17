@@ -32,4 +32,10 @@ public interface CompanyRepository extends JpaRepository<Company, String> {
                 WHERE c.account.email = :email
             """)
     UserDetails findByEmail(String email);
+
+    @Query("""
+                SELECT c FROM Company c
+                WHERE c.account.email = :email
+            """)
+    Optional<Company> findCompanyByEmail(String email);
 }
