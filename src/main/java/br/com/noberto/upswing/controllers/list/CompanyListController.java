@@ -1,9 +1,11 @@
 package br.com.noberto.upswing.controllers.list;
 
+import br.com.noberto.upswing.dtos.academic.CourseSelect;
 import br.com.noberto.upswing.dtos.company.CompanyResponse;
 import br.com.noberto.upswing.dtos.company.JobOfferResponseCompany;
 import br.com.noberto.upswing.dtos.company.VacancyOfferResponse;
 import br.com.noberto.upswing.dtos.student.StudentResponseCompany;
+import br.com.noberto.upswing.models.Course;
 import br.com.noberto.upswing.models.Student;
 import br.com.noberto.upswing.repositories.*;
 import br.com.noberto.upswing.services.list.CompanyListService;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -26,12 +29,14 @@ public class CompanyListController {
     private final JobOfferRepository jobOfferRepository;
     private final VacancyOfferRepository vacancyOfferRepository;
     private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
     @Autowired
-    CompanyListController(CompanyListService service, JobOfferRepository jobOfferRepository, VacancyOfferRepository vacancyOfferRepository, StudentRepository studentRepository){
+    CompanyListController(CompanyListService service, JobOfferRepository jobOfferRepository, VacancyOfferRepository vacancyOfferRepository, StudentRepository studentRepository, CourseRepository courseRepository){
         this.service = service;
         this.jobOfferRepository = jobOfferRepository;
         this.vacancyOfferRepository = vacancyOfferRepository;
         this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
     }
 
     @GetMapping("/{id}")
@@ -40,14 +45,14 @@ public class CompanyListController {
     }
 
     @GetMapping("/my-vacancies/{companyId}")
-    public ResponseEntity<Page<JobOfferResponseCompany>> vacancyAll(@PathVariable UUID companyId, @PageableDefault(size = 8) Pageable pagination){
+    public ResponseEntity<Page<JobOfferResponseCompany>> vacancyAll(@PathVariable String companyId, @PageableDefault(size = 8) Pageable pagination){
         var page = jobOfferRepository.findAllMyVacancies(companyId, pagination)
                 .map(JobOfferResponseCompany::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/my-candidates/{companyId}")
-    public ResponseEntity<Page<VacancyOfferResponse>> candidatesAll(@PathVariable UUID companyId, @PageableDefault(size = 8) Pageable pagination){
+    public ResponseEntity<Page<VacancyOfferResponse>> candidatesAll(@PathVariable String companyId, @PageableDefault(size = 8) Pageable pagination){
         var page = vacancyOfferRepository.findAllCandidates(companyId, pagination)
                 .map(VacancyOfferResponse::new);
         return ResponseEntity.ok(page);

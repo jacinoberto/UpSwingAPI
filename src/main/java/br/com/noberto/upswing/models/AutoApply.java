@@ -37,7 +37,7 @@ public class AutoApply {
     public AutoApply(AutoApplyRequest autoApply, Student student) {
         this.contract = Contract.fromContract(autoApply.contract());
         this.offerLocation = Location.fromLocation(autoApply.offerLocation());
-        this.enableAutoApply = autoApply.enableAutoApply();
+        this.enableAutoApply = true;
         this.student = student;
     }
 }

@@ -5,6 +5,7 @@ import br.com.noberto.upswing.enums.Contract;
 import br.com.noberto.upswing.enums.EducationLevel;
 import br.com.noberto.upswing.models.JobOffer;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record JobOfferResponseCompany(
@@ -12,6 +13,7 @@ public record JobOfferResponseCompany(
         String businessArea,
         String educationLevel,
         String position,
+        BigDecimal salary,
         AddressRequest address,
         String contract,
         Boolean benefitsMeal,
@@ -29,6 +31,7 @@ public record JobOfferResponseCompany(
                 JobOffer.getBusinessArea().getBusinessArea(),
                 EducationLevel.fromString(JobOffer.getEducationLevel()),
                 JobOffer.getPosition(),
+                JobOffer.getSalary(),
                 new AddressRequest(JobOffer.getCompany().getAddress()),
                 Contract.fromString(JobOffer.getContract()),
                 JobOffer.getBenefitsMeal(),

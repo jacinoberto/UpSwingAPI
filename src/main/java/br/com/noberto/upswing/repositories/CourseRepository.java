@@ -21,6 +21,13 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
     Page<Course> findAllBusinessAreaById(UUID businessAreaId, Pageable pagination);
 
     @Query("""
+            SELECT c FROM Course c
+            WHERE c.businessArea.id = :businessAreaId
+            AND c.active = true
+            """)
+    List<Course> findAllCourseBusinessAreaById(UUID businessAreaId);
+
+    @Query("""
                 SELECT c FROM Course c
                 JOIN c.classes cl
                 JOIN cl.registrations r
@@ -28,7 +35,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
                 WHERE s.id = :studentId
                 AND c.active = true
             """)
-    Page<Course> findAllCourseStudentTrue(UUID studentId, Pageable pagination);
+    Page<Course> findAllStudentTrue(String studentId, Pageable pagination);
 
     @Query("""
                 SELECT c FROM Course c

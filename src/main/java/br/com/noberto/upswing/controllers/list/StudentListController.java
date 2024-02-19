@@ -2,8 +2,10 @@ package br.com.noberto.upswing.controllers.list;
 
 import br.com.noberto.upswing.dtos.academic.CourseByBusinessArea;
 import br.com.noberto.upswing.dtos.academic.CourseResponse;
+import br.com.noberto.upswing.dtos.academic.CourseSelect;
 import br.com.noberto.upswing.dtos.company.JobOfferResponse;
 import br.com.noberto.upswing.dtos.student.StudentResponse;
+import br.com.noberto.upswing.models.Course;
 import br.com.noberto.upswing.models.JobOffer;
 import br.com.noberto.upswing.repositories.AutoApplyRepository;
 import br.com.noberto.upswing.repositories.CourseRepository;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -62,14 +65,14 @@ public class StudentListController {
     }
 
     @GetMapping("/my-course/{studentId}")
-    public ResponseEntity<Page<CourseResponse>> myCourses(@PathVariable UUID studentId, @PageableDefault(size = 8) Pageable pagination){
-        var page = courseRepository.findAllCourseStudentTrue(studentId, pagination)
+    public ResponseEntity<Page<CourseResponse>> myCourses(@PathVariable String studentId, @PageableDefault(size = 8) Pageable pagination){
+        var page = courseRepository.findAllStudentTrue(studentId, pagination)
                 .map(CourseResponse::new);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/my-job-offers/{studentId}")
-    public ResponseEntity<Page<JobOfferResponse>> myJobOffers(@PathVariable UUID studentId, @PageableDefault(size = 8) Pageable pagination){
+    public ResponseEntity<Page<JobOfferResponse>> myJobOffers(@PathVariable String studentId, @PageableDefault(size = 8) Pageable pagination){
         var page = jobOfferRepository.findByStudentTrue(studentId, LocalDate.now(),pagination)
                 .map(JobOfferResponse::new);
         return ResponseEntity.ok(page);

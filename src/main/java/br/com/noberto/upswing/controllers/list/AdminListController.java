@@ -6,6 +6,7 @@ import br.com.noberto.upswing.dtos.admin.AdminResponse;
 import br.com.noberto.upswing.dtos.company.CompanyResponse;
 import br.com.noberto.upswing.dtos.company.JobOfferResponse;
 import br.com.noberto.upswing.dtos.student.StudentResponseAdmin;
+import br.com.noberto.upswing.models.Admin;
 import br.com.noberto.upswing.repositories.*;
 import br.com.noberto.upswing.services.list.AdminListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/list/admin")
@@ -27,11 +31,12 @@ public class AdminListController {
     private final StudentRepository studentRepository;
     private final CompanyRepository companyRepository;
     private final JobOfferRepository jobOfferRepository;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
     AdminListController(AdminListService service, AdminRepository repository, CourseRepository courseRepository,
                         ClassRepository classRepository, StudentRepository studentRepository, CompanyRepository
-                        companyRepository, JobOfferRepository jobOfferRepository){
+                        companyRepository, JobOfferRepository jobOfferRepository, AuthenticationManager authenticationManager){
         this.service = service;
         this.repository = repository;
         this.courseRepository = courseRepository;
@@ -39,6 +44,7 @@ public class AdminListController {
         this.studentRepository = studentRepository;
         this.companyRepository = companyRepository;
         this.jobOfferRepository = jobOfferRepository;
+        this.authenticationManager = authenticationManager;
     }
 
     @GetMapping("/{id}")
@@ -46,12 +52,21 @@ public class AdminListController {
         return ResponseEntity.ok(new AdminResponse(service.getAdmin(id)));
     }
 
-    @GetMapping()
-    public ResponseEntity<Page<AdminResponse>> adminAll(@PageableDefault(size = 8, sort = {"account.name"}) Pageable pagination){
-        var page = repository.findAllActiveProfileTrue(pagination)
-                .map(AdminResponse::new);
-        return ResponseEntity.ok(page);
-    }
+//    @GetMapping()
+//    public ResponseEntity<Page<AdminResponse>> adminAll(@PageableDefault(size = 8, sort = {"account.name"}) Pageable pagination){
+//        var page = repository.findAllActiveProfileTrue(pagination);
+//        List<AdminResponse> admins = new ArrayList<>();
+//
+//        for (Admin admin: page) {
+//            var usernamePassword = new UsernamePasswordAuthenticationToken(admin.getAccount().getEmail(), admin.getAccount().getPassword());
+//            var auth = this.authenticationManager.authenticate(usernamePassword);
+//
+//            admins.add(new AdminResponse((Admin) auth.getPrincipal()));
+//        }
+//
+//        Page<AdminResponse> pages = admins.stream().map(adminResponse -> new AdminResponse(adminResponse));
+//        return ResponseEntity.ok(admins);
+//    }
 
     @GetMapping("/courses")
     public ResponseEntity<Page<CourseResponseAdmin>> courseAll(@PageableDefault(size = 8, sort = {"courseName"}) Pageable pagination){

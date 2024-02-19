@@ -4,8 +4,10 @@ import br.com.noberto.upswing.enums.EducationLevel;
 import br.com.noberto.upswing.models.Course;
 
 import java.util.List;
+import java.util.UUID;
 
 public record CourseByBusinessArea(
+        UUID courseId,
         String area,
         String educationalLevel,
         String courseName,
@@ -14,6 +16,7 @@ public record CourseByBusinessArea(
 ){
     public CourseByBusinessArea(Course course){
         this(
+                course.getId(),
                 course.getBusinessArea().getBusinessArea(),
                 EducationLevel.fromString(course.getEducationLevel()),
                 course.getCourseName(),

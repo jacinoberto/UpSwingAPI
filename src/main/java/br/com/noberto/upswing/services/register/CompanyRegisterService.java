@@ -41,13 +41,16 @@ public class CompanyRegisterService {
 
     @Transactional
     public Company registerCompany(RegisterCompany registerCompany){
-        Address address = companyCheck.checkZipCode(registerCompany.address());
-        Company company = new Company(registerCompany);
-        company.getAccount().setPassword(new BCryptPasswordEncoder().encode(registerCompany.account().getPassword()));
-        company.setBusinessArea(companyCheck.checkBusinessArea(registerCompany.businessArea().id()));
-        company.setAddress(address);
-        entityManager.flush();
-        return repository.save(company);
+        if (repository.findCompanyByEmail(registerCompany.account().getEmail()).isEmpty()){
+            Address address = companyCheck.checkZipCode(registerCompany.address());
+            Company company = new Company(registerCompany);
+            company.getAccount().setPassword(new BCryptPasswordEncoder().encode(registerCompany.account().getPassword()));
+            company.setBusinessArea(companyCheck.checkBusinessArea(registerCompany.businessArea().id()));
+            company.setAddress(address);
+            entityManager.flush();
+            return repository.save(company);
+        }
+        throw new IllegalArgumentException("Email informado já exite no banco!");
     }
 
     @Transactional

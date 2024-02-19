@@ -102,7 +102,7 @@ public class JobOffer {
         this.educationLevel = EducationLevel.fromEducationLevel(jobOffer.educationLevel());
         this.contract = Contract.fromContract(jobOffer.contract());
         this.salary = jobOffer.salary();
-        this.journey = Mode.valueOf(jobOffer.journey());
+        this.journey = Mode.fromLearningMode(jobOffer.journey());
         this.workSchedule = jobOffer.workSchedule();
         this.disablePerson = jobOffer.disablePerson();
         this.offerQty = jobOffer.offerQty();

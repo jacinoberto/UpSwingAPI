@@ -22,15 +22,14 @@ public interface JobOfferRepository extends JpaRepository<JobOffer, UUID> {
                 AND j.closingDate >= :date
                 AND j.status = APPROVED
             """)
-    Page<JobOffer> findByStudentTrue(UUID studentId, LocalDate date, Pageable pagination);
+    Page<JobOffer> findByStudentTrue(String studentId, LocalDate date, Pageable pagination);
 
     @Query("""
                 SELECT jo FROM JobOffer jo
                 JOIN jo.company c
                 WHERE c.id = :companyId
-                AND jo.status = APPROVED
             """)
-    Page<JobOffer> findAllMyVacancies(UUID companyId, Pageable pagination);
+    Page<JobOffer> findAllMyVacancies(String companyId, Pageable pagination);
 
     @Query("""
                 SELECT jo FROM JobOffer jo

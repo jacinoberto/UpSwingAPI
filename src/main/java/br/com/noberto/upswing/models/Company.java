@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tb_companies")
@@ -52,6 +51,7 @@ public class Company implements UserDetails {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
@@ -69,8 +69,16 @@ public class Company implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UserRole.COMPANY) return List.of(new SimpleGrantedAuthority("ROLE_COMPANY"));
-        else return List.of( new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_STUDENT"));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        if (this.role == UserRole.COMPANY) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_COMPANY"));
+        } else {
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
+        }
+
+        return authorities;
     }
 
     @Override

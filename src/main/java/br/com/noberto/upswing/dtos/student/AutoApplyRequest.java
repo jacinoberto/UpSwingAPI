@@ -11,14 +11,12 @@ import java.util.UUID;
 public record AutoApplyRequest(
         String contract,
         String offerLocation,
-        Boolean enableAutoApply,
         String studentId
 ) {
         public AutoApplyRequest(AutoApply autoApply){
                 this(
                         Contract.fromString(autoApply.getContract()),
                         Location.fromString(autoApply.getOfferLocation()),
-                        autoApply.getEnableAutoApply(),
                         autoApply.getStudent().getId()
                 );
         }

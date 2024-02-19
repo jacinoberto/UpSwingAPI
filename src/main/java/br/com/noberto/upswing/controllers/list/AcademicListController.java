@@ -8,10 +8,12 @@ import br.com.noberto.upswing.repositories.BusinessAreaRepository;
 import br.com.noberto.upswing.repositories.CourseRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/list")
@@ -36,5 +38,11 @@ public class AcademicListController {
         List<Course> courses = courseRepository.findAll();
         List<CourseSelect> selects = courses.stream().map(CourseSelect::new).toList();
         return ResponseEntity.ok(selects);
+    }
+    @GetMapping("/course-select/{businessAreaId}")
+    public ResponseEntity<List<CourseSelect>> courseSelectByBusinessArea(@PathVariable UUID businessAreaId){
+        List<Course> courses = courseRepository.findAllCourseBusinessAreaById(businessAreaId);
+        List<CourseSelect> courseSelects = courses.stream().map(CourseSelect::new).toList();
+        return ResponseEntity.ok(courseSelects);
     }
 }
