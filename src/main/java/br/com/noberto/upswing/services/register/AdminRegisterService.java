@@ -22,6 +22,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -95,10 +97,20 @@ public class AdminRegisterService {
     }
 
 
-    public Registration registrationStudent(String email, UUID classId){
-        Student student = adminCheck.checkStudent(email);
-        Class aClass = adminCheck.checkClass(classId);
-        return registrationRepository.save(new Registration(codeForRegistration.randomCode(), student, aClass));
+//    public Registration registrationStudent(String email, UUID classId){
+//        Student student = adminCheck.checkStudent(email);
+//        Class aClass = adminCheck.checkClass(classId);
+//        return registrationRepository.save(new Registration(codeForRegistration.randomCode(), student, aClass));
+//    }
+
+    public List<Registration> registrationStudent(List<String> emails, UUID classId){
+        List<Registration> registrations = new ArrayList<>();
+        for (String email: emails) {
+            Student student = adminCheck.checkStudent(email);
+            Class aClass = adminCheck.checkClass(classId);
+            registrations.add(registrationRepository.save(new Registration(codeForRegistration.randomCode(), student, aClass)));
+        }
+        return registrations;
     }
 
     public CompletedSubject saveCompletedSubjects(CompletedSubjectRequest completedSubjectRequest){

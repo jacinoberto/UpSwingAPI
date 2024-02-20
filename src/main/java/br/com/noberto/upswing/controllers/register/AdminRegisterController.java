@@ -11,13 +11,12 @@ import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/register")
@@ -73,10 +72,10 @@ public class AdminRegisterController {
 
     @PostMapping("/registration")
     @Transactional
-    public ResponseEntity<RegistrationRequest> registerStudent(@RequestBody @Valid RegistrationRequest registrationRequest, UriComponentsBuilder uriBuilder){
-        Registration registration = service.registrationStudent(registrationRequest.email(), registrationRequest.id());
-        URI uri = uriBuilder.path("/api/register/registration/{id}").buildAndExpand(registration.getRegistration()).toUri();
-        return ResponseEntity.created(uri).body(new RegistrationRequest(registration));
+    public ResponseEntity<List<RegistrationReturn>> registerStudent(@RequestBody RegistrationRequest registrationRequest){
+        List<Registration> registrations = service.registrationStudent(registrationRequest.emails(), registrationRequest.classId());
+        List<RegistrationReturn> registrationReturns = registrations.stream().map(RegistrationReturn::new).toList();
+        return ResponseEntity.ok(registrationReturns);
     }
 
     @PostMapping("/completed-subject")
