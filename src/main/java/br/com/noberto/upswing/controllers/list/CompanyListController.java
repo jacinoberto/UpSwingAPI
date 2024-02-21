@@ -51,10 +51,17 @@ public class CompanyListController {
         return ResponseEntity.ok(page);
     }
 
-    @GetMapping("/my-candidates/{companyId}")
-    public ResponseEntity<Page<VacancyOfferResponse>> candidatesAll(@PathVariable String companyId, @PageableDefault(size = 8) Pageable pagination){
-        var page = vacancyOfferRepository.findAllCandidates(companyId, pagination)
-                .map(VacancyOfferResponse::new);
+//    @GetMapping("/my-candidates/{companyId}")
+//    public ResponseEntity<Page<VacancyOfferResponse>> candidatesAll(@PathVariable String companyId, @PageableDefault(size = 8) Pageable pagination){
+//        var page = vacancyOfferRepository.findAllCandidates(companyId, pagination)
+//                .map(VacancyOfferResponse::new);
+//        return ResponseEntity.ok(page);
+//    }
+
+    @GetMapping("/my-candidates/{jobOfferId}")
+    public ResponseEntity<Page<StudentResponseCompany>> candidates(@PathVariable UUID jobOfferId, @PageableDefault(size = 8) Pageable pagination){
+        var page = studentRepository.findStudentsByVacancyOffer(jobOfferId, pagination)
+                .map(StudentResponseCompany::new);
         return ResponseEntity.ok(page);
     }
 

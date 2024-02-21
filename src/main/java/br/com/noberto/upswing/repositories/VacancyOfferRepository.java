@@ -20,4 +20,6 @@ public interface VacancyOfferRepository extends JpaRepository<VacancyOffer, UUID
                 WHERE c.id = :companyId
            """)
     Page<VacancyOffer> findAllCandidates(String companyId, Pageable pagination);
+
+
 }

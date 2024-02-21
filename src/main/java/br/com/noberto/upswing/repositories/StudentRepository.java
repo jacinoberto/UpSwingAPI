@@ -92,6 +92,16 @@ public interface StudentRepository extends JpaRepository<Student, String> {
 
     @Query("""
                 SELECT s FROM Student s
+                WHERE EXISTS(
+                    SELECT vo from VacancyOffer vo
+                    WHERE vo.jobOffer.id = :jobOfferId
+                    AND s = vo.student
+                )
+            """)
+    Page<Student> findStudentsByVacancyOffer(UUID jobOfferId, Pageable pagination);
+
+    @Query("""
+                SELECT s FROM Student s
                 WHERE s.account.email = :email
             """)
     UserDetails findByEmail(String email);

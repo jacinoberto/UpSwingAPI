@@ -28,6 +28,7 @@ public interface JobOfferRepository extends JpaRepository<JobOffer, UUID> {
                 SELECT jo FROM JobOffer jo
                 JOIN jo.company c
                 WHERE c.id = :companyId
+                AND jo.status = APPROVED
             """)
     Page<JobOffer> findAllMyVacancies(String companyId, Pageable pagination);
 
