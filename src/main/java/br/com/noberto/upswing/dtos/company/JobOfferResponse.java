@@ -7,8 +7,10 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 public record JobOfferResponse (
+        UUID jobOfferId,
         String name,
         String educationLevel,
         String position,
@@ -25,6 +27,7 @@ public record JobOfferResponse (
 ){
     public JobOfferResponse (JobOffer jobOffer){
         this(
+                jobOffer.getId(),
                 jobOffer.getCompany().getAccount().getName(),
                 EducationLevel.fromString(jobOffer.getEducationLevel()),
                 jobOffer.getPosition(),

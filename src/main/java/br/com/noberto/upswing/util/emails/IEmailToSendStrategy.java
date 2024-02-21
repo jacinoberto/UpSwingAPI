@@ -4,7 +4,7 @@ import br.com.noberto.upswing.email.EmailRequest;
 
 public interface IEmailToSendStrategy {
 
-    <T> EmailRequest emailPending(T object);
-    <T> EmailRequest emailApproved(T object);
-    <T> EmailRequest emailNotApproved(T object);
+    String emailPending(Object object);
+    String emailApproved(Object object);
+    String emailNotApproved(Object object);
 }

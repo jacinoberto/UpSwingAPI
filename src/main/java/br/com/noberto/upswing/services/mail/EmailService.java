@@ -4,9 +4,9 @@ import br.com.noberto.upswing.email.EmailRequest;
 import br.com.noberto.upswing.email.EmailSender;
 import br.com.noberto.upswing.models.*;
 import br.com.noberto.upswing.repositories.*;
-import br.com.noberto.upswing.util.emails.CompanyEmailToSendStrategy;
+import br.com.noberto.upswing.util.emails.CompanyEmailToSend;
 import br.com.noberto.upswing.util.emails.EmailRecoverPassword;
-import br.com.noberto.upswing.util.emails.JobOfferEmailToSendStrategy;
+import br.com.noberto.upswing.util.emails.JobOfferEmailToSend;
 import br.com.noberto.upswing.util.emails.StudentEmailToSend;
 import br.com.noberto.upswing.util.filters.FilterStudentsByContractTypeStrategy;
 import br.com.noberto.upswing.util.verifications.AbstractCheckObject;
@@ -29,12 +29,11 @@ import java.util.List;
 @Service
 public class EmailService {
     private final JavaMailSender mailSender;
-    private final EmailRepository repository;
     private final StudentRepository studentRepository;
     private final CompanyRepository companyRepository;
     private final JobOfferRepository jobOfferRepository;
-    private final JobOfferEmailToSendStrategy jobOfferEmailToSend;
-    private final CompanyEmailToSendStrategy companyEmailToSend;
+    private final JobOfferEmailToSend jobOfferEmailToSend;
+    private final CompanyEmailToSend companyEmailToSend;
     private final StudentEmailToSend studentEmailToSend;
     private final FilterStudentsByContractTypeStrategy filterStudentsByContractType;
     private final AbstractCheckObject companyCheck;
@@ -43,9 +42,8 @@ public class EmailService {
     private final EntityManager entityManager;
 
     @Autowired
-    public EmailService(EmailRepository repository, StudentRepository studentRepository, JavaMailSender mailSender,
-                        CompanyRepository companyRepository, JobOfferRepository jobOfferRepository, ZipCodeRepository zipCodeRepository, BusinessAreaRepository businessAreaRepository, CourseRepository courseRepository, ClassRepository classRepository, JobOfferEmailToSendStrategy jobOfferEmailToSend, CompanyEmailToSendStrategy companyEmailToSend, StudentEmailToSend studentEmailToSend, FilterStudentsByContractTypeStrategy filterStudentsByContractType, AbstractCheckObject companyCheck, EntityManager entityManager, EmailRecoverPassword emailRecoverPassword) {
-        this.repository = repository;
+    public EmailService(StudentRepository studentRepository, JavaMailSender mailSender, CompanyRepository companyRepository,
+                        JobOfferRepository jobOfferRepository, ZipCodeRepository zipCodeRepository, BusinessAreaRepository businessAreaRepository, CourseRepository courseRepository, ClassRepository classRepository, JobOfferEmailToSend jobOfferEmailToSend, CompanyEmailToSend companyEmailToSend, StudentEmailToSend studentEmailToSend, FilterStudentsByContractTypeStrategy filterStudentsByContractType, AbstractCheckObject companyCheck, EntityManager entityManager, EmailRecoverPassword emailRecoverPassword) {
         this.studentRepository = studentRepository;
         this.mailSender = mailSender;
         this.companyRepository = companyRepository;
@@ -58,20 +56,6 @@ public class EmailService {
         this.companyCheck = new CompanyCheck(zipCodeRepository, businessAreaRepository, studentRepository, classRepository, companyRepository, courseRepository, entityManager);
         this.entityManager = entityManager;
     }
-
-//    @Async("threadPoolTaskExecutor")
-//    public void welcomeEmail(Student studentData){
-//        SimpleMailMessage mailMessage = new SimpleMailMessage();
-//        Student student = studentRepository.findById(studentData.getId()).orElseThrow(() -> new EntityExistsException("ID informado para Aluno é invalido!"));
-//        EmailRequest emailRequest = studentEmailToSend.getWelcomeEmail(student);
-//
-//        mailMessage.setFrom(emailRequest.getEmailFrom());
-//        mailMessage.setTo(student.getAccount().getEmail());
-//        mailMessage.setSubject(emailRequest.getSubject());
-//        mailMessage.setText(emailRequest.getMessage());
-//        mailSender.send(mailMessage);
-//        repository.save(new EmailSender(emailRequest));
-//    }
 
     @Async("threadPoolTaskExecutor")
     public void welcomeEmail(Student studentData) throws MessagingException {
@@ -87,132 +71,118 @@ public class EmailService {
 
     @Async("threadPoolTaskExecutor")
     @Transactional
-    public void emailForJobApplication(JobOffer jobOffer){
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
+    public void emailForJobApplication(JobOffer jobOffer) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
         Company company = companyRepository.findById(jobOffer.getCompany().getId())
                 .orElseThrow(() -> new EntityExistsException("ID informado para Empresa invalido!"));
         List<Student> students = filterStudentsByContractType.filterStudents(jobOffer);
         entityManager.flush();
-        for (Student studentData : students){
+
+        for (Student studentData : students) {
             Student student = studentRepository.getReferenceById(studentData.getId());
-            EmailRequest emailRequest = studentEmailToSend.getAppliedVacancyEmail(student, company, jobOffer);
 
-            mailMessage.setFrom(emailRequest.getEmailFrom());
-            mailMessage.setTo(student.getAccount().getEmail());
-            mailMessage.setSubject(emailRequest.getSubject());
-            mailMessage.setText(emailRequest.getMessage());
-
-            mailSender.send(mailMessage);
-            repository.save(new EmailSender(emailRequest));
+            helper.setTo(student.getAccount().getEmail());
+            helper.setSubject("Temos uma nova oportunidade compativel com seu perfil!");
+            helper.setText(studentEmailToSend.getAppliedVacancyEmail(student, company, jobOffer), true);
+            mailSender.send(message);
         }
     }
+
     @Async("threadPoolTaskExecutor")
-    public void emailForPendingProfile(Company companyData){
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
+    public void emailForPendingProfile(Company companyData) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
         Company company = companyRepository.findById(companyData.getId())
                 .orElseThrow(() -> new EntityExistsException("ID informado para Empresa invalido!"));
-        EmailRequest emailRequest = companyEmailToSend.emailPending(company);
 
-        mailMessage.setFrom(emailRequest.getEmailFrom());
-        mailMessage.setTo(company.getAccount().getEmail());
-        mailMessage.setSubject(emailRequest.getSubject());
-        mailMessage.setText(emailRequest.getMessage());
-
-        mailSender.send(mailMessage);
-        repository.save(new EmailSender(emailRequest));
+        helper.setTo(company.getAccount().getEmail());
+        helper.setSubject("Seu perrfil está pendente de aprovação!");
+        helper.setText(companyEmailToSend.emailPending(company), true);
+        mailSender.send(message);
     }
 
     @Async("threadPoolTaskExecutor")
-    public void emailForApprovedProfile(Company companyData){
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
+    public void emailForApprovedProfile(Company companyData) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
         Company company = companyRepository.findById(companyData.getId())
                 .orElseThrow(() -> new EntityExistsException("ID informado para Empresa invalido!"));
-        EmailRequest emailRequest = companyEmailToSend.emailApproved(company);
 
-        mailMessage.setFrom(emailRequest.getEmailFrom());
-        mailMessage.setTo(company.getAccount().getEmail());
-        mailMessage.setSubject(emailRequest.getSubject());
-        mailMessage.setText(emailRequest.getMessage());
-
-        mailSender.send(mailMessage);
-        repository.save(new EmailSender(emailRequest));
+        helper.setTo(company.getAccount().getEmail());
+        helper.setSubject("Seu perfil foi aprovado!");
+        helper.setText(companyEmailToSend.emailApproved(company), true);
+        mailSender.send(message);
     }
 
     @Async("threadPoolTaskExecutor")
     @Transactional
-    public void emailForNotApprovedProfile(Company companyData){
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
+    public void emailForNotApprovedProfile(Company companyData) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
         Company company = companyRepository.findById(companyData.getId())
                 .orElseThrow(() -> new EntityExistsException("ID informado para Empresa invalido!"));
-        EmailRequest emailRequest = companyEmailToSend.emailNotApproved(company);
-
         entityManager.flush();
 
-        mailMessage.setFrom(emailRequest.getEmailFrom());
-        mailMessage.setTo(company.getAccount().getEmail());
-        mailMessage.setSubject(emailRequest.getSubject());
-        mailMessage.setText(emailRequest.getMessage());
-
-        mailSender.send(mailMessage);
-        repository.save(new EmailSender(emailRequest));
+        helper.setTo(company.getAccount().getEmail());
+        helper.setSubject("Seu perfil não foi aprovado!");
+        helper.setText(companyEmailToSend.emailNotApproved(company), true);
+        mailSender.send(message);
     }
 
     @Async("threadPoolTaskExecutor")
     @Transactional
-    public void emailForPendingVacancy(JobOffer jobOffer){
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
+    public void emailForPendingVacancy(JobOffer jobOffer) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
         Company company = companyRepository.findById(jobOffer.getCompany().getId())
                 .orElseThrow(() -> new EntityExistsException("ID informado para Empresa é invalido!"));
-        EmailRequest emailRequest = jobOfferEmailToSend.emailPending(jobOffer);
-
         entityManager.flush();
 
-        mailMessage.setFrom(emailRequest.getEmailFrom());
-        mailMessage.setTo(company.getAccount().getEmail());
-        mailMessage.setSubject(emailRequest.getSubject());
-        mailMessage.setText(emailRequest.getMessage());
-
-        mailSender.send(mailMessage);
-        repository.save(new EmailSender(emailRequest));
+        helper.setTo(company.getAccount().getEmail());
+        helper.setSubject("Sua vaga está pendente de aprovação!");
+        helper.setText(jobOfferEmailToSend.emailPending(jobOffer), true);
+        mailSender.send(message);
     }
 
     @Async("threadPoolTaskExecutor")
     @Transactional
-    public void emailForApprovedVacancy(JobOffer jobOfferData){
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
+    public void emailForApprovedVacancy(JobOffer jobOfferData) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
         Company company = companyRepository.findById(jobOfferData.getCompany().getId())
                 .orElseThrow(() -> new EntityExistsException("ID informado para Empresa é invalido!"));
         JobOffer jobOffer = jobOfferRepository.findById(jobOfferData.getId())
                 .orElseThrow(() -> new EntityExistsException("Vaga invalida"));
-        EmailRequest emailRequest = jobOfferEmailToSend.emailApproved(jobOffer);
         entityManager.flush();
-        mailMessage.setFrom(emailRequest.getEmailFrom());
-        mailMessage.setTo(company.getAccount().getEmail());
-        mailMessage.setSubject(emailRequest.getSubject());
-        mailMessage.setText(emailRequest.getMessage());
 
-        mailSender.send(mailMessage);
-        repository.save(new EmailSender(emailRequest));
+        helper.setTo(company.getAccount().getEmail());
+        helper.setSubject("Sua vaga foi aprovada!");
+        helper.setText(jobOfferEmailToSend.emailApproved(jobOffer), true);
+        mailSender.send(message);
     }
 
     @Async("threadPoolTaskExecutor")
     @Transactional
-    public void emailForNotApprovedVacancy(JobOffer jobOfferData){
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
+    public void emailForNotApprovedVacancy(JobOffer jobOfferData) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
         Company company = companyCheck.checkCompany(jobOfferData.getCompany().getId());
         JobOffer jobOffer = jobOfferRepository.findById(jobOfferData.getId())
                 .orElseThrow(() -> new EntityExistsException("Vaga invalida"));
-        EmailRequest emailRequest = jobOfferEmailToSend.emailNotApproved(jobOffer);
-
         entityManager.flush();
 
-        mailMessage.setFrom(emailRequest.getEmailFrom());
-        mailMessage.setTo(company.getAccount().getEmail());
-        mailMessage.setSubject(emailRequest.getSubject());
-        mailMessage.setText(emailRequest.getMessage());
-
-        mailSender.send(mailMessage);
-        repository.save(new EmailSender(emailRequest));
+        helper.setTo(company.getAccount().getEmail());
+        helper.setSubject("Sua não foi aprovada!");
+        helper.setText(jobOfferEmailToSend.emailNotApproved(jobOffer), true);
+        mailSender.send(message);
     }
 
     @Async("threadPoolTaskExecutor")

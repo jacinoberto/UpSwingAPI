@@ -7,8 +7,10 @@ import br.com.noberto.upswing.models.JobOffer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 public record JobOfferResponseCompany(
+        UUID jobOfferId,
         String name,
         String businessArea,
         String educationLevel,
@@ -25,23 +27,24 @@ public record JobOfferResponseCompany(
         LocalDate closingDate,
         String offerDescription
 ) {
-    public JobOfferResponseCompany (JobOffer JobOffer){
+    public JobOfferResponseCompany (JobOffer jobOffer){
         this(
-                JobOffer.getCompany().getAccount().getName(),
-                JobOffer.getBusinessArea().getBusinessArea(),
-                EducationLevel.fromString(JobOffer.getEducationLevel()),
-                JobOffer.getPosition(),
-                JobOffer.getSalary(),
-                new AddressRequest(JobOffer.getCompany().getAddress()),
-                Contract.fromString(JobOffer.getContract()),
-                JobOffer.getBenefitsMeal(),
-                JobOffer.getBenefitsMobility(),
-                JobOffer.getBenefitsCultural(),
-                JobOffer.getBenefitsEducation(),
-                JobOffer.getBenefitsHealthWellness(),
-                JobOffer.getOfferQty(),
-                JobOffer.getClosingDate(),
-                JobOffer.getOfferDescription()
+                jobOffer.getId(),
+                jobOffer.getCompany().getAccount().getName(),
+                jobOffer.getBusinessArea().getBusinessArea(),
+                EducationLevel.fromString(jobOffer.getEducationLevel()),
+                jobOffer.getPosition(),
+                jobOffer.getSalary(),
+                new AddressRequest(jobOffer.getCompany().getAddress()),
+                Contract.fromString(jobOffer.getContract()),
+                jobOffer.getBenefitsMeal(),
+                jobOffer.getBenefitsMobility(),
+                jobOffer.getBenefitsCultural(),
+                jobOffer.getBenefitsEducation(),
+                jobOffer.getBenefitsHealthWellness(),
+                jobOffer.getOfferQty(),
+                jobOffer.getClosingDate(),
+                jobOffer.getOfferDescription()
         );
     }
 }

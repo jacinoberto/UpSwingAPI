@@ -11,6 +11,7 @@ import br.com.noberto.upswing.models.*;
 import br.com.noberto.upswing.services.mail.EmailService;
 import br.com.noberto.upswing.services.update.AdminUpdateService;
 import br.com.noberto.upswing.services.update.ApprovalService;
+import jakarta.mail.MessagingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +53,7 @@ public class AdminUpdateController {
     }
 
     @PatchMapping("/job-approved/{jobOfferId}")
-    public ResponseEntity<RegisterJobOffer> approvedJobOffer(@PathVariable UUID jobOfferId){
+    public ResponseEntity<RegisterJobOffer> approvedJobOffer(@PathVariable UUID jobOfferId) throws MessagingException {
         JobOffer jobOffer = approvalService.approvedJobOffer(jobOfferId);
         emailService.emailForJobApplication(jobOffer);
         emailService.emailForApprovedVacancy(jobOffer);
@@ -60,21 +61,21 @@ public class AdminUpdateController {
     }
 
     @PatchMapping("/job-not-approved/{jobOfferId}")
-    public ResponseEntity<RegisterJobOffer> notApprovedJobOffer(@PathVariable UUID jobOfferId){
+    public ResponseEntity<RegisterJobOffer> notApprovedJobOffer(@PathVariable UUID jobOfferId) throws MessagingException {
         JobOffer jobOffer = approvalService.notApprovedJobOffer(jobOfferId);
         emailService.emailForNotApprovedVacancy(jobOffer);
         return ResponseEntity.ok(new RegisterJobOffer(jobOffer));
     }
 
     @PatchMapping("/company-approved/{companyId}")
-    public ResponseEntity<RegisterCompany> approvedCompany(@PathVariable String companyId){
+    public ResponseEntity<RegisterCompany> approvedCompany(@PathVariable String companyId) throws MessagingException {
         Company company = approvalService.approvedProfile(companyId);
         emailService.emailForApprovedProfile(company);
         return ResponseEntity.ok(new RegisterCompany(company));
     }
 
     @PatchMapping("/company-not-approved/{companyId}")
-    public ResponseEntity<RegisterCompany> notApprovedCompany(@PathVariable String companyId){
+    public ResponseEntity<RegisterCompany> notApprovedCompany(@PathVariable String companyId) throws MessagingException {
         Company company = approvalService.notApprovedProfile(companyId);
         emailService.emailForNotApprovedProfile(company);
         return ResponseEntity.ok(new RegisterCompany(company));

@@ -52,21 +52,12 @@ public class AdminListController {
         return ResponseEntity.ok(new AdminResponse(service.getAdmin(id)));
     }
 
-//    @GetMapping()
-//    public ResponseEntity<Page<AdminResponse>> adminAll(@PageableDefault(size = 8, sort = {"account.name"}) Pageable pagination){
-//        var page = repository.findAllActiveProfileTrue(pagination);
-//        List<AdminResponse> admins = new ArrayList<>();
-//
-//        for (Admin admin: page) {
-//            var usernamePassword = new UsernamePasswordAuthenticationToken(admin.getAccount().getEmail(), admin.getAccount().getPassword());
-//            var auth = this.authenticationManager.authenticate(usernamePassword);
-//
-//            admins.add(new AdminResponse((Admin) auth.getPrincipal()));
-//        }
-//
-//        Page<AdminResponse> pages = admins.stream().map(adminResponse -> new AdminResponse(adminResponse));
-//        return ResponseEntity.ok(admins);
-//    }
+    @GetMapping
+    public ResponseEntity<Page<AdminResponse>> adminAll(@PageableDefault(size = 6) Pageable pagination){
+        var page = repository.findAll(pagination)
+                .map(AdminResponse::new);
+        return ResponseEntity.ok(page);
+    }
 
     @GetMapping("/courses")
     public ResponseEntity<Page<CourseResponseAdmin>> courseAll(@PageableDefault(size = 8, sort = {"courseName"}) Pageable pagination){
