@@ -24,4 +24,9 @@ public class VacancyOffer {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "job_offer_id")
     private JobOffer jobOffer;
+
+    public VacancyOffer(Student student, JobOffer jobOffer) {
+        this.student = student;
+        this.jobOffer = jobOffer;
+    }
 }
