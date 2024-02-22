@@ -21,5 +21,10 @@ public interface VacancyOfferRepository extends JpaRepository<VacancyOffer, UUID
            """)
     Page<VacancyOffer> findAllCandidates(String companyId, Pageable pagination);
 
-
+    @Query("""
+                SELECT vo FROM VacancyOffer vo
+                WHERE vo.jobOffer.id = :jobOfferId
+                AND vo.student.id = :studentId
+           """)
+    VacancyOffer findByJobOffer(UUID jobOfferId, String studentId);
 }

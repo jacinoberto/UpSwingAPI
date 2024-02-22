@@ -21,6 +21,7 @@ public interface JobOfferRepository extends JpaRepository<JobOffer, UUID> {
                 WHERE s.id = :studentId
                 AND j.closingDate >= :date
                 AND j.status = APPROVED
+                AND v.status = true
             """)
     Page<JobOffer> findByStudentTrue(String studentId, LocalDate date, Pageable pagination);
 

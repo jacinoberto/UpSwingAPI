@@ -25,8 +25,11 @@ public class VacancyOffer {
     @JoinColumn(name = "job_offer_id")
     private JobOffer jobOffer;
 
+    private Boolean status;
+
     public VacancyOffer(Student student, JobOffer jobOffer) {
         this.student = student;
         this.jobOffer = jobOffer;
+        this.status = true;
     }
 }
