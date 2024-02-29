@@ -30,6 +30,9 @@ O Upswing é uma plataforma projetada para facilitar o ingresso de estudantes no
 ### Para visualizar a documentação da API no Swagger 3
 Com o projeto rodando em sua máquina acesse em seu navegador a URL `localhost:8080/swagger-ui.html`
 
+## Integração do Back End com Front End
+Para integrar a API do Upswing ao Front do projeto basta acessar o repositorio `https://github.com/Flickler/upswing`
+
 ## Contribuição
 O Banco de Oportunidades Upswing é um projeto que ainda está em desenvolvimento e estamos abertos a contribuições. Se você se interessou pela ideia e queira contribuir com o projeto basta entrar em contato com a gente pelos links abaixo:
 
