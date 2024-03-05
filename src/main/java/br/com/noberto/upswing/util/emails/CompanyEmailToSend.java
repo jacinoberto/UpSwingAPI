@@ -277,7 +277,7 @@ public class CompanyEmailToSend implements IEmailToSendStrategy {
                "                <p class=\"text-message\">Atenciosamente,<br> Upswing</p>\n" +
                "            </div>\n" +
                "            <div>\n" +
-               "                <a href=\"http://localhost:4200/co/login\" class=\"access-link\">Ir para o site</a>\n" +
+               "                <a href=\"https://upswing-8bc8b.web.app/co/login\" class=\"access-link\">Ir para o site</a>\n" +
                "            </div>\n" +
                "            <div class=\"footer\">\n" +
                "                <div class=\"links\">\n" +

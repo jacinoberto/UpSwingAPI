@@ -120,7 +120,7 @@ public class EmailRecoverPassword {
                "                <p class=\"text-message\">Atenciosamente,<br> Upswing</p>\n" +
                "            </div>\n" +
                "            <div>\n" +
-               "                <a href=\"http://localhost:4200/reset-password/" + token + "\" class=\"access-link\">Redefinir senha</a>\n" +
+               "                <a href=\"https://upswing-8bc8b.web.app/reset-password/" + token + "\" class=\"access-link\">Redefinir senha</a>\n" +
                "            </div>\n" +
                "            <div class=\"footer\">\n" +
                "                <div class=\"links\">\n" +

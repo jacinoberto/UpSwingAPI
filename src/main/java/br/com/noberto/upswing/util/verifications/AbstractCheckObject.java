@@ -76,9 +76,9 @@ public abstract class AbstractCheckObject{
     public Student checkStudent(String email){
         entityManager.flush();
         Student student = new Student();
-        if (studentRepository.getAccountByEmail(email) != null){
+        if (studentRepository.getAccountByEmail(email).isPresent()){
             student =  studentRepository.getAccountByEmail(email)
-                    .orElseThrow(() -> new EntityExistsException("Email informado para aluno é invalido!"));
+                    .orElseThrow(() -> new EntityExistsException("O e-mail " + email + " é invalido!"));
         }
         if (studentRepository.findById(email).isPresent()){
             student = studentRepository.findById(email)
