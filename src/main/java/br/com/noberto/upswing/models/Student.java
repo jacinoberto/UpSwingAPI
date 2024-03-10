@@ -1,6 +1,7 @@
 package br.com.noberto.upswing.models;
 
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
+import br.com.noberto.upswing.dtos.student.StudentImport;
 import br.com.noberto.upswing.dtos.student.StudentResponse;
 import br.com.noberto.upswing.email.EmailSender;
 import br.com.noberto.upswing.enums.UserRole;
@@ -67,6 +68,14 @@ public class Student implements UserDetails {
         this.birthDate = student.birthDate();
         this.occupation = getOccupation();
         this.account = new Account(student);
+        this.role = UserRole.STUDENT;
+    }
+
+    public Student(StudentImport student) {
+        this.socialSecurity = student.socialSecurity();
+        this.birthDate = student.birthDate();
+        this.account = new Account(student);
+        this.address = new Address(student);
         this.role = UserRole.STUDENT;
     }
 

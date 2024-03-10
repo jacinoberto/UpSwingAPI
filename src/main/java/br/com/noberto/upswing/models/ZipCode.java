@@ -4,6 +4,7 @@ import br.com.noberto.upswing.dtos.address.AddressRequest;
 import br.com.noberto.upswing.dtos.address.ZipCodeRequest;
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
+import br.com.noberto.upswing.dtos.student.StudentImport;
 import br.com.noberto.upswing.repositories.ZipCodeRepository;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -52,4 +53,11 @@ public class ZipCode {
         this.state = zipCode.state();
     }
 
+    public ZipCode(StudentImport student) {
+        this.zipCode = student.zipCode();
+        this.street = student.street();
+        this.area = student.area();
+        this.city = student.city();
+        this.state = student.state();
+    }
 }

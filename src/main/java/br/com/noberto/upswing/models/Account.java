@@ -4,6 +4,7 @@ import br.com.noberto.upswing.dtos.admin.AdminUpdate;
 import br.com.noberto.upswing.dtos.admin.RegisterAdmin;
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
+import br.com.noberto.upswing.dtos.student.StudentImport;
 import br.com.noberto.upswing.dtos.student.StudentResponse;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -96,6 +97,14 @@ public class Account {
         this.optionalPhone = company.getAccount().getOptionalPhone();
         this.email = company.getAccount().getEmail();
         this.password = company.getAccount().getPassword();
+        this.activeProfile = true;
+    }
+
+    public Account(StudentImport student) {
+        this.name = student.name();
+        this.mainPhone = student.mainPhone();
+        this.optionalPhone = student.optionalPhone();
+        this.email = student.email();
         this.activeProfile = true;
     }
 }

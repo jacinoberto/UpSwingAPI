@@ -4,6 +4,7 @@ import br.com.noberto.upswing.dtos.address.AddressRequest;
 import br.com.noberto.upswing.dtos.address.ZipCodeRequest;
 import br.com.noberto.upswing.dtos.company.RegisterCompany;
 import br.com.noberto.upswing.dtos.student.RegisterStudent;
+import br.com.noberto.upswing.dtos.student.StudentImport;
 import br.com.noberto.upswing.dtos.student.StudentResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -49,5 +50,11 @@ public class Address {
         this.number = address.number();
         this.complement = address.complement();
         this.zipCode = zipCode;
+    }
+
+    public Address(StudentImport student) {
+        this.number = student.number();
+        this.complement = student.complement();
+        this.zipCode = new ZipCode(student);
     }
 }
